@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Safety Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d32f2f 0%, #f57c00 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #d32f2f;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #f57c00;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #d32f2f, #f57c00);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #ffebee;
+            border-left: 5px solid #d32f2f;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Life Safety Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Life Safety Infrastructure</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Life Safety Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Life Safety Systems for data centers. This course will provide you with essential knowledge about life safety systems, emergency egress, and the critical components that protect personnel during emergencies.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the components of life safety systems</li>
+                        <li>Learn about emergency egress requirements and design</li>
+                        <li>Recognize emergency lighting and exit signage requirements</li>
+                        <li>Understand smoke control and stairwell pressurization</li>
+                        <li>Learn about mass notification systems</li>
+                        <li>Understand integration with fire alarm systems</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of fire alarm systems</p>
+            </div>
+
+            <!-- Slide 2: What are Life Safety Systems? -->
+            <div class="slide">
+                <h2>What are Life Safety Systems?</h2>
+                
+                <p><strong>Life Safety Systems</strong> are integrated building systems designed to protect occupants during emergencies by providing safe egress, maintaining tenable conditions, and communicating emergency information.</p>
+
+                <h3>Key Components of Life Safety Systems:</h3>
+                <ul>
+                    <li><strong>Means of Egress:</strong> Safe pathways for evacuation</li>
+                    <li><strong>Emergency Lighting:</strong> Illumination during power failure</li>
+                    <li><strong>Exit Signage:</strong> Clear marking of exit routes</li>
+                    <li><strong>Smoke Control:</strong> Managing smoke movement</li>
+                    <li><strong>Mass Notification:</strong> Emergency communication systems</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Life Safety System Overview -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Life Safety System Components</text>
+                        
+                        <!-- Central Fire Alarm -->
+                        <circle cx="400" cy="200" r="60" fill="#e74c3c" stroke="#c0392b" stroke-width="3"/>
+                        <text x="400" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fire Alarm</text>
+                        <text x="400" y="215" text-anchor="middle" fill="white" font-size="12">System</text>
+                        
+                        <!-- Components -->
+                        <!-- Egress -->
+                        <rect x="80" y="60" width="120" height="60" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="140" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Means of</text>
+                        <text x="140" y="100" text-anchor="middle" fill="white" font-size="12">Egress</text>
+                        
+                        <!-- Emergency Lighting -->
+                        <rect x="600" y="60" width="120" height="60" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="660" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Emergency</text>
+                        <text x="660" y="100" text-anchor="middle" fill="white" font-size="12">Lighting</text>
+                        
+                        <!-- Exit Signs -->
+                        <rect x="80" y="280" width="120" height="60" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="140" y="305" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Exit</text>
+                        <text x="140" y="320" text-anchor="middle" fill="white" font-size="12">Signage</text>
+                        
+                        <!-- Smoke Control -->
+                        <rect x="600" y="280" width="120" height="60" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="660" y="305" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Smoke</text>
+                        <text x="660" y="320" text-anchor="middle" fill="white" font-size="12">Control</text>
+                        
+                        <!-- Mass Notification -->
+                        <rect x="340" y="60" width="120" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="400" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Mass</text>
+                        <text x="400" y="100" text-anchor="middle" fill="white" font-size="12">Notification</text>
+                        
+                        <!-- Connections -->
+                        <line x1="200" y1="90" x2="340" y2="170" stroke="#333" stroke-width="2"/>
+                        <line x1="460" y1="90" x2="460" y2="170" stroke="#333" stroke-width="2"/>
+                        <line x1="600" y1="90" x2="460" y2="170" stroke="#333" stroke-width="2"/>
+                        <line x1="200" y1="310" x2="340" y2="230" stroke="#333" stroke-width="2"/>
+                        <line x1="600" y1="310" x2="460" y2="230" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Labels -->
+                        <text x="400" y="370" text-anchor="middle" font-size="12" fill="#666">All components integrate with the Fire Alarm System</text>
+                    </svg>
+                </div>
+
+                <div class="info-box">
+                    <h4>Life Safety Objectives:</h4>
+                    <ul>
+                        <li><strong>Occupant Protection:</strong> Ensure safe evacuation</li>
+                        <li><strong>Property Protection:</strong> Minimize damage</li>
+                        <li><strong>Business Continuity:</strong> Enable rapid recovery</li>
+                        <li><strong>Code Compliance:</strong> Meet regulatory requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Means of Egress -->
+            <div class="slide">
+                <h2>Means of Egress</h2>
+                
+                <p>The means of egress is a continuous and unobstructed path of travel from any occupied portion of a building to a public way.</p>
+
+                <h3>Three Parts of Egress:</h3>
+                
+                <div class="info-box">
+                    <h4>1. Exit Access</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Path from any occupied point to an exit</li>
+                        <li><strong>Components:</strong> Corridors, aisles, rooms</li>
+                        <li><strong>Travel Distance:</strong> Limited by code (typically 200-300 ft)</li>
+                        <li><strong>Common Path:</strong> Limited to 75-100 ft typically</li>
+                        <li><strong>Dead Ends:</strong> Limited to 20-50 ft</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>2. Exit</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Protected path to exit discharge</li>
+                        <li><strong>Components:</strong> Exit stairs, exit ramps, exit doors</li>
+                        <li><strong>Fire Rating:</strong> 1-2 hour rated enclosures</li>
+                        <li><strong>Width:</strong> Based on occupant load</li>
+                        <li><strong>Doors:</strong> Self-closing, fire-rated</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>3. Exit Discharge</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Path from exit to public way</li>
+                        <li><strong>Components:</strong> Exit courts, yards, public ways</li>
+                        <li><strong>Protection:</strong> May require rated construction</li>
+                        <li><strong>Width:</strong> Not less than exit width</li>
+                        <li><strong>Clear Path:</strong> Free from obstructions</li>
+                    </ul>
+                </div>
+
+                <h3>Egress Width Calculation:</h3>
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Factor</th>
+                        <th>Minimum Width</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Stairs</strong></td>
+                        <td>0.3" per occupant</td>
+                        <td>44" (>50 occupants)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Other Egress</strong></td>
+                        <td>0.2" per occupant</td>
+                        <td>36" minimum</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Doors</strong></td>
+                        <td>Clear width</td>
+                        <td>32" minimum clear</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Corridors</strong></td>
+                        <td>Serving >50</td>
+                        <td>44" minimum</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <h4>⚠️ Critical Requirements:</h4>
+                    <ul>
+                        <li>Maximum travel distance to exit</li>
+                        <li>Minimum number of exits (typically 2)</li>
+                        <li>Exit separation (1/3 diagonal minimum)</li>
+                        <li>Door swing direction (in direction of travel)</li>
+                        <li>No dead ends exceeding code limits</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Emergency Lighting -->
+            <div class="slide">
+                <h2>Emergency Lighting Systems</h2>
+                
+                <p>Emergency lighting provides illumination when normal power fails, enabling safe evacuation and emergency operations.</p>
+
+                <h3>1. Performance Requirements</h3>
+                <div class="info-box">
+                    <h4>Illumination Levels:</h4>
+                    <ul>
+                        <li><strong>Average:</strong> 1 foot-candle (10.8 lux) minimum</li>
+                        <li><strong>Minimum:</strong> 0.1 foot-candle at floor level</li>
+                        <li><strong>Maximum/Minimum Ratio:</strong> Not to exceed 40:1</li>
+                        <li><strong>Duration:</strong> 90 minutes minimum</li>
+                        <li><strong>Response Time:</strong> Within 10 seconds of power failure</li>
+                    </ul>
+                </div>
+
+                <h3>2. Types of Emergency Lighting</h3>
+                
+                <div class="success-box">
+                    <h4>Unit Equipment</h4>
+                    <ul>
+                        <li>Self-contained battery units</li>
+                        <li>Automatic transfer on power loss</li>
+                        <li>Monthly/annual testing features</li>
+                        <li>LED technology for efficiency</li>
+                        <li>Wall or ceiling mounted</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Central Battery Systems</h4>
+                    <ul>
+                        <li>Centralized battery bank</li>
+                        <li>Inverter system for AC power</li>
+                        <li>Serves multiple lighting circuits</li>
+                        <li>Lower maintenance requirements</li>
+                        <li>Remote monitoring capability</li>
+                    </ul>
+                </div>
+
+                <h3>3. Required Locations</h3>
+                <ul>
+                    <li><strong>Exit Access:</strong> Corridors, aisles, ramps, escalators</li>
+                    <li><strong>Exits:</strong> Exit stairs, exit passageways</li>
+                    <li><strong>Exit Discharge:</strong> Exterior landings, public way</li>
+                    <li><strong>Areas of Refuge:</strong> Designated waiting areas</li>
+                    <li><strong>Electrical/Mechanical Rooms:</strong> Service equipment</li>
+                    <li><strong>Fire Command Center:</strong> Emergency operations</li>
+                </ul>
+
+                <h3>4. Testing Requirements</h3>
+                <table>
+                    <tr>
+                        <th>Test Type</th>
+                        <th>Frequency</th>
+                        <th>Duration</th>
+                        <th>Requirements</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Functional Test</strong></td>
+                        <td>Monthly</td>
+                        <td>30 seconds</td>
+                        <td>Verify operation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duration Test</strong></td>
+                        <td>Annual</td>
+                        <td>90 minutes</td>
+                        <td>Full discharge test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Written Records</strong></td>
+                        <td>Each test</td>
+                        <td>-</td>
+                        <td>Document results</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 5: Exit Signage -->
+            <div class="slide">
+                <h2>Exit Signs and Marking</h2>
+                
+                <p>Exit signs provide clear, visible guidance to building exits during normal and emergency conditions.</p>
+
+                <h3>1. Exit Sign Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>Design Standards:</h4>
+                    <ul>
+                        <li><strong>Letters:</strong> "EXIT" in plainly legible letters</li>
+                        <li><strong>Size:</strong> Letters not less than 6 inches high</li>
+                        <li><strong>Stroke:</strong> Letter width not less than 3/4 inch</li>
+                        <li><strong>Color:</strong> Red or green (per local code)</li>
+                        <li><strong>Illumination:</strong> Internally or externally illuminated</li>
+                    </ul>
+                </div>
+
+                <h3>2. Types of Exit Signs</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Power Source</th>
+                        <th>Runtime</th>
+                        <th>Maintenance</th>
+                    </tr>
+                    <tr>
+                        <td><strong>LED Electric</strong></td>
+                        <td>AC with battery</td>
+                        <td>90 minutes</td>
+                        <td>Annual battery test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Photoluminescent</strong></td>
+                        <td>None (charged by light)</td>
+                        <td>Varies</td>
+                        <td>Cleaning only</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Self-Luminous</strong></td>
+                        <td>Tritium (radioactive)</td>
+                        <td>10-20 years</td>
+                        <td>Disposal requirements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Combination</strong></td>
+                        <td>Electric + Photo</td>
+                        <td>Continuous</td>
+                        <td>Regular testing</td>
+                    </tr>
+                </table>
+
+                <h3>3. Placement Requirements</h3>
+                
+                <div class="warning-box">
+                    <h4>Exit Signs Required At:</h4>
+                    <ul>
+                        <li>Each exit door</li>
+                        <li>Exit access corridors requiring direction</li>
+                        <li>Horizontal exits</li>
+                        <li>Approved exit stairways</li>
+                        <li>Changes in direction along exit path</li>
+                    </ul>
+                </div>
+
+                <h3>4. Directional Signage</h3>
+                <ul>
+                    <li><strong>Chevron Arrows:</strong> Indicate direction of travel</li>
+                    <li><strong>Maximum Distance:</strong> 100 feet between signs</li>
+                    <li><strong>Visibility:</strong> From any point in exit access</li>
+                    <li><strong>Low-Level Signs:</strong> Required in some occupancies</li>
+                    <li><strong>Tactile Signs:</strong> For accessibility compliance</li>
+                </ul>
+
+                <h3>5. Floor Proximity Signs</h3>
+                <div class="info-box">
+                    <h4>Stairway Identification Signs:</h4>
+                    <ul>
+                        <li>Floor level designation</li>
+                        <li>Stair identification</li>
+                        <li>Top and bottom terminus</li>
+                        <li>Direction to exit discharge</li>
+                        <li>5 feet above floor landing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Smoke Control Systems -->
+            <div class="slide">
+                <h2>Smoke Control Systems</h2>
+                
+                <p>Smoke control systems manage smoke movement during a fire to maintain tenable conditions for evacuation and fire department operations.</p>
+
+                <h3>1. Smoke Control Methods</h3>
+                
+                <div class="info-box">
+                    <h4>Passive Smoke Control:</h4>
+                    <ul>
+                        <li><strong>Compartmentation:</strong> Fire-rated barriers</li>
+                        <li><strong>Smoke Barriers:</strong> Limit smoke spread</li>
+                        <li><strong>Door Closers:</strong> Automatic closing devices</li>
+                        <li><strong>Smoke Dampers:</strong> Duct penetrations</li>
+                        <li><strong>Shaft Enclosures:</strong> Vertical openings</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Active Smoke Control:</h4>
+                    <ul>
+                        <li><strong>Pressurization:</strong> Stairwells and areas of refuge</li>
+                        <li><strong>Exhaust Systems:</strong> Remove smoke from fire area</li>
+                        <li><strong>HVAC Control:</strong> Prevent smoke circulation</li>
+                        <li><strong>Smoke Containment:</strong> Pressure differentials</li>
+                        <li><strong>Natural Venting:</strong> Automatic roof vents</li>
+                    </ul>
+                </div>
+
+                <h3>2. Stairwell Pressurization</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Stairwell Pressurization System</text>
+                        
+                        <!-- Building outline -->
+                        <rect x="200" y="60" width="400" height="300" fill="none" stroke="#333" stroke-width="3"/>
+                        
+                        <!-- Stairwell -->
+                        <rect x="500" y="60" width="100" height="300" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+                        <text x="550" y="210" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Stairwell</text>
+                        
+                        <!-- Floors -->
+                        <line x1="200" y1="150" x2="500" y2="150" stroke="#333" stroke-width="2"/>
+                        <line x1="200" y1="240" x2="500" y2="240" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Pressure indicators -->
+                        <text x="550" y="100" text-anchor="middle" font-size="12" fill="#2e7d32">+0.15" WC</text>
+                        <text x="350" y="100" text-anchor="middle" font-size="12" fill="#666">0.00" WC</text>
+                        
+                        <!-- Fire floor -->
+                        <rect x="220" y="160" width="260" height="70" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+                        <text x="350" y="200" text-anchor="middle" font-size="14" fill="#d32f2f">Fire Floor</text>
+                        
+                        <!-- Supply fan -->
+                        <rect x="520" y="20" width="60" height="30" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="550" y="40" text-anchor="middle" font-size="12" fill="white">Fan</text>
+                        
+                        <!-- Airflow arrows -->
+                        <path d="M 550 50 L 550 60" stroke="#2196F3" stroke-width="3" marker-end="url(#arrowblue)"/>
+                        <path d="M 500 110 L 480 110" stroke="#2196F3" stroke-width="2" marker-end="url(#arrowblue)"/>
+                        <path d="M 500 200 L 480 200" stroke="#2196F3" stroke-width="2" marker-end="url(#arrowblue)"/>
+                        <path d="M 500 290 L 480 290" stroke="#2196F3" stroke-width="2" marker-end="url(#arrowblue)"/>
+                        
+                        <!-- Labels -->
+                        <text x="400" y="380" text-anchor="middle" font-size="12" fill="#666">Positive pressure prevents smoke infiltration</text>
+                        
+                        <!-- Arrowhead markers -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#2196F3"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>3. Design Criteria</h3>
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Requirement</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Pressure Differential</strong></td>
+                        <td>0.05-0.35" WC</td>
+                        <td>Prevent smoke entry</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Door Opening Force</strong></td>
+                        <td><30 lbf</td>
+                        <td>Allow egress</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Velocity</strong></td>
+                        <td>≥200 fpm</td>
+                        <td>When doors open</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activation</strong></td>
+                        <td>Automatic</td>
+                        <td>On fire alarm</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <h4>⚠️ Critical Considerations:</h4>
+                    <ul>
+                        <li>Stack effect in tall buildings</li>
+                        <li>Wind effects on system performance</li>
+                        <li>HVAC system interactions</li>
+                        <li>Door opening forces</li>
+                        <li>System commissioning requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Mass Notification Systems -->
+            <div class="slide">
+                <h2>Mass Notification Systems</h2>
+                
+                <p>Mass Notification Systems (MNS) provide real-time information and instructions to building occupants during emergencies.</p>
+
+                <h3>1. System Components</h3>
+                
+                <div class="info-box">
+                    <h4>Notification Methods:</h4>
+                    <ul>
+                        <li><strong>Audible:</strong> Voice messages, tones, sirens</li>
+                        <li><strong>Visual:</strong> Strobes, displays, signs</li>
+                        <li><strong>Textual:</strong> LCD displays, mobile alerts</li>
+                        <li><strong>Tactile:</strong> Vibration devices for hearing impaired</li>
+                        <li><strong>Integration:</strong> Email, SMS, social media</li>
+                    </ul>
+                </div>
+
+                <h3>2. Emergency Voice/Alarm Communications</h3>
+                
+                <div class="success-box">
+                    <h4>EVAC System Features:</h4>
+                    <ul>
+                        <li>Live voice paging capability</li>
+                        <li>Pre-recorded message playback</li>
+                        <li>Selective paging by zones</li>
+                        <li>Multiple message priority levels</li>
+                        <li>Integration with fire alarm system</li>
+                        <li>Backup power for 24 hours + 15 minutes alarm</li>
+                    </ul>
+                </div>
+
+                <h3>3. Design Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Specification</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Intelligibility</strong></td>
+                        <td>CIS ≥ 0.70</td>
+                        <td>Clear communication</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audibility</strong></td>
+                        <td>15 dB above ambient</td>
+                        <td>Ensure hearing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coverage</strong></td>
+                        <td>All occupiable spaces</td>
+                        <td>Complete notification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Survivability</strong></td>
+                        <td>2-hour rated pathway</td>
+                        <td>System protection</td>
+                    </tr>
+                </table>
+
+                <h3>4. Message Priorities</h3>
+                <ul>
+                    <li><strong>Priority 1:</strong> Live emergency voice</li>
+                    <li><strong>Priority 2:</strong> Automatic fire alarm</li>
+                    <li><strong>Priority 3:</strong> Mass notification emergency</li>
+                    <li><strong>Priority 4:</strong> Building evacuation</li>
+                    <li><strong>Priority 5:</strong> General announcements</li>
+                </ul>
+
+                <h3>5. Integration Requirements</h3>
+                <div class="warning-box">
+                    <h4>System Interfaces:</h4>
+                    <ul>
+                        <li>Fire alarm system override capability</li>
+                        <li>Security system coordination</li>
+                        <li>Building automation interface</li>
+                        <li>External alerting systems</li>
+                        <li>First responder communications</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Integration with Fire Alarm Systems -->
+            <div class="slide">
+                <h2>Fire Alarm System Integration</h2>
+                
+                <p>Life safety systems must integrate seamlessly with fire alarm systems to provide coordinated emergency response.</p>
+
+                <h3>1. Integration Points</h3>
+                
+                <div class="info-box">
+                    <h4>Fire Alarm Control Panel Interfaces:</h4>
+                    <ul>
+                        <li><strong>Emergency Lighting:</strong> Automatic activation on alarm</li>
+                        <li><strong>Door Release:</strong> Magnetic lock override</li>
+                        <li><strong>Elevator Recall:</strong> Return to designated floor</li>
+                        <li><strong>HVAC Shutdown:</strong> Prevent smoke spread</li>
+                        <li><strong>Smoke Control:</strong> Activate pressurization</li>
+                    </ul>
+                </div>
+
+                <h3>2. Control Sequences</h3>
+                
+                <div class="success-box">
+                    <h4>Typical Fire Alarm Sequence:</h4>
+                    <ol>
+                        <li>Detection device activates</li>
+                        <li>Fire alarm control panel processes signal</li>
+                        <li>Notification appliances activate</li>
+                        <li>Emergency lighting activates</li>
+                        <li>Doors release for egress</li>
+                        <li>Elevators recall to primary floor</li>
+                        <li>HVAC systems shut down</li>
+                        <li>Smoke control systems activate</li>
+                        <li>Mass notification system activates</li>
+                    </ol>
+                </div>
+
+                <h3>3. Survivability Requirements</h3>
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Protection Level</th>
+                        <th>Method</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Control Equipment</strong></td>
+                        <td>2-hour rated room</td>
+                        <td>Fire-rated enclosure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Riser Cables</strong></td>
+                        <td>2-hour rated</td>
+                        <td>CI cable or protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notification Circuits</strong></td>
+                        <td>Attack protection</td>
+                        <td>15 minutes minimum</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power Supplies</strong></td>
+                        <td>24-hour standby</td>
+                        <td>Battery backup</td>
+                    </tr>
+                </table>
+
+                <h3>4. Testing and Commissioning</h3>
+                <ul>
+                    <li><strong>Integrated Testing:</strong> Test all systems together</li>
+                    <li><strong>Sequence Verification:</strong> Confirm proper operation order</li>
+                    <li><strong>Timing Verification:</strong> Check response times</li>
+                    <li><strong>Documentation:</strong> Record all test results</li>
+                    <li><strong>Training:</strong> Ensure staff understanding</li>
+                </ul>
+
+                <div class="danger-box">
+                    <h4>Common Integration Issues:</h4>
+                    <ul>
+                        <li>Voltage compatibility between systems</li>
+                        <li>Programming conflicts</li>
+                        <li>Wiring errors</li>
+                        <li>Inadequate documentation</li>
+                        <li>Lack of coordination during installation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Testing and Maintenance -->
+            <div class="slide">
+                <h2>Testing and Maintenance</h2>
+                
+                <p>Regular testing and maintenance of life safety systems is critical for reliability and code compliance.</p>
+
+                <h3>1. Testing Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>System</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                        <th>Special</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Emergency Lighting</strong></td>
+                        <td>30-second test</td>
+                        <td>90-minute test</td>
+                        <td>After repairs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exit Signs</strong></td>
+                        <td>Visual inspection</td>
+                        <td>Full inspection</td>
+                        <td>After power loss</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Smoke Control</strong></td>
+                        <td>-</td>
+                        <td>Full test</td>
+                        <td>Semi-annual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mass Notification</strong></td>
+                        <td>-</td>
+                        <td>Full test</td>
+                        <td>After changes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stairwell Doors</strong></td>
+                        <td>-</td>
+                        <td>Operation test</td>
+                        <td>After maintenance</td>
+                    </tr>
+                </table>
+
+                <h3>2. Documentation Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>Required Records:</h4>
+                    <ul>
+                        <li><strong>Test Logs:</strong> Date, time, results, tester</li>
+                        <li><strong>Deficiency Reports:</strong> Problems found and corrected</li>
+                        <li><strong>Maintenance Records:</strong> Service performed</li>
+                        <li><strong>System Changes:</strong> Modifications or additions</li>
+                        <li><strong>Training Records:</strong> Personnel qualifications</li>
+                    </ul>
+                </div>
+
+                <h3>3. Common Maintenance Issues</h3>
+                
+                <div class="warning-box">
+                    <h4>Frequent Problems:</h4>
+                    <ul>
+                        <li>Dead batteries in emergency lights</li>
+                        <li>Blocked exits or egress paths</li>
+                        <li>Damaged exit signs</li>
+                        <li>Door closer adjustments needed</li>
+                        <li>Smoke damper maintenance overlooked</li>
+                        <li>Integration programming lost</li>
+                    </ul>
+                </div>
+
+                <h3>4. Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Maintenance Excellence:</h4>
+                    <ul>
+                        <li>Develop comprehensive maintenance schedules</li>
+                        <li>Use qualified service providers</li>
+                        <li>Maintain spare parts inventory</li>
+                        <li>Implement predictive maintenance</li>
+                        <li>Regular staff training updates</li>
+                        <li>Coordinate with fire marshal inspections</li>
+                    </ul>
+                </div>
+
+                <h3>5. Emergency Procedures</h3>
+                <ul>
+                    <li><strong>System Failure:</strong> Implement fire watch procedures</li>
+                    <li><strong>Impairments:</strong> Notify fire department and AHJ</li>
+                    <li><strong>Temporary Measures:</strong> Provide alternative protection</li>
+                    <li><strong>Documentation:</strong> Record all impairments and restorations</li>
+                    <li><strong>Communication:</strong> Inform all affected parties</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Data Center Specific Considerations -->
+            <div class="slide">
+                <h2>Data Center Specific Considerations</h2>
+                
+                <p>Data centers have unique life safety challenges due to their critical nature and specialized environments.</p>
+
+                <h3>1. Special Hazards</h3>
+                
+                <div class="danger-box">
+                    <h4>Data Center Risks:</h4>
+                    <ul>
+                        <li><strong>Limited Occupancy:</strong> Fewer people but critical operations</li>
+                        <li><strong>High Energy Density:</strong> Increased fire load</li>
+                        <li><strong>Specialized Suppression:</strong> Clean agent systems</li>
+                        <li><strong>Access Control:</strong> Security vs. egress conflicts</li>
+                        <li><strong>24/7 Operations:</strong> Continuous occupancy considerations</li>
+                    </ul>
+                </div>
+
+                <h3>2. Design Adaptations</h3>
+                
+                <div class="info-box">
+                    <h4>Modified Requirements:</h4>
+                    <ul>
+                        <li><strong>Very Early Warning:</strong> Aspirating smoke detection</li>
+                        <li><strong>Pre-Action Suppression:</strong> Prevent water damage</li>
+                        <li><strong>EPO Integration:</strong> Emergency power off coordination</li>
+                        <li><strong>Mantrap Egress:</strong> Override on fire alarm</li>
+                        <li><strong>Cold Aisle Containment:</strong> Egress considerations</li>
+                    </ul>
+                </div>
+
+                <h3>3. Integration Challenges</h3>
+                <table>
+                    <tr>
+                        <th>System</th>
+                        <th>Challenge</th>
+                        <th>Solution</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Control</strong></td>
+                        <td>Security vs. egress</td>
+                        <td>Fail-safe locks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EPO</strong></td>
+                        <td>Power vs. life safety</td>
+                        <td>Maintain emergency power</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Suppression</strong></td>
+                        <td>Agent discharge</td>
+                        <td>Evacuation delays</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cooling</strong></td>
+                        <td>Containment barriers</td>
+                        <td>Egress doors</td>
+                    </tr>
+                </table>
+
+                <h3>4. Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Data Center Life Safety Excellence:</h4>
+                    <ul>
+                        <li>Conduct thorough risk assessments</li>
+                        <li>Design for both life safety and asset protection</li>
+                        <li>Implement comprehensive training programs</li>
+                        <li>Regular evacuation drills including all shifts</li>
+                        <li>Coordinate with local fire department</li>
+                        <li>Document all special conditions and procedures</li>
+                    </ul>
+                </div>
+
+                <h3>5. Emergency Response Planning</h3>
+                <ul>
+                    <li><strong>Pre-Plans:</strong> Detailed facility information for responders</li>
+                    <li><strong>Key Box:</strong> Access keys and information</li>
+                    <li><strong>Contact Lists:</strong> 24/7 emergency contacts</li>
+                    <li><strong>Special Procedures:</strong> EPO, suppression delays</li>
+                    <li><strong>Recovery Plans:</strong> Business continuity considerations</li>
+                </ul>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• NFPA 101 - Life Safety Code (2021 Edition)</li>
+                        <li>• NFPA 72 - National Fire Alarm and Signaling Code (2022)</li>
+                        <li>• NFPA 92 - Standard for Smoke Control Systems (2021)</li>
+                        <li>• NFPA 110 - Emergency and Standby Power Systems (2022)</li>
+                        <li>• International Building Code (IBC) 2021</li>
+                        <li>• NFPA 75 - Fire Protection of Information Technology Equipment</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• NFPA - National Fire Protection Association</li>
+                        <li>• ICC - International Code Council</li>
+                        <li>• SFPE - Society of Fire Protection Engineers</li>
+                        <li>• NEMA - National Electrical Manufacturers Association</li>
+                        <li>• UL - Underwriters Laboratories</li>
+                        <li>• The Uptime Institute - Data Center Standards</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "SFPE Handbook of Fire Protection Engineering" - 5th Edition</li>
+                        <li>• "Emergency Lighting Design Guide" - NEMA</li>
+                        <li>• "Smoke Control System Design" - ASHRAE</li>
+                        <li>• "Mass Notification Systems Design Guide" - NEMA</li>
+                        <li>• "Data Center Fire Protection Guidelines" - FM Global</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from code organizations, industry standards, and engineering best practices. All requirements and specifications reflect current codes and standards as of 2024. Always consult the latest adopted codes in your jurisdiction.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Life Safety Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the minimum illumination level required for emergency lighting?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> 0.5 foot-candles average</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> 1.0 foot-candle average</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> 2.0 foot-candles average</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> 5.0 foot-candles average</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. How long must emergency lighting operate on battery power?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> 30 minutes</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> 60 minutes</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> 90 minutes</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> 120 minutes</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What are the three parts of means of egress?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Entry, pathway, exit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Exit access, exit, exit discharge</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Door, corridor, stairway</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Entrance, passage, street</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What is the typical pressure differential for stairwell pressurization?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> 0.01-0.03 inches water column</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> 0.05-0.35 inches water column</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> 0.50-1.00 inches water column</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> 1.00-2.00 inches water column</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the minimum height for EXIT sign letters?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 4 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 6 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 8 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 10 inches</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the maximum door opening force allowed for egress?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> 15 pounds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> 30 pounds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> 50 pounds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> 75 pounds</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the required Common Intelligibility Scale (CIS) for voice systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> ≥ 0.50</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> ≥ 0.60</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> ≥ 0.70</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> ≥ 0.80</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. How often must emergency lighting undergo a 90-minute test?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Monthly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Quarterly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Semi-annually</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Annually</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the typical egress width factor for stairs?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 0.2 inches per occupant</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 0.3 inches per occupant</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 0.5 inches per occupant</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 1.0 inch per occupant</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the minimum clear width for an egress door?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 28 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 32 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 36 inches</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 44 inches</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // 1.0 foot-candle average
+            q2: 'c',  // 90 minutes
+            q3: 'b',  // Exit access, exit, exit discharge
+            q4: 'b',  // 0.05-0.35 inches water column
+            q5: 'b',  // 6 inches
+            q6: 'b',  // 30 pounds
+            q7: 'c',  // ≥ 0.70
+            q8: 'd',  // Annually
+            q9: 'b',  // 0.3 inches per occupant
+            q10: 'b'  // 32 inches
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Life Safety Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #2a5298;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1e3c72;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Generator Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Standby Power Systems</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Generator Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Generator systems for data centers. This course will provide you with essential knowledge about generator technology, its critical importance in data center operations, and best practices for ensuring reliable standby power.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand what generator systems are and how they work</li>
+                        <li>Learn about different types of generators and fuel systems</li>
+                        <li>Recognize the critical importance of generators in data centers</li>
+                        <li>Understand generator components and system architecture</li>
+                        <li>Learn about testing, maintenance, and operational procedures</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of electrical systems</p>
+            </div>
+
+            <!-- Slide 2: What is a Generator System? -->
+            <div class="slide">
+                <h2>What is a Generator System?</h2>
+                
+                <p>A <strong>Generator System</strong> is a standby power source that converts mechanical energy into electrical energy, providing emergency power to critical facilities when utility power fails or becomes unreliable.</p>
+
+                <h3>Key Functions of a Generator:</h3>
+                <ul>
+                    <li><strong>Standby Power:</strong> Provides backup electricity during utility outages</li>
+                    <li><strong>Prime Power:</strong> Can serve as the primary power source in remote locations</li>
+                    <li><strong>Peak Shaving:</strong> Reduces utility costs during high-demand periods</li>
+                    <li><strong>Load Testing:</strong> Supports facility testing without utility interruption</li>
+                    <li><strong>Grid Support:</strong> Can provide power back to the grid in some configurations</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Fuel Source -->
+                        <rect x="20" y="150" width="100" height="60" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+                        <text x="70" y="185" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fuel Tank</text>
+                        
+                        <!-- Arrow -->
+                        <path d="M 120 180 L 160 180" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Engine -->
+                        <rect x="160" y="130" width="120" height="100" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="220" y="165" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Engine</text>
+                        <text x="220" y="185" text-anchor="middle" fill="white" font-size="12">(Mechanical)</text>
+                        
+                        <!-- Arrow -->
+                        <path d="M 280 180 L 320 180" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Generator -->
+                        <rect x="320" y="100" width="160" height="160" fill="#1e3c72" stroke="#16325c" stroke-width="3" rx="5"/>
+                        <text x="400" y="140" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Generator</text>
+                        <text x="400" y="165" text-anchor="middle" fill="white" font-size="14">(Alternator)</text>
+                        <circle cx="400" cy="200" r="25" fill="#2a5298" stroke="white" stroke-width="2"/>
+                        <text x="400" y="207" text-anchor="middle" fill="white" font-size="12" font-weight="bold">AC</text>
+                        
+                        <!-- Arrow -->
+                        <path d="M 480 180 L 520 180" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Output -->
+                        <rect x="520" y="150" width="120" height="60" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="580" y="175" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Electrical</text>
+                        <text x="580" y="195" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Power</text>
+                        
+                        <!-- Control System -->
+                        <rect x="300" y="20" width="200" height="50" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="5"/>
+                        <text x="400" y="50" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Control System</text>
+                        
+                        <!-- Control lines -->
+                        <path d="M 400 70 L 220 130" stroke="#9c27b0" stroke-width="2" stroke-dasharray="5,5"/>
+                        <path d="M 400 70 L 400 100" stroke="#9c27b0" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Basic Generator System: Fuel → Engine → Generator → Electrical Power</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: How Does a Generator Work? -->
+            <div class="slide">
+                <h2>How Does a Generator Work?</h2>
+                
+                <p>Generators operate on the principle of electromagnetic induction, discovered by Michael Faraday. When a conductor moves through a magnetic field, it generates electrical current.</p>
+
+                <h3>Basic Operating Principles:</h3>
+                
+                <div class="info-box">
+                    <h4>1. Normal Standby Mode</h4>
+                    <ul>
+                        <li>Generator monitors utility power continuously</li>
+                        <li>Engine block heater maintains optimal temperature</li>
+                        <li>Battery charger keeps starting batteries ready</li>
+                        <li>Control system performs periodic self-tests</li>
+                        <li>Fuel system maintains adequate supply</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>2. Power Failure Response</h4>
+                    <ul>
+                        <li>Automatic Transfer Switch (ATS) detects utility failure</li>
+                        <li>Signal sent to generator control system</li>
+                        <li>Engine cranks and starts (typically 10 seconds)</li>
+                        <li>Generator reaches rated voltage and frequency</li>
+                        <li>ATS transfers load to generator (total time: 10-30 seconds)</li>
+                    </ul>
+                </div>
+
+                <h3>Key Operating Stages:</h3>
+                <ul>
+                    <li><strong>Start Sequence:</strong> Cranking → Ignition → Warm-up → Ready</li>
+                    <li><strong>Synchronization:</strong> Voltage, frequency, and phase matching</li>
+                    <li><strong>Load Acceptance:</strong> Gradual or block loading capability</li>
+                    <li><strong>Running:</strong> Continuous monitoring and regulation</li>
+                    <li><strong>Retransfer:</strong> Return to utility when power restored</li>
+                </ul>
+
+                <div class="success-box">
+                    <h4>Generator Output Characteristics</h4>
+                    <ul>
+                        <li><strong>Voltage:</strong> 480V, 4160V, or 13.8kV (typical data center voltages)</li>
+                        <li><strong>Frequency:</strong> 60Hz (US) or 50Hz (Europe/Asia)</li>
+                        <li><strong>Power Factor:</strong> 0.8 lagging (standard)</li>
+                        <li><strong>Voltage Regulation:</strong> ±1% steady state</li>
+                        <li><strong>Frequency Regulation:</strong> ±0.25% steady state</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Types of Generator Systems -->
+            <div class="slide">
+                <h2>Types of Generator Systems</h2>
+                
+                <p>Data centers use various generator types based on size, criticality, and application requirements:</p>
+
+                <h3>1. By Fuel Type</h3>
+                
+                <div class="info-box">
+                    <h4>Diesel Generators (Most Common)</h4>
+                    <ul>
+                        <li><strong>Advantages:</strong> Reliable, efficient, quick starting, high power density</li>
+                        <li><strong>Runtime:</strong> 24-72 hours with on-site fuel</li>
+                        <li><strong>Efficiency:</strong> 35-45%</li>
+                        <li><strong>Start Time:</strong> 10-15 seconds</li>
+                        <li><strong>Maintenance:</strong> 250-500 hour intervals</li>
+                        <li><strong>Data Center Use:</strong> Industry standard for critical facilities</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Natural Gas Generators</h4>
+                    <ul>
+                        <li><strong>Advantages:</strong> Cleaner emissions, unlimited runtime, lower fuel costs</li>
+                        <li><strong>Disadvantages:</strong> Slower start, lower power density, gas supply vulnerability</li>
+                        <li><strong>Efficiency:</strong> 28-42%</li>
+                        <li><strong>Start Time:</strong> 30-45 seconds</li>
+                        <li><strong>Data Center Use:</strong> Growing adoption for sustainability</li>
+                    </ul>
+                </div>
+
+                <h3>2. By Configuration</h3>
+
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Power Range</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Standby</strong></td>
+                        <td>500kW - 3MW</td>
+                        <td>Emergency power only, 200 hrs/year max</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prime</strong></td>
+                        <td>500kW - 2.5MW</td>
+                        <td>Unlimited runtime, variable load</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Continuous</strong></td>
+                        <td>500kW - 2MW</td>
+                        <td>Constant load, unlimited runtime</td>
+                    </tr>
+                </table>
+
+                <h3>3. By Speed</h3>
+                <ul>
+                    <li><strong>High Speed (1800 RPM):</strong> Smaller, lighter, less expensive</li>
+                    <li><strong>Medium Speed (1200 RPM):</strong> Better fuel efficiency, longer life</li>
+                    <li><strong>Low Speed (514-900 RPM):</strong> Most efficient, longest life, highest cost</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Why Generators are Critical for Data Centers -->
+            <div class="slide">
+                <h2>Why Generators are Critical for Data Centers</h2>
+                
+                <p>Generators form the backbone of data center power reliability, providing essential backup power to maintain continuous operations.</p>
+
+                <h3>1. Business Continuity Protection</h3>
+                <ul>
+                    <li><strong>Downtime Prevention:</strong> Eliminates outages lasting longer than UPS runtime</li>
+                    <li><strong>Financial Impact:</strong> Prevents losses of £4,300+ per minute</li>
+                    <li><strong>SLA Compliance:</strong> Maintains 99.999% uptime commitments</li>
+                    <li><strong>Data Integrity:</strong> Ensures continuous operation for data protection</li>
+                    <li><strong>Customer Confidence:</strong> Demonstrates infrastructure reliability</li>
+                </ul>
+
+                <h3>2. Power Grid Vulnerabilities</h3>
+                <div class="warning-box">
+                    <h4>Common Utility Power Issues:</h4>
+                    <ul>
+                        <li><strong>Weather Events:</strong> Storms, floods, extreme temperatures</li>
+                        <li><strong>Grid Failures:</strong> Equipment failures, overloads, cascading outages</li>
+                        <li><strong>Planned Maintenance:</strong> Scheduled utility work and upgrades</li>
+                        <li><strong>Natural Disasters:</strong> Earthquakes, hurricanes, wildfires</li>
+                        <li><strong>Human Factors:</strong> Accidents, construction damage, cyber attacks</li>
+                    </ul>
+                </div>
+
+                <h3>3. Extended Runtime Capability</h3>
+                <div class="success-box">
+                    <h4>UPS vs Generator Runtime</h4>
+                    <ul>
+                        <li><strong>UPS Alone:</strong> 5-30 minutes typical</li>
+                        <li><strong>Generator:</strong> 24-72 hours on-site fuel</li>
+                        <li><strong>With Fuel Contracts:</strong> Unlimited runtime possible</li>
+                        <li><strong>Critical Period:</strong> Bridges extended outages</li>
+                        <li><strong>Load Support:</strong> Full facility load capability</li>
+                    </ul>
+                </div>
+
+                <h3>4. Regulatory and Compliance Requirements</h3>
+                <ul>
+                    <li>Uptime Institute Tier III/IV requires N+1 generator redundancy</li>
+                    <li>Healthcare and financial regulations mandate backup power</li>
+                    <li>Insurance requirements often specify generator capacity</li>
+                    <li>Local codes require emergency power for life safety</li>
+                </ul>
+
+                <h3>5. Competitive Advantage</h3>
+                <ul>
+                    <li>Differentiates from facilities with UPS-only protection</li>
+                    <li>Enables higher availability SLAs</li>
+                    <li>Supports disaster recovery site designation</li>
+                    <li>Provides customer assurance and trust</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Generator System Architecture -->
+            <div class="slide">
+                <h2>Generator System Architecture in Data Centers</h2>
+                
+                <p>Data centers implement various generator configurations to achieve required reliability levels:</p>
+
+                <h3>1. N Configuration (No Redundancy)</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>Single generator sized for full critical load</li>
+                        <li>No redundancy - maintenance requires utility dependency</li>
+                        <li>Suitable for Tier I/II facilities</li>
+                        <li>Availability: ~98-99%</li>
+                        <li>Cost: Lowest capital investment</li>
+                    </ul>
+                </div>
+
+                <h3>2. N+1 Configuration</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>One additional generator for redundancy</li>
+                        <li>Can maintain full load with one unit offline</li>
+                        <li>Common in Tier III facilities</li>
+                        <li>Availability: ~99.9%</li>
+                        <li>Parallel switchgear required</li>
+                    </ul>
+                </div>
+
+                <h3>3. 2N Configuration</h3>
+                <div class="success-box">
+                    <ul>
+                        <li>Complete duplicate generator systems (A & B)</li>
+                        <li>Each system sized for full critical load</li>
+                        <li>Required for Tier IV certification</li>
+                        <li>Availability: ~99.99%</li>
+                        <li>Highest cost but maximum reliability</li>
+                    </ul>
+                </div>
+
+                <h3>4. Distributed Redundant</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>Multiple smaller generators with shared redundancy</li>
+                        <li>Better partial load efficiency</li>
+                        <li>Easier maintenance scheduling</li>
+                        <li>Complex controls and paralleling</li>
+                        <li>Availability: ~99.95%</li>
+                    </ul>
+                </div>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e3c72">N+1 Generator Configuration</text>
+                        
+                        <!-- Utility Source -->
+                        <rect x="50" y="60" width="100" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="100" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Utility</text>
+                        
+                        <!-- ATS -->
+                        <rect x="350" y="60" width="100" height="60" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="400" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ATS</text>
+                        
+                        <!-- Generators -->
+                        <rect x="50" y="200" width="120" height="80" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="110" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Gen 1</text>
+                        <text x="110" y="255" text-anchor="middle" fill="white" font-size="12">2MW</text>
+                        
+                        <rect x="220" y="200" width="120" height="80" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="280" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Gen 2</text>
+                        <text x="280" y="255" text-anchor="middle" fill="white" font-size="12">2MW</text>
+                        
+                        <rect x="390" y="200" width="120" height="80" fill="#2a5298" stroke="#1e3c72" stroke-width="2" rx="5"/>
+                        <text x="450" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Gen 3</text>
+                        <text x="450" y="255" text-anchor="middle" fill="white" font-size="12">2MW (+1)</text>
+                        
+                        <!-- Paralleling Gear -->
+                        <rect x="200" y="320" width="160" height="60" fill="#9c27b0" stroke="#7b1fa2" stroke-width="2" rx="5"/>
+                        <text x="280" y="355" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Paralleling Gear</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 150 90 L 350 90" stroke="#333" stroke-width="3"/>
+                        <path d="M 110 280 L 110 320 L 200 320" stroke="#333" stroke-width="3"/>
+                        <path d="M 280 280 L 280 320" stroke="#333" stroke-width="3"/>
+                        <path d="M 450 280 L 450 320 L 360 320" stroke="#333" stroke-width="3"/>
+                        <path d="M 280 320 L 280 300" stroke="#333" stroke-width="3"/>
+                        <path d="M 360 350 L 400 350 L 400 120" stroke="#333" stroke-width="3"/>
+                        
+                        <!-- Load -->
+                        <rect x="550" y="60" width="120" height="60" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="610" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Critical Load</text>
+                        
+                        <path d="M 450 90 L 550 90" stroke="#333" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">N+1 Configuration: 3 x 2MW generators for 4MW critical load</p>
+                </div>
+            </div>
+
+            <!-- Slide 7: Generator Components Deep Dive -->
+            <div class="slide">
+                <h2>Generator Components Deep Dive</h2>
+                
+                <h3>1. Engine System</h3>
+                <div class="info-box">
+                    <h4>Engine Components:</h4>
+                    <ul>
+                        <li><strong>Engine Block:</strong> Cast iron or aluminum, houses cylinders</li>
+                        <li><strong>Pistons & Rods:</strong> Convert combustion to mechanical motion</li>
+                        <li><strong>Crankshaft:</strong> Converts linear to rotational motion</li>
+                        <li><strong>Turbocharger:</strong> Increases power density and efficiency</li>
+                        <li><strong>Governor:</strong> Maintains speed/frequency regulation</li>
+                    </ul>
+                    
+                    <h4>Support Systems:</h4>
+                    <ul>
+                        <li><strong>Cooling System:</strong> Radiator, coolant pumps, thermostats</li>
+                        <li><strong>Lubrication:</strong> Oil pumps, filters, coolers</li>
+                        <li><strong>Air System:</strong> Air filters, intercoolers</li>
+                        <li><strong>Exhaust:</strong> Manifold, muffler, emissions treatment</li>
+                    </ul>
+                </div>
+
+                <h3>2. Alternator (Generator End)</h3>
+                <ul>
+                    <li><strong>Rotor:</strong> Rotating magnetic field (excited by DC)</li>
+                    <li><strong>Stator:</strong> Stationary windings where power is generated</li>
+                    <li><strong>Exciter:</strong> Provides DC power to rotor</li>
+                    <li><strong>Voltage Regulator:</strong> Automatic Voltage Regulator (AVR)</li>
+                    <li><strong>Bearings:</strong> Support rotor, require periodic maintenance</li>
+                </ul>
+
+                <h3>3. Fuel System</h3>
+                <div class="warning-box">
+                    <h4>Critical Fuel Components:</h4>
+                    <ul>
+                        <li><strong>Day Tank:</strong> 4-8 hours runtime (typical)</li>
+                        <li><strong>Bulk Storage:</strong> 24-72 hours capacity</li>
+                        <li><strong>Transfer Pumps:</strong> Automatic refill system</li>
+                        <li><strong>Filtration:</strong> Water separators, particulate filters</li>
+                        <li><strong>Monitoring:</strong> Level sensors, leak detection</li>
+                    </ul>
+                </div>
+
+                <h3>4. Control System</h3>
+                <ul>
+                    <li><strong>Controller:</strong> Microprocessor-based, monitors all parameters</li>
+                    <li><strong>HMI Panel:</strong> Local display and control interface</li>
+                    <li><strong>Remote Monitoring:</strong> SCADA, BMS integration</li>
+                    <li><strong>Safety Systems:</strong> Overspeed, high temp, low oil pressure</li>
+                    <li><strong>Synchronizing:</strong> Parallel operation controls</li>
+                </ul>
+
+                <h3>5. Starting System</h3>
+                <ul>
+                    <li><strong>Batteries:</strong> 24V DC typical, redundant banks</li>
+                    <li><strong>Battery Charger:</strong> Maintains float charge</li>
+                    <li><strong>Starter Motor:</strong> High-torque DC motor</li>
+                    <li><strong>Cranking Limiters:</strong> Prevent excessive cranking</li>
+                    <li><strong>Block Heater:</strong> Maintains 90-110°F for quick start</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Testing and Maintenance -->
+            <div class="slide">
+                <h2>Testing and Maintenance</h2>
+                
+                <p>Regular testing and maintenance ensure generator reliability when needed most.</p>
+
+                <h3>1. Commissioning Tests</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Factory Testing:</strong> Full load test before shipment</li>
+                        <li><strong>4-Hour Load Bank Test:</strong> Verify capacity and performance</li>
+                        <li><strong>8-Hour Integrated Test:</strong> Test with actual building load</li>
+                        <li><strong>Fuel System Test:</strong> Verify all fuel systems operation</li>
+                        <li><strong>Paralleling Test:</strong> Verify multi-unit coordination</li>
+                    </ul>
+                </div>
+
+                <h3>2. Regular Testing Schedule</h3>
+                <table>
+                    <tr>
+                        <th>Frequency</th>
+                        <th>Test Type</th>
+                        <th>Duration</th>
+                        <th>Load Level</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Weekly</strong></td>
+                        <td>No-load exercise</td>
+                        <td>30 minutes</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monthly</strong></td>
+                        <td>Load bank test</td>
+                        <td>1 hour</td>
+                        <td>25-50%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quarterly</strong></td>
+                        <td>Building load test</td>
+                        <td>2 hours</td>
+                        <td>Actual load</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annual</strong></td>
+                        <td>Full load bank</td>
+                        <td>4 hours</td>
+                        <td>100%</td>
+                    </tr>
+                </table>
+
+                <h3>3. Maintenance Requirements</h3>
+                <div class="success-box">
+                    <h4>Preventive Maintenance Schedule:</h4>
+                    <ul>
+                        <li><strong>250 Hours:</strong> Oil/filter change, basic inspection</li>
+                        <li><strong>500 Hours:</strong> Comprehensive PM, valve adjustment</li>
+                        <li><strong>2000 Hours:</strong> Major service, injector service</li>
+                        <li><strong>10,000 Hours:</strong> Top-end overhaul</li>
+                        <li><strong>20,000 Hours:</strong> Major overhaul</li>
+                    </ul>
+                </div>
+
+                <h3>4. Critical Maintenance Items</h3>
+                <ul>
+                    <li><strong>Fuel Quality:</strong> Test quarterly for water, bacteria, particulates</li>
+                    <li><strong>Battery Systems:</strong> Monthly specific gravity, annual load test</li>
+                    <li><strong>Cooling System:</strong> Coolant analysis, radiator cleaning</li>
+                    <li><strong>Air Systems:</strong> Filter replacement, turbo inspection</li>
+                    <li><strong>Exhaust System:</strong> Inspection for leaks, corrosion</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Common Failure Points:</h4>
+                    <ul>
+                        <li>Starting batteries (30% of failures)</li>
+                        <li>Fuel system issues (25% of failures)</li>
+                        <li>Cooling system problems (20% of failures)</li>
+                        <li>Control system faults (15% of failures)</li>
+                        <li>Mechanical wear (10% of failures)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Best Practices and Integration -->
+            <div class="slide">
+                <h2>Best Practices and Integration</h2>
+                
+                <h3>Generator System Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>1. Design Best Practices</h4>
+                    <ul>
+                        <li>Size generators for future growth (125% of initial load)</li>
+                        <li>Implement appropriate redundancy (N+1 minimum for critical facilities)</li>
+                        <li>Ensure adequate fuel storage (72 hours minimum)</li>
+                        <li>Plan for proper ventilation and exhaust routing</li>
+                        <li>Consider noise and emissions regulations</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Best Practices</h3>
+                <ul>
+                    <li><strong>Regular Testing:</strong> Weekly no-load, monthly loaded tests</li>
+                    <li><strong>Fuel Management:</strong> Regular testing, treatment, and rotation</li>
+                    <li><strong>Documentation:</strong> Maintain detailed logs and records</li>
+                    <li><strong>Training:</strong> Ensure operators understand all procedures</li>
+                    <li><strong>Emergency Procedures:</strong> Clear protocols for all scenarios</li>
+                </ul>
+
+                <h3>3. System Integration</h3>
+                <div class="info-box">
+                    <h4>Critical Integration Points:</h4>
+                    <ul>
+                        <li><strong>UPS Systems:</strong> Coordinate transfer timing and load acceptance</li>
+                        <li><strong>ATS/Switchgear:</strong> Proper sensing and transfer logic</li>
+                        <li><strong>Building Management:</strong> Remote monitoring and control</li>
+                        <li><strong>Fuel Systems:</strong> Automated filling and monitoring</li>
+                        <li><strong>Fire/Life Safety:</strong> EPO circuits and safety interlocks</li>
+                    </ul>
+                </div>
+
+                <h3>4. Common Integration Challenges</h3>
+                <ul>
+                    <li><strong>Load Acceptance:</strong> Step loading vs. gradual loading strategies</li>
+                    <li><strong>Harmonics:</strong> UPS and IT load harmonic compatibility</li>
+                    <li><strong>Grounding:</strong> Proper neutral and ground reference</li>
+                    <li><strong>Paralleling:</strong> Load sharing and protection coordination</li>
+                    <li><strong>Controls:</strong> SCADA and BMS protocol compatibility</li>
+                </ul>
+
+                <h3>5. Sustainability Considerations</h3>
+                <div class="info-box">
+                    <h4>Environmental Best Practices:</h4>
+                    <ul>
+                        <li><strong>Emissions Compliance:</strong> Tier 4 engines, exhaust treatment</li>
+                        <li><strong>Fuel Options:</strong> Biodiesel, HVO, natural gas alternatives</li>
+                        <li><strong>Efficiency:</strong> Load bank testing with heat recovery</li>
+                        <li><strong>Noise Mitigation:</strong> Sound attenuated enclosures</li>
+                        <li><strong>Future Ready:</strong> Hydrogen fuel cell compatibility</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Generators provide critical extended runtime backup power</li>
+                        <li>Diesel generators remain the data center standard</li>
+                        <li>Redundancy configurations ensure reliability (N+1, 2N)</li>
+                        <li>Regular testing and maintenance are essential</li>
+                        <li>Integration with UPS and ATS systems is critical</li>
+                        <li>Fuel quality and management determine reliability</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Generators = Extended Runtime:</strong> Bridge between UPS and utility restoration</li>
+                    <li><strong>Testing is Critical:</strong> Untested generators have 30%+ failure rate</li>
+                    <li><strong>Fuel is Key:</strong> Most failures are fuel-related</li>
+                    <li><strong>Maintenance Matters:</strong> Follow manufacturer PM schedules</li>
+                    <li><strong>Integration:</strong> Coordinate with all facility systems</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's generator specifications</li>
+                        <li>Observe a generator test procedure</li>
+                        <li>Review maintenance logs and schedules</li>
+                        <li>Understand your facility's fuel management program</li>
+                        <li>Participate in emergency response drills</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Generator systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the primary function of a generator in a data center?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Provide continuous power 24/7</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Provide standby power during utility outages</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Reduce electricity costs</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Power non-critical loads only</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which fuel type is most commonly used in data center generators?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Natural gas</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Diesel</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Propane</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Gasoline</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What is the typical start-up time for a diesel generator?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> 1-2 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> 10-15 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> 60-90 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> 3-5 minutes</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. In an N+1 generator configuration, what does the "+1" represent?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> One extra fuel tank</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> One redundant generator</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> One hour of extra runtime</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> One additional transfer switch</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the recommended minimum on-site fuel storage for data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 4-8 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 12-24 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 24-72 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 7-14 days</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What component converts mechanical energy to electrical energy?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Engine</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Alternator</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Transfer switch</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Governor</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. How often should generators typically be exercised with no load?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Daily</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Weekly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Monthly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Quarterly</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What causes approximately 30% of generator failures?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Engine problems</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Starting batteries</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Fuel contamination</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Control system faults</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What device detects utility power failure and signals the generator to start?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Circuit breaker</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Voltage regulator</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Automatic Transfer Switch (ATS)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Power distribution unit</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the typical efficiency range for diesel generators?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 15-25%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 35-45%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 55-65%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 75-85%</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 11</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Provide standby power during utility outages
+            q2: 'b',  // Diesel
+            q3: 'b',  // 10-15 seconds
+            q4: 'b',  // One redundant generator
+            q5: 'c',  // 24-72 hours
+            q6: 'b',  // Alternator
+            q7: 'b',  // Weekly
+            q8: 'b',  // Starting batteries
+            q9: 'c',  // Automatic Transfer Switch (ATS)
+            q10: 'b'  // 35-45%
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Generator systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

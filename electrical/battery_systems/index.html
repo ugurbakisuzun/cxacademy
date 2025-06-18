@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #2a5298;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1e3c72;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Battery Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Critical Power Backup</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Battery Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Battery systems for data centers. This course will provide you with essential knowledge about battery technology, its critical role in UPS systems, and best practices for ensuring reliable backup power.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand battery fundamentals and electrochemistry basics</li>
+                        <li>Learn about different battery technologies and applications</li>
+                        <li>Recognize the critical importance of batteries in data centers</li>
+                        <li>Understand battery system components and configurations</li>
+                        <li>Learn maintenance, testing, and safety procedures</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of electrical systems and UPS fundamentals</p>
+            </div>
+
+            <!-- Slide 2: What are Battery Systems? -->
+            <div class="slide">
+                <h2>What are Battery Systems?</h2>
+                
+                <p>In data centers, <strong>Battery Systems</strong> are electrochemical energy storage devices that provide instantaneous backup power to critical loads through the UPS system when utility power fails.</p>
+
+                <h3>Key Functions of Battery Systems:</h3>
+                <ul>
+                    <li><strong>Energy Storage:</strong> Store electrical energy in chemical form</li>
+                    <li><strong>Instant Power:</strong> Provide immediate power with zero transfer time</li>
+                    <li><strong>Bridge Power:</strong> Support load until generators start</li>
+                    <li><strong>Power Conditioning:</strong> Enable UPS to provide clean power</li>
+                    <li><strong>Ride-Through:</strong> Handle brief power disturbances</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e3c72">Battery System in UPS Configuration</text>
+                        
+                        <!-- Normal Operation Path -->
+                        <text x="100" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#27ae60">Normal Operation</text>
+                        
+                        <!-- Utility -->
+                        <rect x="20" y="90" width="80" height="50" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="60" y="120" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Utility</text>
+                        
+                        <!-- Rectifier -->
+                        <rect x="140" y="90" width="100" height="50" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="190" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Rectifier</text>
+                        <text x="190" y="130" text-anchor="middle" fill="white" font-size="10">AC→DC</text>
+                        
+                        <!-- Inverter -->
+                        <rect x="280" y="90" width="100" height="50" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="330" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Inverter</text>
+                        <text x="330" y="130" text-anchor="middle" fill="white" font-size="10">DC→AC</text>
+                        
+                        <!-- IT Load -->
+                        <rect x="420" y="90" width="80" height="50" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="460" y="120" text-anchor="middle" fill="white" font-size="12" font-weight="bold">IT Load</text>
+                        
+                        <!-- Battery Operation Path -->
+                        <text x="100" y="220" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">Battery Operation</text>
+                        
+                        <!-- Battery Bank -->
+                        <rect x="140" y="240" width="240" height="120" fill="#f39c12" stroke="#e67e22" stroke-width="3" rx="5"/>
+                        <text x="260" y="270" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Battery Bank</text>
+                        
+                        <!-- Individual batteries -->
+                        <rect x="160" y="290" width="40" height="50" fill="#d68910" stroke="#b9770e" stroke-width="2" rx="3"/>
+                        <text x="180" y="320" text-anchor="middle" fill="white" font-size="20" font-weight="bold">+</text>
+                        
+                        <rect x="220" y="290" width="40" height="50" fill="#d68910" stroke="#b9770e" stroke-width="2" rx="3"/>
+                        <text x="240" y="320" text-anchor="middle" fill="white" font-size="20" font-weight="bold">+</text>
+                        
+                        <rect x="280" y="290" width="40" height="50" fill="#d68910" stroke="#b9770e" stroke-width="2" rx="3"/>
+                        <text x="300" y="320" text-anchor="middle" fill="white" font-size="20" font-weight="bold">+</text>
+                        
+                        <rect x="340" y="290" width="40" height="50" fill="#d68910" stroke="#b9770e" stroke-width="2" rx="3"/>
+                        <text x="360" y="320" text-anchor="middle" fill="white" font-size="20" font-weight="bold">+</text>
+                        
+                        <!-- Connections - Normal Operation -->
+                        <path d="M 100 115 L 140 115" stroke="#27ae60" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 240 115 L 280 115" stroke="#27ae60" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 380 115 L 420 115" stroke="#27ae60" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Battery charging path -->
+                        <path d="M 190 140 L 190 240" stroke="#27ae60" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="200" y="190" font-size="10" fill="#27ae60">Charging</text>
+                        
+                        <!-- Battery discharge path -->
+                        <path d="M 380 300 L 460 300 L 460 180 L 330 180 L 330 140" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+                        <text x="470" y="240" font-size="10" fill="#e74c3c">Discharge</text>
+                        
+                        <!-- Power failure indicator -->
+                        <line x1="60" y1="180" x2="60" y2="200" stroke="#e74c3c" stroke-width="4"/>
+                        <path d="M 50 190 L 60 200 L 70 190" stroke="#e74c3c" stroke-width="4" fill="none"/>
+                        <text x="60" y="220" text-anchor="middle" font-size="10" fill="#e74c3c">Power Fail</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#27ae60"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Battery System Integration: Charging during normal operation, discharging during power failure</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: How Do Batteries Work? -->
+            <div class="slide">
+                <h2>How Do Batteries Work?</h2>
+                
+                <p>Batteries convert chemical energy into electrical energy through electrochemical reactions. Understanding this process is crucial for proper maintenance and operation.</p>
+
+                <h3>Basic Electrochemistry:</h3>
+                
+                <div class="info-box">
+                    <h4>Battery Components:</h4>
+                    <ul>
+                        <li><strong>Anode (Negative):</strong> Releases electrons during discharge</li>
+                        <li><strong>Cathode (Positive):</strong> Accepts electrons during discharge</li>
+                        <li><strong>Electrolyte:</strong> Conducts ions between electrodes</li>
+                        <li><strong>Separator:</strong> Prevents short circuits while allowing ion flow</li>
+                        <li><strong>Container:</strong> Houses components and contains electrolyte</li>
+                    </ul>
+                </div>
+
+                <h3>Battery Operation Cycles:</h3>
+                
+                <div class="success-box">
+                    <h4>1. Float Charge (Normal Operation)</h4>
+                    <ul>
+                        <li>Battery maintained at full charge (2.25-2.27V per cell)</li>
+                        <li>Small current compensates for self-discharge</li>
+                        <li>Chemical reactions in equilibrium</li>
+                        <li>Ready for immediate discharge</li>
+                        <li>Typical mode 99% of the time</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>2. Discharge (Power Failure)</h4>
+                    <ul>
+                        <li>Chemical reaction produces electrical current</li>
+                        <li>Lead sulfate forms on both plates</li>
+                        <li>Electrolyte specific gravity decreases</li>
+                        <li>Voltage drops as discharge progresses</li>
+                        <li>Must not exceed 1.75V per cell (deep discharge)</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>3. Recharge (Power Restored)</h4>
+                    <ul>
+                        <li>Reverse chemical reaction restores active materials</li>
+                        <li>Lead sulfate converts back to lead and lead dioxide</li>
+                        <li>Electrolyte specific gravity increases</li>
+                        <li>Initial bulk charge at higher current</li>
+                        <li>Final float charge for full restoration</li>
+                    </ul>
+                </div>
+
+                <h3>Key Battery Parameters:</h3>
+                <ul>
+                    <li><strong>Capacity (Ah):</strong> Amount of energy battery can deliver</li>
+                    <li><strong>Voltage:</strong> 2V, 6V, or 12V cells (2V nominal per cell)</li>
+                    <li><strong>Internal Resistance:</strong> Affects discharge capability</li>
+                    <li><strong>Temperature:</strong> Major factor in capacity and life</li>
+                    <li><strong>State of Charge:</strong> Percentage of available capacity</li>
+                </ul>
+            </div>
+
+            <!-- Slide 4: Types of Battery Systems -->
+            <div class="slide">
+                <h2>Types of Battery Systems</h2>
+                
+                <p>Data centers use various battery technologies, each with unique characteristics and applications.</p>
+
+                <h3>1. VRLA (Valve Regulated Lead Acid) Batteries</h3>
+                <div class="info-box">
+                    <h4>Most Common in Data Centers (80%+ market share)</h4>
+                    <ul>
+                        <li><strong>Types:</strong> AGM (Absorbed Glass Mat) or Gel</li>
+                        <li><strong>Life:</strong> 3-5 years typical, 10+ years for long-life models</li>
+                        <li><strong>Maintenance:</strong> "Maintenance-free" (no water addition)</li>
+                        <li><strong>Cost:</strong> Lowest initial cost</li>
+                        <li><strong>Temperature:</strong> Sensitive, optimal at 77°F (25°C)</li>
+                        <li><strong>Footprint:</strong> Moderate space requirements</li>
+                    </ul>
+                </div>
+
+                <h3>2. Flooded/Wet Cell Batteries</h3>
+                <div class="info-box">
+                    <h4>Traditional Technology</h4>
+                    <ul>
+                        <li><strong>Types:</strong> VLA (Vented Lead Acid)</li>
+                        <li><strong>Life:</strong> 20+ years with proper maintenance</li>
+                        <li><strong>Maintenance:</strong> Regular water addition required</li>
+                        <li><strong>Cost:</strong> Higher lifecycle value</li>
+                        <li><strong>Ventilation:</strong> Requires hydrogen venting</li>
+                        <li><strong>Reliability:</strong> Most reliable if maintained</li>
+                    </ul>
+                </div>
+
+                <h3>3. Lithium-Ion Batteries</h3>
+                <div class="success-box">
+                    <h4>Emerging Technology (Growing Adoption)</h4>
+                    <ul>
+                        <li><strong>Types:</strong> LFP (Lithium Iron Phosphate) most common</li>
+                        <li><strong>Life:</strong> 10-15 years typical</li>
+                        <li><strong>Maintenance:</strong> Minimal with BMS monitoring</li>
+                        <li><strong>Cost:</strong> Higher initial, lower TCO</li>
+                        <li><strong>Footprint:</strong> 50-70% smaller than VRLA</li>
+                        <li><strong>Weight:</strong> 60-70% lighter than VRLA</li>
+                        <li><strong>Charging:</strong> Faster recharge capability</li>
+                    </ul>
+                </div>
+
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>VRLA</th>
+                        <th>Flooded</th>
+                        <th>Lithium-Ion</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Initial Cost</strong></td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Life Expectancy</strong></td>
+                        <td>3-5 years</td>
+                        <td>20+ years</td>
+                        <td>10-15 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maintenance</strong></td>
+                        <td>Low</td>
+                        <td>High</td>
+                        <td>Minimal</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Space Required</strong></td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature Tolerance</strong></td>
+                        <td>Poor</td>
+                        <td>Moderate</td>
+                        <td>Good</td>
+                    </tr>
+                </table>
+
+                <h3>Selection Criteria:</h3>
+                <ul>
+                    <li><strong>Runtime Requirements:</strong> Minutes needed at full load</li>
+                    <li><strong>Space Constraints:</strong> Available battery room size</li>
+                    <li><strong>Maintenance Capabilities:</strong> Staff and procedures</li>
+                    <li><strong>Total Cost of Ownership:</strong> Initial + operational costs</li>
+                    <li><strong>Environmental Conditions:</strong> Temperature control capability</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Why Batteries are Critical for Data Centers -->
+            <div class="slide">
+                <h2>Why Batteries are Critical for Data Centers</h2>
+                
+                <p>Batteries are the last line of defense against power interruptions, making them absolutely critical for data center reliability.</p>
+
+                <h3>1. Zero Transfer Time Protection</h3>
+                <ul>
+                    <li><strong>Instantaneous Response:</strong> No break in power during utility failure</li>
+                    <li><strong>Seamless Transition:</strong> IT equipment unaware of power event</li>
+                    <li><strong>Data Integrity:</strong> Prevents corruption and loss</li>
+                    <li><strong>Session Continuity:</strong> No dropped connections or transactions</li>
+                    <li><strong>Revenue Protection:</strong> Avoids costly downtime</li>
+                </ul>
+
+                <h3>2. Bridge to Generator Power</h3>
+                <div class="warning-box">
+                    <h4>Critical Timing Window:</h4>
+                    <ul>
+                        <li><strong>Generator Start:</strong> 10-15 seconds typical</li>
+                        <li><strong>Load Transfer:</strong> Additional 5-10 seconds</li>
+                        <li><strong>Total Gap:</strong> 15-30 seconds without utility</li>
+                        <li><strong>Battery Support:</strong> 5-30 minutes runtime typical</li>
+                        <li><strong>Safety Margin:</strong> Handles multiple start attempts</li>
+                    </ul>
+                </div>
+
+                <h3>3. Power Quality Enhancement</h3>
+                <div class="info-box">
+                    <h4>Batteries Enable UPS Functions:</h4>
+                    <ul>
+                        <li><strong>Voltage Regulation:</strong> Maintains stable output</li>
+                        <li><strong>Frequency Stability:</strong> Isolates from utility variations</li>
+                        <li><strong>Harmonic Filtering:</strong> Clean power output</li>
+                        <li><strong>Surge Protection:</strong> Absorbs transients</li>
+                        <li><strong>Noise Isolation:</strong> Eliminates electrical interference</li>
+                    </ul>
+                </div>
+
+                <h3>4. Business Impact of Battery Failure</h3>
+                <div class="danger-box">
+                    <h4>Consequences of Battery System Failure:</h4>
+                    <ul>
+                        <li><strong>Immediate Shutdown:</strong> Complete IT load loss</li>
+                        <li><strong>Data Loss:</strong> Unsaved transactions and corruption</li>
+                        <li><strong>Revenue Loss:</strong> £4,300+ per minute average</li>
+                        <li><strong>SLA Violations:</strong> Customer compensation claims</li>
+                        <li><strong>Reputation Damage:</strong> Loss of customer trust</li>
+                        <li><strong>Recovery Time:</strong> Hours to days for full restoration</li>
+                    </ul>
+                </div>
+
+                <h3>5. Reliability Statistics</h3>
+                <ul>
+                    <li><strong>Battery-Related Failures:</strong> 20-30% of UPS failures</li>
+                    <li><strong>Common Cause:</strong> Poor maintenance practices</li>
+                    <li><strong>MTBF Impact:</strong> Weakest link in power chain</li>
+                    <li><strong>Predictability:</strong> Gradual degradation if monitored</li>
+                    <li><strong>Prevention:</strong> Regular testing and replacement</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Battery System Architecture -->
+            <div class="slide">
+                <h2>Battery System Architecture in Data Centers</h2>
+                
+                <p>Battery systems are configured in strings and banks to meet voltage and runtime requirements.</p>
+
+                <h3>1. Basic Battery Configurations</h3>
+                
+                <div class="info-box">
+                    <h4>String Configuration:</h4>
+                    <ul>
+                        <li><strong>Series Connection:</strong> Batteries connected positive to negative</li>
+                        <li><strong>Voltage Addition:</strong> Total voltage = sum of all cells</li>
+                        <li><strong>Current:</strong> Same through all batteries</li>
+                        <li><strong>Typical String:</strong> 40 x 12V = 480VDC for large UPS</li>
+                        <li><strong>Monitoring:</strong> Each battery requires monitoring</li>
+                    </ul>
+                </div>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e3c72">Battery String and Bank Configuration</text>
+                        
+                        <!-- String 1 -->
+                        <text x="100" y="70" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">String 1</text>
+                        <rect x="50" y="90" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="80" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <rect x="130" y="90" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="160" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <rect x="210" y="90" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="240" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <text x="290" y="110" text-anchor="middle" font-size="16" font-weight="bold">...</text>
+                        
+                        <rect x="320" y="90" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="350" y="115" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <!-- String 2 -->
+                        <text x="100" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">String 2</text>
+                        <rect x="50" y="190" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="80" y="215" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <rect x="130" y="190" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="160" y="215" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <rect x="210" y="190" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="240" y="215" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <text x="290" y="210" text-anchor="middle" font-size="16" font-weight="bold">...</text>
+                        
+                        <rect x="320" y="190" width="60" height="40" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="3"/>
+                        <text x="350" y="215" text-anchor="middle" fill="white" font-size="12" font-weight="bold">12V</text>
+                        
+                        <!-- Connections -->
+                        <line x1="110" y1="110" x2="130" y2="110" stroke="#333" stroke-width="2"/>
+                        <line x1="190" y1="110" x2="210" y2="110" stroke="#333" stroke-width="2"/>
+                        
+                        <line x1="110" y1="210" x2="130" y2="210" stroke="#333" stroke-width="2"/>
+                        <line x1="190" y1="210" x2="210" y2="210" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Parallel connection -->
+                        <line x1="30" y1="110" x2="30" y2="210" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="30" y1="110" x2="50" y2="110" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="30" y1="210" x2="50" y2="210" stroke="#e74c3c" stroke-width="3"/>
+                        
+                        <line x1="400" y1="110" x2="400" y2="210" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="380" y1="110" x2="400" y2="110" stroke="#e74c3c" stroke-width="3"/>
+                        <line x1="380" y1="210" x2="400" y2="210" stroke="#e74c3c" stroke-width="3"/>
+                        
+                        <!-- Output -->
+                        <rect x="500" y="140" width="100" height="60" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="550" y="165" text-anchor="middle" fill="white" font-size="14" font-weight="bold">DC Bus</text>
+                        <text x="550" y="185" text-anchor="middle" fill="white" font-size="12">480VDC</text>
+                        
+                        <line x1="400" y1="170" x2="500" y2="170" stroke="#333" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                        
+                        <!-- Labels -->
+                        <text x="700" y="110" text-anchor="middle" font-size="12" fill="#333">40 batteries</text>
+                        <text x="700" y="130" text-anchor="middle" font-size="12" fill="#333">= 480VDC</text>
+                        
+                        <text x="700" y="210" text-anchor="middle" font-size="12" fill="#333">2 strings</text>
+                        <text x="700" y="230" text-anchor="middle" font-size="12" fill="#333">= 2x capacity</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Parallel strings increase capacity while maintaining voltage</p>
+                </div>
+
+                <h3>2. Runtime Calculations</h3>
+                <table>
+                    <tr>
+                        <th>Runtime Target</th>
+                        <th>Typical Config</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>5 minutes</strong></td>
+                        <td>1-2 strings</td>
+                        <td>Generator-backed sites</td>
+                    </tr>
+                    <tr>
+                        <td><strong>15 minutes</strong></td>
+                        <td>3-4 strings</td>
+                        <td>Standard data center</td>
+                    </tr>
+                    <tr>
+                        <td><strong>30 minutes</strong></td>
+                        <td>6-8 strings</td>
+                        <td>Critical facilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2+ hours</strong></td>
+                        <td>Multiple banks</td>
+                        <td>No generator sites</td>
+                    </tr>
+                </table>
+
+                <h3>3. Redundancy Configurations</h3>
+                <ul>
+                    <li><strong>N Configuration:</strong> Minimum strings for runtime</li>
+                    <li><strong>N+1 Configuration:</strong> One additional string for maintenance</li>
+                    <li><strong>Distributed:</strong> Multiple smaller battery systems</li>
+                    <li><strong>Shared Reserve:</strong> Common backup battery bank</li>
+                </ul>
+
+                <h3>4. Battery Room Requirements</h3>
+                <div class="warning-box">
+                    <h4>Critical Design Considerations:</h4>
+                    <ul>
+                        <li><strong>Temperature:</strong> 77°F ±2°F (25°C ±1°C) ideal</li>
+                        <li><strong>Ventilation:</strong> Hydrogen gas dispersal</li>
+                        <li><strong>Floor Loading:</strong> 150-300 lb/sq ft typical</li>
+                        <li><strong>Spill Containment:</strong> For flooded batteries</li>
+                        <li><strong>Access:</strong> 36" minimum aisles, lifting equipment</li>
+                        <li><strong>Safety:</strong> Eyewash, spill kits, PPE storage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Battery Maintenance and Testing -->
+            <div class="slide">
+                <h2>Battery Maintenance and Testing</h2>
+                
+                <p>Regular maintenance and testing are essential for ensuring battery reliability when needed most.</p>
+
+                <h3>1. IEEE Maintenance Standards</h3>
+                <div class="info-box">
+                    <h4>IEEE 450 (Flooded) / IEEE 1188 (VRLA) Requirements:</h4>
+                    <ul>
+                        <li><strong>Monthly:</strong> Visual inspection, pilot cell readings</li>
+                        <li><strong>Quarterly:</strong> All cell voltage and temperature</li>
+                        <li><strong>Annually:</strong> Impedance testing, connection resistance</li>
+                        <li><strong>2-3 Years:</strong> Capacity discharge testing</li>
+                        <li><strong>Continuous:</strong> Float voltage and current monitoring</li>
+                    </ul>
+                </div>
+
+                <h3>2. Visual Inspection Checklist</h3>
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Check For</th>
+                        <th>Action if Found</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Container</strong></td>
+                        <td>Cracks, bulging, leaks</td>
+                        <td>Replace battery immediately</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Terminals</strong></td>
+                        <td>Corrosion, loose connections</td>
+                        <td>Clean and retorque</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ventilation</strong></td>
+                        <td>Blocked vents, dust</td>
+                        <td>Clear and clean</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature</strong></td>
+                        <td>Hot spots, uneven temps</td>
+                        <td>Investigate cause</td>
+                    </tr>
+                </table>
+
+                <h3>3. Electrical Testing</h3>
+                <div class="success-box">
+                    <h4>Impedance/Conductance Testing:</h4>
+                    <ul>
+                        <li><strong>Purpose:</strong> Detect failing cells before failure</li>
+                        <li><strong>Method:</strong> AC signal injection, response measurement</li>
+                        <li><strong>Baseline:</strong> Establish when new, track changes</li>
+                        <li><strong>Threshold:</strong> >30% change indicates problem</li>
+                        <li><strong>Advantage:</strong> Non-invasive, battery remains online</li>
+                    </ul>
+                </div>
+
+                <h3>4. Capacity Testing</h3>
+                <div class="warning-box">
+                    <h4>Discharge Testing Procedure:</h4>
+                    <ul>
+                        <li><strong>Purpose:</strong> Verify actual runtime capability</li>
+                        <li><strong>Method:</strong> Controlled discharge to 1.75V/cell</li>
+                        <li><strong>Load:</strong> Typically 80% of rated capacity</li>
+                        <li><strong>Pass Criteria:</strong> >80% of rated capacity</li>
+                        <li><strong>Risk:</strong> Battery offline during test</li>
+                        <li><strong>Recovery:</strong> 24-48 hours recharge time</li>
+                    </ul>
+                </div>
+
+                <h3>5. Common Battery Problems</h3>
+                <ul>
+                    <li><strong>Thermal Runaway:</strong> Self-heating spiral (VRLA risk)</li>
+                    <li><strong>Sulfation:</strong> Lead sulfate crystallization from undercharge</li>
+                    <li><strong>Dry-Out:</strong> Electrolyte loss in VRLA batteries</li>
+                    <li><strong>Grid Corrosion:</strong> Positive plate deterioration</li>
+                    <li><strong>Shorted Cells:</strong> Internal plate contact</li>
+                </ul>
+
+                <div class="danger-box">
+                    <h4>⚠️ Replacement Indicators:</h4>
+                    <ul>
+                        <li>Capacity <80% of rating</li>
+                        <li>Impedance >50% above baseline</li>
+                        <li>Unable to hold float voltage</li>
+                        <li>Physical damage or swelling</li>
+                        <li>Age exceeding design life</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Battery Safety and Handling -->
+            <div class="slide">
+                <h2>Battery Safety and Handling</h2>
+                
+                <p>Battery systems present significant safety hazards that require proper procedures and equipment.</p>
+
+                <h3>1. Primary Safety Hazards</h3>
+                
+                <div class="danger-box">
+                    <h4>⚠️ Electrical Hazards:</h4>
+                    <ul>
+                        <li><strong>High Voltage:</strong> 480VDC typical, lethal current potential</li>
+                        <li><strong>Arc Flash:</strong> Short circuit can cause severe burns</li>
+                        <li><strong>Stored Energy:</strong> Always energized, cannot be "turned off"</li>
+                        <li><strong>Low Resistance Path:</strong> Metal tools can cause shorts</li>
+                        <li><strong>Ground Faults:</strong> Can energize equipment chassis</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <h4>⚠️ Chemical Hazards:</h4>
+                    <ul>
+                        <li><strong>Sulfuric Acid:</strong> Severe burns, blindness risk</li>
+                        <li><strong>Hydrogen Gas:</strong> Explosive at 4% concentration</li>
+                        <li><strong>Lead Exposure:</strong> Toxic, requires careful handling</li>
+                        <li><strong>Corrosive Vapors:</strong> Damage to equipment and health</li>
+                        <li><strong>Electrolyte Spills:</strong> Environmental hazard</li>
+                    </ul>
+                </div>
+
+                <h3>2. Personal Protective Equipment (PPE)</h3>
+                <div class="warning-box">
+                    <h4>Required PPE for Battery Work:</h4>
+                    <ul>
+                        <li><strong>Safety Glasses:</strong> Side shields, acid resistant</li>
+                        <li><strong>Face Shield:</strong> For discharge testing or maintenance</li>
+                        <li><strong>Acid-Resistant Gloves:</strong> Rubber or neoprene</li>
+                        <li><strong>Apron:</strong> Acid-resistant material</li>
+                        <li><strong>Steel-Toe Boots:</strong> Acid-resistant soles</li>
+                        <li><strong>Insulated Tools:</strong> Prevent short circuits</li>
+                    </ul>
+                </div>
+
+                <h3>3. Safe Work Practices</h3>
+                <ul>
+                    <li><strong>Remove Jewelry:</strong> Rings, watches, metal objects</li>
+                    <li><strong>Use Insulated Tools:</strong> Properly rated for DC voltage</li>
+                    <li><strong>Work with Partner:</strong> Never work alone on batteries</li>
+                    <li><strong>Verify Ventilation:</strong> Ensure hydrogen dispersal</li>
+                    <li><strong>Post Warning Signs:</strong> Alert others to hazards</li>
+                </ul>
+
+                <h3>4. Emergency Response Procedures</h3>
+                <div class="info-box">
+                    <h4>Acid Exposure Response:</h4>
+                    <ul>
+                        <li><strong>Skin Contact:</strong> Flush with water 15+ minutes</li>
+                        <li><strong>Eye Contact:</strong> Eyewash station 15+ minutes, seek medical</li>
+                        <li><strong>Inhalation:</strong> Fresh air immediately, seek medical</li>
+                        <li><strong>Spills:</strong> Neutralize with baking soda, contain</li>
+                        <li><strong>Fire:</strong> Class D extinguisher, evacuate area</li>
+                    </ul>
+                </div>
+
+                <h3>5. Battery Room Safety Equipment</h3>
+                <table>
+                    <tr>
+                        <th>Equipment</th>
+                        <th>Purpose</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Eyewash Station</strong></td>
+                        <td>Acid exposure treatment</td>
+                        <td>Within 10 seconds walk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Safety Shower</strong></td>
+                        <td>Large exposure treatment</td>
+                        <td>At room entrance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Spill Kit</strong></td>
+                        <td>Acid neutralization</td>
+                        <td>Near battery systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hydrogen Detector</strong></td>
+                        <td>Gas concentration alarm</td>
+                        <td>Ceiling mounted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Class D Extinguisher</strong></td>
+                        <td>Electrical fires</td>
+                        <td>At exits</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 9: Best Practices and Monitoring -->
+            <div class="slide">
+                <h2>Best Practices and Monitoring</h2>
+                
+                <h3>Battery System Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>1. Design Best Practices</h4>
+                    <ul>
+                        <li>Size for end-of-life capacity (80% of new)</li>
+                        <li>Maintain consistent battery room temperature (77°F ±2°F)</li>
+                        <li>Install battery monitoring systems from day one</li>
+                        <li>Plan for replacement access and logistics</li>
+                        <li>Implement proper ventilation (flooded cells: 1 CFM/cell)</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Best Practices</h3>
+                <ul>
+                    <li><strong>Temperature Control:</strong> Every 15°F rise halves battery life</li>
+                    <li><strong>Float Voltage:</strong> Maintain manufacturer specifications ±1%</li>
+                    <li><strong>Equalize Charging:</strong> Only when recommended (not for VRLA)</li>
+                    <li><strong>Record Keeping:</strong> Document all readings and maintenance</li>
+                    <li><strong>Replacement Planning:</strong> Budget for 80% life expectancy</li>
+                </ul>
+
+                <h3>3. Battery Monitoring Systems</h3>
+                <div class="info-box">
+                    <h4>Continuous Monitoring Parameters:</h4>
+                    <ul>
+                        <li><strong>Individual Cell/Jar Voltage:</strong> Detect failing cells</li>
+                        <li><strong>String Current:</strong> Identify ground faults</li>
+                        <li><strong>Temperature:</strong> Multiple points for hot spots</li>
+                        <li><strong>Impedance/Conductance:</strong> Trend degradation</li>
+                        <li><strong>Ambient Conditions:</strong> Room temperature and humidity</li>
+                    </ul>
+                </div>
+
+                <h3>4. Lifecycle Management</h3>
+                <table>
+                    <tr>
+                        <th>Battery Age</th>
+                        <th>Testing Frequency</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><strong>0-2 years</strong></td>
+                        <td>Annual impedance</td>
+                        <td>Establish baseline</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2-3 years</strong></td>
+                        <td>Semi-annual impedance</td>
+                        <td>First discharge test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3-4 years</strong></td>
+                        <td>Quarterly impedance</td>
+                        <td>Annual discharge test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4+ years</strong></td>
+                        <td>Monthly monitoring</td>
+                        <td>Plan replacement</td>
+                    </tr>
+                </table>
+
+                <h3>5. Future Trends</h3>
+                <div class="info-box">
+                    <h4>Emerging Technologies and Practices:</h4>
+                    <ul>
+                        <li><strong>Lithium-Ion Adoption:</strong> Longer life, smaller footprint</li>
+                        <li><strong>AI Predictive Analytics:</strong> Failure prediction algorithms</li>
+                        <li><strong>Remote Monitoring:</strong> Cloud-based battery management</li>
+                        <li><strong>Modular Systems:</strong> Hot-swappable battery modules</li>
+                        <li><strong>Sustainability:</strong> Battery recycling programs</li>
+                    </ul>
+                </div>
+
+                <h3>6. Common Mistakes to Avoid</h3>
+                <div class="warning-box">
+                    <h4>Avoid These Pitfalls:</h4>
+                    <ul>
+                        <li>Mixing batteries of different ages or types</li>
+                        <li>Neglecting temperature control</li>
+                        <li>Skipping regular maintenance</li>
+                        <li>Over-torquing connections</li>
+                        <li>Ignoring manufacturer recommendations</li>
+                        <li>Delaying replacement decisions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Batteries provide critical zero-transfer-time backup power</li>
+                        <li>VRLA batteries dominate data centers, but lithium-ion is growing</li>
+                        <li>Temperature control is crucial - every 15°F rise halves life</li>
+                        <li>Regular maintenance and testing prevent failures</li>
+                        <li>Safety procedures are essential due to electrical and chemical hazards</li>
+                        <li>Monitoring systems enable predictive maintenance</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Batteries = Insurance:</strong> Your last line of defense</li>
+                    <li><strong>Temperature Matters:</strong> 77°F is your target</li>
+                    <li><strong>Test Regularly:</strong> Impedance testing finds problems early</li>
+                    <li><strong>Safety First:</strong> Always use proper PPE and procedures</li>
+                    <li><strong>Plan Ahead:</strong> Batteries age - plan for replacement</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's battery maintenance procedures</li>
+                        <li>Understand your battery monitoring system</li>
+                        <li>Participate in battery maintenance activities</li>
+                        <li>Know emergency response procedures</li>
+                        <li>Track battery age and plan replacements</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Battery systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the primary function of batteries in a data center UPS system?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Store energy for long-term use</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Provide instantaneous backup power during outages</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Improve power factor</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Generate electricity</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What type of battery is most commonly used in data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Lithium-ion</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> VRLA (Valve Regulated Lead Acid)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Nickel-cadmium</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Alkaline</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What is the optimal temperature for battery room operation?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> 65°F (18°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> 77°F (25°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> 85°F (29°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> 95°F (35°C)</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. How does a 15°F temperature increase affect battery life?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> No significant effect</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Reduces life by 25%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Reduces life by 50%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Reduces life by 75%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the typical design life of VRLA batteries in data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 1-2 years</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 3-5 years</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 10-15 years</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 20+ years</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What percentage indicates a battery should be replaced during capacity testing?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Below 95%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Below 90%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Below 80%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Below 70%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What gas is produced by batteries that creates an explosion hazard?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Oxygen</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Nitrogen</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Hydrogen</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Carbon dioxide</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is the nominal voltage of a lead-acid cell?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> 1.5V</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> 2.0V</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> 3.7V</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> 12V</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What type of testing can detect battery problems without taking them offline?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Capacity testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Load testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Impedance testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Discharge testing</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What percentage of UPS failures are battery-related?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 5-10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 10-15%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 20-30%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 40-50%</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 11</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Provide instantaneous backup power during outages
+            q2: 'b',  // VRLA (Valve Regulated Lead Acid)
+            q3: 'b',  // 77°F (25°C)
+            q4: 'c',  // Reduces life by 50%
+            q5: 'b',  // 3-5 years
+            q6: 'c',  // Below 80%
+            q7: 'c',  // Hydrogen
+            q8: 'b',  // 2.0V
+            q9: 'c',  // Impedance testing
+            q10: 'c'  // 20-30%
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Battery systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

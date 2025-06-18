@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Distribution Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #2a5298;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1e3c72;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1e3c72;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Power Distribution Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Electrical Distribution</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Power Distribution Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Power Distribution systems for data centers. This course will provide you with essential knowledge about electrical distribution, its critical components, and best practices for ensuring reliable power delivery to IT equipment.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand power distribution hierarchy and components</li>
+                        <li>Learn about different voltage levels and transformations</li>
+                        <li>Recognize critical distribution equipment and their functions</li>
+                        <li>Understand redundancy configurations and reliability</li>
+                        <li>Learn about power monitoring and protection systems</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of electrical concepts</p>
+            </div>
+
+            <!-- Slide 2: What is Power Distribution? -->
+            <div class="slide">
+                <h2>What is Power Distribution?</h2>
+                
+                <p><strong>Power Distribution</strong> in a data center refers to the complete electrical infrastructure that delivers power from the utility source to the IT equipment, ensuring reliable, high-quality electrical power at the appropriate voltage levels.</p>
+
+                <h3>Key Functions of Power Distribution:</h3>
+                <ul>
+                    <li><strong>Voltage Transformation:</strong> Steps down utility voltage to usable levels</li>
+                    <li><strong>Power Routing:</strong> Distributes power to various loads throughout facility</li>
+                    <li><strong>Protection:</strong> Safeguards equipment from electrical faults</li>
+                    <li><strong>Isolation:</strong> Enables maintenance without complete shutdown</li>
+                    <li><strong>Monitoring:</strong> Tracks power usage and quality</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Utility -->
+                        <rect x="20" y="50" width="100" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="70" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Utility</text>
+                        <text x="70" y="100" text-anchor="middle" fill="white" font-size="12">13.8kV</text>
+                        
+                        <!-- Main Transformer -->
+                        <rect x="180" y="30" width="100" height="100" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="230" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Main</text>
+                        <text x="230" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Transformer</text>
+                        <text x="230" y="110" text-anchor="middle" fill="white" font-size="12">13.8kV→480V</text>
+                        
+                        <!-- Switchgear -->
+                        <rect x="340" y="40" width="100" height="80" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="390" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Switchgear</text>
+                        <text x="390" y="95" text-anchor="middle" fill="white" font-size="12">480V</text>
+                        
+                        <!-- PDU -->
+                        <rect x="500" y="45" width="100" height="70" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="550" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">PDU</text>
+                        <text x="550" y="95" text-anchor="middle" fill="white" font-size="12">480V→208V</text>
+                        
+                        <!-- IT Load -->
+                        <rect x="660" y="50" width="100" height="60" fill="#27ae60" stroke="#229954" stroke-width="2" rx="5"/>
+                        <text x="710" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">IT Load</text>
+                        <text x="710" y="100" text-anchor="middle" fill="white" font-size="12">208V</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 120 80 L 180 80" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 280 80 L 340 80" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 440 80 L 500 80" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 600 80 L 660 80" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- UPS Path -->
+                        <rect x="340" y="200" width="100" height="80" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="390" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">UPS</text>
+                        <text x="390" y="255" text-anchor="middle" fill="white" font-size="12">480V</text>
+                        
+                        <path d="M 390 120 L 390 200" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 440 240 L 500 240 L 500 115" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Generator -->
+                        <rect x="180" y="200" width="100" height="80" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="230" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Generator</text>
+                        <text x="230" y="255" text-anchor="middle" fill="white" font-size="12">480V</text>
+                        
+                        <path d="M 280 240 L 340 240" stroke="#333" stroke-width="3" stroke-dasharray="5,5"/>
+                        
+                        <!-- Legend -->
+                        <text x="20" y="350" font-size="14" font-weight="bold" fill="#333">Legend:</text>
+                        <line x1="20" y1="370" x2="60" y2="370" stroke="#333" stroke-width="3"/>
+                        <text x="70" y="375" font-size="12" fill="#333">Normal Power Path</text>
+                        <line x1="200" y1="370" x2="240" y2="370" stroke="#333" stroke-width="3" stroke-dasharray="5,5"/>
+                        <text x="250" y="375" font-size="12" fill="#333">Backup Power Path</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Typical Data Center Power Distribution Path</p>
+                </div>
+            </div>
+
+            <!-- Slide 3: Power Distribution Hierarchy -->
+            <div class="slide">
+                <h2>Power Distribution Hierarchy</h2>
+                
+                <p>Data center power distribution follows a hierarchical structure, stepping down voltage levels as power moves closer to the IT equipment.</p>
+
+                <h3>Voltage Level Hierarchy:</h3>
+                
+                <div class="info-box">
+                    <h4>1. Utility Service Entrance</h4>
+                    <ul>
+                        <li><strong>Voltage:</strong> 13.8kV, 25kV, or 35kV (typical)</li>
+                        <li><strong>Purpose:</strong> Efficient long-distance transmission</li>
+                        <li><strong>Equipment:</strong> Service entrance switchgear</li>
+                        <li><strong>Protection:</strong> Main disconnect, surge protection</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>2. Primary Distribution</h4>
+                    <ul>
+                        <li><strong>Voltage:</strong> 480V (US) or 400V (Europe)</li>
+                        <li><strong>Purpose:</strong> Distribution to major equipment</li>
+                        <li><strong>Equipment:</strong> Main switchboards, distribution panels</li>
+                        <li><strong>Loads:</strong> Large mechanical equipment, UPS input</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>3. Secondary Distribution</h4>
+                    <ul>
+                        <li><strong>Voltage:</strong> 208V/120V (US) or 400V/230V (Europe)</li>
+                        <li><strong>Purpose:</strong> Distribution to IT equipment</li>
+                        <li><strong>Equipment:</strong> Power Distribution Units (PDUs)</li>
+                        <li><strong>Loads:</strong> Server racks, network equipment</li>
+                    </ul>
+                </div>
+
+                <h3>Why Multiple Voltage Levels?</h3>
+                <ul>
+                    <li><strong>Efficiency:</strong> Higher voltages reduce current and losses</li>
+                    <li><strong>Safety:</strong> Lower voltages for end-use equipment</li>
+                    <li><strong>Equipment Requirements:</strong> Different equipment needs different voltages</li>
+                    <li><strong>Cost Optimization:</strong> Balance between conductor size and equipment cost</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Important Voltage Considerations:</h4>
+                    <ul>
+                        <li>Higher voltage = Lower current = Smaller conductors</li>
+                        <li>Power Loss = I²R (current squared × resistance)</li>
+                        <li>Each transformation introduces 1-2% efficiency loss</li>
+                        <li>Proper grounding critical at all voltage levels</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Critical Distribution Components -->
+            <div class="slide">
+                <h2>Critical Distribution Components</h2>
+                
+                <h3>1. Transformers</h3>
+                <div class="info-box">
+                    <h4>Function and Types:</h4>
+                    <ul>
+                        <li><strong>Purpose:</strong> Step down voltage to required levels</li>
+                        <li><strong>Types:</strong> Dry-type (indoor) or liquid-filled (outdoor)</li>
+                        <li><strong>Efficiency:</strong> 98-99% at full load</li>
+                        <li><strong>Cooling:</strong> Air (AA), forced air (FA), or liquid</li>
+                        <li><strong>K-Factor:</strong> Rated for harmonic loads (K-13 typical)</li>
+                    </ul>
+                </div>
+
+                <h3>2. Switchgear</h3>
+                <ul>
+                    <li><strong>Low Voltage:</strong> Up to 600V</li>
+                    <li><strong>Medium Voltage:</strong> 601V to 35kV</li>
+                    <li><strong>Functions:</strong> Isolation, protection, control</li>
+                    <li><strong>Types:</strong> Metal-enclosed, metal-clad, or switchboards</li>
+                    <li><strong>Features:</strong> Draw-out breakers, bus bars, metering</li>
+                </ul>
+
+                <h3>3. Circuit Breakers</h3>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Rating</th>
+                        <th>Application</th>
+                        <th>Features</th>
+                    </tr>
+                    <tr>
+                        <td><strong>MCCB</strong></td>
+                        <td>100-3000A</td>
+                        <td>Feeders, large loads</td>
+                        <td>Adjustable settings</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ICCB</strong></td>
+                        <td>800-6000A</td>
+                        <td>Main breakers</td>
+                        <td>Electronic trip units</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ACB</strong></td>
+                        <td>800-6000A</td>
+                        <td>Critical feeds</td>
+                        <td>Draw-out, maintainable</td>
+                    </tr>
+                </table>
+
+                <h3>4. Power Distribution Units (PDUs)</h3>
+                <div class="success-box">
+                    <h4>PDU Types and Features:</h4>
+                    <ul>
+                        <li><strong>Floor-Standing PDUs:</strong> Transform 480V to 208V, 75-300kVA</li>
+                        <li><strong>Rack PDUs:</strong> Distribute power within racks, monitoring capable</li>
+                        <li><strong>Features:</strong> Branch circuit monitoring, remote switching</li>
+                        <li><strong>Efficiency:</strong> >97% typical for modern units</li>
+                        <li><strong>Options:</strong> Static switch for dual-feed capability</li>
+                    </ul>
+                </div>
+
+                <h3>5. Busway Systems</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Overhead power distribution in data halls</li>
+                    <li><strong>Advantages:</strong> Flexible, expandable, reduced cabling</li>
+                    <li><strong>Types:</strong> Track busway, plug-in busway</li>
+                    <li><strong>Ratings:</strong> 100A to 5000A systems</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Redundancy and Reliability -->
+            <div class="slide">
+                <h2>Redundancy and Reliability</h2>
+                
+                <p>Data center power distribution systems implement various redundancy levels to achieve required availability targets.</p>
+
+                <h3>1. Single Path (N) Distribution</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>Single power path to IT equipment</li>
+                        <li>No redundancy in distribution</li>
+                        <li>Suitable for Tier I facilities</li>
+                        <li>Availability: ~99.67%</li>
+                        <li>Maintenance requires shutdown</li>
+                    </ul>
+                </div>
+
+                <h3>2. Distributed Redundant (N+1)</h3>
+                <div class="info-box">
+                    <ul>
+                        <li>Redundant components at each level</li>
+                        <li>Can lose one component without impact</li>
+                        <li>Common for Tier II/III facilities</li>
+                        <li>Availability: ~99.98%</li>
+                        <li>Allows some maintenance activities</li>
+                    </ul>
+                </div>
+
+                <h3>3. Dual Path (2N) Distribution</h3>
+                <div class="success-box">
+                    <ul>
+                        <li>Complete duplicate power paths (A & B)</li>
+                        <li>Dual-corded IT equipment</li>
+                        <li>Required for Tier IV facilities</li>
+                        <li>Availability: ~99.995%</li>
+                        <li>Full concurrent maintainability</li>
+                    </ul>
+                </div>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e3c72">2N Power Distribution Architecture</text>
+                        
+                        <!-- A-Side -->
+                        <text x="200" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#e74c3c">A-Side Power</text>
+                        
+                        <rect x="120" y="90" width="80" height="50" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="160" y="120" text-anchor="middle" fill="white" font-size="12">Utility A</text>
+                        
+                        <rect x="120" y="170" width="80" height="50" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="160" y="200" text-anchor="middle" fill="white" font-size="12">Gen A</text>
+                        
+                        <rect x="250" y="130" width="80" height="50" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="290" y="160" text-anchor="middle" fill="white" font-size="12">UPS A</text>
+                        
+                        <rect x="250" y="230" width="80" height="50" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="290" y="260" text-anchor="middle" fill="white" font-size="12">PDU A</text>
+                        
+                        <!-- B-Side -->
+                        <text x="600" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#2ecc71">B-Side Power</text>
+                        
+                        <rect x="600" y="90" width="80" height="50" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="640" y="120" text-anchor="middle" fill="white" font-size="12">Utility B</text>
+                        
+                        <rect x="600" y="170" width="80" height="50" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="640" y="200" text-anchor="middle" fill="white" font-size="12">Gen B</text>
+                        
+                        <rect x="470" y="130" width="80" height="50" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="510" y="160" text-anchor="middle" fill="white" font-size="12">UPS B</text>
+                        
+                        <rect x="470" y="230" width="80" height="50" fill="#1e3c72" stroke="#16325c" stroke-width="2" rx="5"/>
+                        <text x="510" y="260" text-anchor="middle" fill="white" font-size="12">PDU B</text>
+                        
+                        <!-- Server -->
+                        <rect x="340" y="350" width="120" height="80" fill="#27ae60" stroke="#229954" stroke-width="3" rx="5"/>
+                        <text x="400" y="380" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Dual-Corded</text>
+                        <text x="400" y="400" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Server</text>
+                        
+                        <!-- Power supplies -->
+                        <rect x="355" y="360" width="20" height="20" fill="#e74c3c"/>
+                        <text x="365" y="375" text-anchor="middle" fill="white" font-size="10" font-weight="bold">A</text>
+                        
+                        <rect x="425" y="360" width="20" height="20" fill="#2ecc71"/>
+                        <text x="435" y="375" text-anchor="middle" fill="white" font-size="10" font-weight="bold">B</text>
+                        
+                        <!-- Connections A-Side -->
+                        <path d="M 200 115 L 250 155" stroke="#e74c3c" stroke-width="3"/>
+                        <path d="M 200 195 L 250 155" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+                        <path d="M 290 180 L 290 230" stroke="#e74c3c" stroke-width="3"/>
+                        <path d="M 290 280 L 365 350" stroke="#e74c3c" stroke-width="3"/>
+                        
+                        <!-- Connections B-Side -->
+                        <path d="M 600 115 L 550 155" stroke="#2ecc71" stroke-width="3"/>
+                        <path d="M 600 195 L 550 155" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,5"/>
+                        <path d="M 510 180 L 510 230" stroke="#2ecc71" stroke-width="3"/>
+                        <path d="M 510 280 L 435 350" stroke="#2ecc71" stroke-width="3"/>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">2N Architecture: Complete redundancy with dual power paths</p>
+                </div>
+
+                <h3>Key Reliability Factors:</h3>
+                <ul>
+                    <li><strong>Single Points of Failure:</strong> Identify and eliminate</li>
+                    <li><strong>Maintenance Windows:</strong> Plan for concurrent maintainability</li>
+                    <li><strong>Transfer Mechanisms:</strong> Static switches for hitless transfers</li>
+                    <li><strong>Human Error:</strong> Design to prevent operational mistakes</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Power Quality and Monitoring -->
+            <div class="slide">
+                <h2>Power Quality and Monitoring</h2>
+                
+                <p>Maintaining power quality and comprehensive monitoring are essential for reliable data center operations.</p>
+
+                <h3>1. Power Quality Parameters</h3>
+                
+                <div class="info-box">
+                    <h4>Critical Power Quality Metrics:</h4>
+                    <ul>
+                        <li><strong>Voltage Regulation:</strong> ±5% of nominal</li>
+                        <li><strong>Frequency:</strong> 60Hz ±0.5Hz (50Hz ±0.5Hz in Europe)</li>
+                        <li><strong>Total Harmonic Distortion (THD):</strong> <5% voltage, <8% current</li>
+                        <li><strong>Power Factor:</strong> >0.9 (leading or lagging)</li>
+                        <li><strong>Voltage Imbalance:</strong> <2% between phases</li>
+                    </ul>
+                </div>
+
+                <h3>2. Common Power Quality Issues</h3>
+                
+                <div class="warning-box">
+                    <h4>Issues and Impacts:</h4>
+                    <ul>
+                        <li><strong>Harmonics:</strong> Overheating, equipment damage, efficiency loss</li>
+                        <li><strong>Voltage Sags/Swells:</strong> Equipment malfunction, UPS transfers</li>
+                        <li><strong>Transients:</strong> Component damage, data corruption</li>
+                        <li><strong>Frequency Variations:</strong> Motor speed changes, timing issues</li>
+                        <li><strong>Neutral-Ground Voltage:</strong> Equipment grounding issues</li>
+                    </ul>
+                </div>
+
+                <h3>3. Power Monitoring Systems</h3>
+                
+                <table>
+                    <tr>
+                        <th>Level</th>
+                        <th>Monitoring Points</th>
+                        <th>Parameters</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Utility</strong></td>
+                        <td>Main switchgear</td>
+                        <td>V, I, kW, kVA, PF</td>
+                        <td>Utility billing verification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UPS</strong></td>
+                        <td>Input/Output</td>
+                        <td>V, I, kW, THD, efficiency</td>
+                        <td>Performance tracking</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PDU</strong></td>
+                        <td>Transformer, panels</td>
+                        <td>V, I, kW, temperature</td>
+                        <td>Load management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Branch</strong></td>
+                        <td>Circuit breakers</td>
+                        <td>I, kW</td>
+                        <td>Capacity planning</td>
+                    </tr>
+                </table>
+
+                <h3>4. Monitoring System Features</h3>
+                
+                <div class="success-box">
+                    <h4>Modern Power Monitoring Capabilities:</h4>
+                    <ul>
+                        <li><strong>Real-Time Monitoring:</strong> Live power parameters and alarms</li>
+                        <li><strong>Historical Trending:</strong> Long-term data storage and analysis</li>
+                        <li><strong>Predictive Analytics:</strong> Identify issues before failures</li>
+                        <li><strong>Energy Management:</strong> PUE calculation, efficiency tracking</li>
+                        <li><strong>Integration:</strong> DCIM, BMS, and cloud platforms</li>
+                    </ul>
+                </div>
+
+                <h3>5. Protection Coordination</h3>
+                <ul>
+                    <li><strong>Selective Coordination:</strong> Only affected breaker trips</li>
+                    <li><strong>Arc Flash Mitigation:</strong> Reduced incident energy</li>
+                    <li><strong>Ground Fault Protection:</strong> Equipment and personnel safety</li>
+                    <li><strong>Surge Protection:</strong> Multiple stages throughout facility</li>
+                </ul>
+            </div>
+
+            <!-- Slide 7: Safety and Compliance -->
+            <div class="slide">
+                <h2>Safety and Compliance</h2>
+                
+                <p>Electrical safety and code compliance are paramount in data center power distribution systems.</p>
+
+                <h3>1. Electrical Safety Hazards</h3>
+                
+                <div class="danger-box">
+                    <h4>⚠️ Primary Electrical Hazards:</h4>
+                    <ul>
+                        <li><strong>Electric Shock:</strong> Contact with energized parts</li>
+                        <li><strong>Arc Flash:</strong> Explosive energy release (up to 35,000°F)</li>
+                        <li><strong>Arc Blast:</strong> Pressure wave and molten metal</li>
+                        <li><strong>Fire:</strong> Overheating, short circuits</li>
+                        <li><strong>Equipment Damage:</strong> Costly downtime and repairs</li>
+                    </ul>
+                </div>
+
+                <h3>2. Arc Flash Protection</h3>
+                
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Cal/cm²</th>
+                        <th>PPE Required</th>
+                        <th>Typical Location</th>
+                    </tr>
+                    <tr>
+                        <td><strong>CAT 1</strong></td>
+                        <td>4</td>
+                        <td>FR clothing, face shield</td>
+                        <td>Panelboards</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CAT 2</strong></td>
+                        <td>8</td>
+                        <td>FR clothing, hood</td>
+                        <td>480V switchgear</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CAT 3</strong></td>
+                        <td>25</td>
+                        <td>FR suit, hood, gloves</td>
+                        <td>Main switchboards</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CAT 4</strong></td>
+                        <td>40</td>
+                        <td>Full arc flash suit</td>
+                        <td>Main breakers</td>
+                    </tr>
+                </table>
+
+                <h3>3. Safety Procedures</h3>
+                
+                <div class="info-box">
+                    <h4>Lockout/Tagout (LOTO) Procedures:</h4>
+                    <ul>
+                        <li><strong>De-energize:</strong> Turn off all energy sources</li>
+                        <li><strong>Isolate:</strong> Open disconnecting devices</li>
+                        <li><strong>Lock:</strong> Apply locks to prevent re-energization</li>
+                        <li><strong>Tag:</strong> Place warning tags on locks</li>
+                        <li><strong>Test:</strong> Verify zero energy before work</li>
+                    </ul>
+                </div>
+
+                <h3>4. Code Compliance</h3>
+                
+                <ul>
+                    <li><strong>NEC (NFPA 70):</strong> National Electrical Code requirements</li>
+                    <li><strong>NFPA 70E:</strong> Electrical safety in the workplace</li>
+                    <li><strong>IEEE Standards:</strong> Design and testing standards</li>
+                    <li><strong>Local Codes:</strong> Municipal and state requirements</li>
+                    <li><strong>Insurance Requirements:</strong> FM Global, XL Catlin guidelines</li>
+                </ul>
+
+                <h3>5. Best Safety Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Data Center Electrical Safety:</h4>
+                    <ul>
+                        <li><strong>Training:</strong> Regular safety training for all personnel</li>
+                        <li><strong>Labeling:</strong> Clear equipment and hazard labeling</li>
+                        <li><strong>Procedures:</strong> Written procedures for all tasks</li>
+                        <li><strong>PPE:</strong> Appropriate PPE readily available</li>
+                        <li><strong>Maintenance:</strong> Regular inspection and testing</li>
+                        <li><strong>Documentation:</strong> Up-to-date single-line diagrams</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Maintenance and Testing -->
+            <div class="slide">
+                <h2>Maintenance and Testing</h2>
+                
+                <p>Regular maintenance and testing ensure power distribution system reliability and safety.</p>
+
+                <h3>1. Preventive Maintenance Schedule</h3>
+                
+                <table>
+                    <tr>
+                        <th>Equipment</th>
+                        <th>Monthly</th>
+                        <th>Annually</th>
+                        <th>3-5 Years</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Switchgear</strong></td>
+                        <td>Visual inspection</td>
+                        <td>Thermography, cleaning</td>
+                        <td>Breaker testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transformers</strong></td>
+                        <td>Temperature check</td>
+                        <td>Oil analysis, IR scan</td>
+                        <td>Insulation testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PDUs</strong></td>
+                        <td>Load monitoring</td>
+                        <td>Connection tightness</td>
+                        <td>Breaker calibration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grounding</strong></td>
+                        <td>Visual check</td>
+                        <td>Resistance testing</td>
+                        <td>Complete survey</td>
+                    </tr>
+                </table>
+
+                <h3>2. Testing Procedures</h3>
+                
+                <div class="info-box">
+                    <h4>Critical Testing Activities:</h4>
+                    <ul>
+                        <li><strong>Infrared Thermography:</strong> Identify hot spots and loose connections</li>
+                        <li><strong>Insulation Resistance:</strong> Verify insulation integrity</li>
+                        <li><strong>Breaker Testing:</strong> Trip timing and coordination</li>
+                        <li><strong>Ground Resistance:</strong> Ensure <5 ohms to ground</li>
+                        <li><strong>Power Quality:</strong> Harmonic analysis and monitoring</li>
+                    </ul>
+                </div>
+
+                <h3>3. Common Issues Found</h3>
+                
+                <div class="warning-box">
+                    <h4>Typical Maintenance Findings:</h4>
+                    <ul>
+                        <li><strong>Loose Connections:</strong> 30% of electrical failures</li>
+                        <li><strong>Dust Accumulation:</strong> Reduced cooling, tracking</li>
+                        <li><strong>Corrosion:</strong> High humidity environments</li>
+                        <li><strong>Breaker Drift:</strong> Settings change over time</li>
+                        <li><strong>Grounding Issues:</strong> Increased resistance</li>
+                    </ul>
+                </div>
+
+                <h3>4. Maintenance Windows</h3>
+                
+                <ul>
+                    <li><strong>Concurrent Maintenance:</strong> Work on redundant systems</li>
+                    <li><strong>Risk Assessment:</strong> Evaluate maintenance risks</li>
+                    <li><strong>Method of Procedure (MOP):</strong> Detailed work plans</li>
+                    <li><strong>Emergency Response:</strong> Contingency planning</li>
+                    <li><strong>Communication:</strong> Stakeholder notifications</li>
+                </ul>
+            </div>
+
+            <!-- Slide 9: Best Practices and Future Trends -->
+            <div class="slide">
+                <h2>Best Practices and Future Trends</h2>
+                
+                <h3>Power Distribution Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>1. Design Best Practices</h4>
+                    <ul>
+                        <li>Standardize on equipment vendors for easier maintenance</li>
+                        <li>Implement proper selective coordination studies</li>
+                        <li>Design for 125% of anticipated load growth</li>
+                        <li>Use front-accessible equipment where possible</li>
+                        <li>Implement comprehensive labeling standards</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Best Practices</h3>
+                <ul>
+                    <li><strong>Capacity Management:</strong> Maintain 20% headroom minimum</li>
+                    <li><strong>Load Balancing:</strong> Balance loads across phases</li>
+                    <li><strong>Documentation:</strong> Keep single-lines current</li>
+                    <li><strong>Training:</strong> Regular operator certification</li>
+                    <li><strong>Emergency Procedures:</strong> Regular drills and updates</li>
+                </ul>
+
+                <h3>3. Energy Efficiency Strategies</h3>
+                <div class="info-box">
+                    <h4>Efficiency Improvements:</h4>
+                    <ul>
+                        <li><strong>High-Efficiency Transformers:</strong> 99%+ efficiency models</li>
+                        <li><strong>Right-Sizing:</strong> Operate equipment near optimal load</li>
+                        <li><strong>Power Factor Correction:</strong> Reduce reactive power</li>
+                        <li><strong>Voltage Optimization:</strong> Operate at higher voltages</li>
+                        <li><strong>Modular Systems:</strong> Scale with actual load</li>
+                    </ul>
+                </div>
+
+                <h3>4. Future Trends</h3>
+                
+                <div class="info-box">
+                    <h4>Emerging Technologies:</h4>
+                    <ul>
+                        <li><strong>DC Distribution:</strong> 380VDC to eliminate conversions</li>
+                        <li><strong>Smart Grid Integration:</strong> Dynamic pricing response</li>
+                        <li><strong>AI-Driven Optimization:</strong> Predictive load management</li>
+                        <li><strong>Renewable Integration:</strong> Solar, wind, fuel cells</li>
+                        <li><strong>Advanced Materials:</strong> Superconducting cables</li>
+                    </ul>
+                </div>
+
+                <h3>5. Sustainability Considerations</h3>
+                <ul>
+                    <li><strong>SF6 Alternatives:</strong> Eco-friendly switchgear options</li>
+                    <li><strong>Lifecycle Analysis:</strong> Total environmental impact</li>
+                    <li><strong>Circular Economy:</strong> Equipment reuse and recycling</li>
+                    <li><strong>Carbon Footprint:</strong> Reduce distribution losses</li>
+                    <li><strong>Green Certifications:</strong> LEED, Energy Star compliance</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Power distribution provides the pathway from utility to IT load</li>
+                        <li>Multiple voltage levels optimize efficiency and safety</li>
+                        <li>Critical components include transformers, switchgear, and PDUs</li>
+                        <li>Redundancy configurations ensure reliability (N+1, 2N)</li>
+                        <li>Power quality monitoring is essential for equipment protection</li>
+                        <li>Safety procedures and compliance are non-negotiable</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Safety First:</strong> Always follow electrical safety procedures</li>
+                    <li><strong>Redundancy:</strong> Design for maintainability and reliability</li>
+                    <li><strong>Monitoring:</strong> You can't manage what you don't measure</li>
+                    <li><strong>Maintenance:</strong> Preventive maintenance prevents failures</li>
+                    <li><strong>Documentation:</strong> Keep drawings and procedures current</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's single-line diagrams</li>
+                        <li>Understand your redundancy configuration</li>
+                        <li>Learn your facility's safety procedures</li>
+                        <li>Participate in maintenance activities</li>
+                        <li>Study power monitoring system displays</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Power Distribution systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the typical utility service voltage for large data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> 480V</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> 208V</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> 13.8kV</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> 120V</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What does PDU stand for in data center power distribution?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Power Delivery Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Power Distribution Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Primary Distribution Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Protective Device Unit</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. In a 2N power distribution system, what does "2N" represent?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Two times the normal voltage</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Two separate utility feeds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Complete duplicate power paths</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Two backup generators</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What is the main purpose of a transformer in power distribution?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Generate electricity</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Store electrical energy</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Change voltage levels</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Measure power consumption</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the acceptable Total Harmonic Distortion (THD) limit for voltage?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> <1%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> <5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> <10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> <15%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What type of circuit breaker is typically used for main switchgear applications?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Miniature Circuit Breaker (MCB)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Ground Fault Circuit Interrupter (GFCI)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Air Circuit Breaker (ACB)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Residual Current Device (RCD)</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What percentage of electrical failures are caused by loose connections?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> 10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> 20%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> 30%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> 50%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What does LOTO stand for in electrical safety?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Load On Test Off</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Lockout/Tagout</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Low Output Trip Off</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Line Out Terminal Open</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the typical efficiency of modern transformers at full load?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 85-90%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 90-95%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 98-99%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 99.9%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the recommended minimum headroom for capacity management?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 20%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 30%</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 11</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'c',  // 13.8kV
+            q2: 'b',  // Power Distribution Unit
+            q3: 'c',  // Complete duplicate power paths
+            q4: 'c',  // Change voltage levels
+            q5: 'b',  // <5%
+            q6: 'c',  // Air Circuit Breaker (ACB)
+            q7: 'c',  // 30%
+            q8: 'b',  // Lockout/Tagout
+            q9: 'c',  // 98-99%
+            q10: 'c'  // 20%
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Power Distribution systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

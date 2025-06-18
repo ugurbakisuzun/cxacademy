@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Detection Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #d32f2f;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #f44336;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #f44336;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #d32f2f, #f44336);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #ffe5e5;
+            border-left: 5px solid #d32f2f;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fire Detection Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Life Safety Systems</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Fire Detection Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Fire Detection Systems for data centers. This course will provide you with essential knowledge about fire detection technology, system components, and best practices for protecting your critical infrastructure and personnel.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand fire detection principles and technologies</li>
+                        <li>Learn about different detector types and their applications</li>
+                        <li>Recognize system components and their functions</li>
+                        <li>Understand integration with other data center systems</li>
+                        <li>Learn testing and maintenance requirements</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of data center operations</p>
+            </div>
+
+            <!-- Slide 2: What is Fire Detection? -->
+            <div class="slide">
+                <h2>What is Fire Detection?</h2>
+                
+                <p><strong>Fire Detection Systems</strong> are designed to identify the presence of fire or combustion products in their earliest stages, providing early warning to occupants and enabling rapid response to minimize damage and protect lives.</p>
+
+                <h3>Key Functions in Data Centers:</h3>
+                <ul>
+                    <li><strong>Early Warning:</strong> Detect fire in incipient stages before significant damage</li>
+                    <li><strong>Life Safety:</strong> Alert personnel for safe evacuation</li>
+                    <li><strong>Asset Protection:</strong> Enable rapid response to protect critical IT equipment</li>
+                    <li><strong>System Integration:</strong> Coordinate with suppression and facility systems</li>
+                    <li><strong>Continuous Monitoring:</strong> 24/7 automated surveillance of protected areas</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Fire Development Stages -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Stages of Fire Development</text>
+                        
+                        <!-- Timeline -->
+                        <line x1="50" y1="320" x2="750" y2="320" stroke="#333" stroke-width="2"/>
+                        <text x="400" y="350" text-anchor="middle" font-size="14" fill="#333">Time →</text>
+                        
+                        <!-- Stage 1: Incipient -->
+                        <rect x="50" y="250" width="150" height="60" fill="#ffc107" stroke="#ff9800" stroke-width="2" rx="5"/>
+                        <text x="125" y="280" text-anchor="middle" font-weight="bold" font-size="14">Incipient</text>
+                        <text x="125" y="295" text-anchor="middle" font-size="12">Invisible products</text>
+                        
+                        <!-- Stage 2: Smoldering -->
+                        <rect x="220" y="200" width="150" height="110" fill="#ff9800" stroke="#f57c00" stroke-width="2" rx="5"/>
+                        <text x="295" y="230" text-anchor="middle" font-weight="bold" font-size="14">Smoldering</text>
+                        <text x="295" y="245" text-anchor="middle" font-size="12">Visible smoke</text>
+                        <text x="295" y="260" text-anchor="middle" font-size="12">No flame</text>
+                        
+                        <!-- Stage 3: Flame -->
+                        <rect x="390" y="150" width="150" height="160" fill="#f44336" stroke="#d32f2f" stroke-width="2" rx="5"/>
+                        <text x="465" y="180" text-anchor="middle" font-weight="bold" font-size="14">Flame</text>
+                        <text x="465" y="195" text-anchor="middle" font-size="12">Visible fire</text>
+                        <text x="465" y="210" text-anchor="middle" font-size="12">Rapid growth</text>
+                        
+                        <!-- Stage 4: Heat -->
+                        <rect x="560" y="100" width="180" height="210" fill="#d32f2f" stroke="#b71c1c" stroke-width="2" rx="5"/>
+                        <text x="650" y="130" text-anchor="middle" font-weight="bold" font-size="14">Intense Heat</text>
+                        <text x="650" y="145" text-anchor="middle" font-size="12">Uncontrolled fire</text>
+                        <text x="650" y="160" text-anchor="middle" font-size="12">Structural damage</text>
+                        
+                        <!-- Detection Methods -->
+                        <text x="125" y="90" text-anchor="middle" font-weight="bold" fill="#0066cc" font-size="12">VESDA/ASD</text>
+                        <line x1="125" y1="100" x2="125" y2="250" stroke="#0066cc" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <text x="295" y="90" text-anchor="middle" font-weight="bold" fill="#0066cc" font-size="12">Smoke Detectors</text>
+                        <line x1="295" y1="100" x2="295" y2="200" stroke="#0066cc" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <text x="465" y="90" text-anchor="middle" font-weight="bold" fill="#0066cc" font-size="12">Heat/Flame</text>
+                        <line x1="465" y1="100" x2="465" y2="150" stroke="#0066cc" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <text x="650" y="60" text-anchor="middle" font-weight="bold" fill="#0066cc" font-size="12">Sprinklers</text>
+                        <line x1="650" y1="70" x2="650" y2="100" stroke="#0066cc" stroke-width="2" stroke-dasharray="5,5"/>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Early detection is critical - the sooner fire is detected, the less damage occurs</p>
+                </div>
+
+                <div class="danger-box">
+                    <h4>🔥 Why Early Detection Matters:</h4>
+                    <ul>
+                        <li>Fire doubles in size every 30-60 seconds</li>
+                        <li>Smoke damage to electronics occurs before flame</li>
+                        <li>Data center equipment is highly sensitive to combustion products</li>
+                        <li>Early warning enables suppression before catastrophic damage</li>
+                        <li>Life safety - ensures safe evacuation time</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Types of Detection Systems -->
+            <div class="slide">
+                <h2>Types of Fire Detection Systems</h2>
+                
+                <p>Data centers employ multiple detection technologies to ensure comprehensive protection.</p>
+
+                <h3>1. Detection System Categories:</h3>
+                
+                <div class="info-box">
+                    <h4>Conventional Systems</h4>
+                    <ul>
+                        <li><strong>Zone-based:</strong> Groups of detectors per circuit</li>
+                        <li><strong>Basic indication:</strong> Shows zone in alarm</li>
+                        <li><strong>Lower cost:</strong> Simple wiring and panels</li>
+                        <li><strong>Limited information:</strong> No specific device identification</li>
+                        <li><strong>Application:</strong> Small facilities, non-critical areas</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Addressable Systems</h4>
+                    <ul>
+                        <li><strong>Device-specific:</strong> Each detector has unique address</li>
+                        <li><strong>Detailed information:</strong> Exact location and status</li>
+                        <li><strong>Advanced features:</strong> Sensitivity adjustment, drift compensation</li>
+                        <li><strong>Better diagnostics:</strong> Device health monitoring</li>
+                        <li><strong>Application:</strong> Data centers, critical facilities</li>
+                    </ul>
+                </div>
+
+                <h3>2. Detection Technologies:</h3>
+
+                <table>
+                    <tr>
+                        <th>Technology</th>
+                        <th>Detection Method</th>
+                        <th>Response Time</th>
+                        <th>Best Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Ionization Smoke</strong></td>
+                        <td>Particle ionization</td>
+                        <td>Fast (flame)</td>
+                        <td>General areas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Photoelectric Smoke</strong></td>
+                        <td>Light scattering</td>
+                        <td>Fast (smoke)</td>
+                        <td>Smoldering fires</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aspirating (VESDA)</strong></td>
+                        <td>Air sampling</td>
+                        <td>Very early</td>
+                        <td>Critical areas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Heat Detection</strong></td>
+                        <td>Temperature rise</td>
+                        <td>Slower</td>
+                        <td>High dust areas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Beam Detection</strong></td>
+                        <td>Light obscuration</td>
+                        <td>Moderate</td>
+                        <td>Large open areas</td>
+                    </tr>
+                </table>
+
+                <h3>3. Multi-Criteria Detection:</h3>
+                
+                <div class="success-box">
+                    <h4>Advanced Multi-Sensor Detectors</h4>
+                    <ul>
+                        <li>Combine multiple sensing technologies (smoke + heat + CO)</li>
+                        <li>Intelligent algorithms reduce false alarms</li>
+                        <li>Better detection across all fire types</li>
+                        <li>Environmental compensation capabilities</li>
+                        <li>Ideal for data centers with varying conditions</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Selection Considerations:</h4>
+                    <ul>
+                        <li>Environmental conditions (airflow, temperature, humidity)</li>
+                        <li>Protected asset criticality and value</li>
+                        <li>Required detection speed and sensitivity</li>
+                        <li>Maintenance accessibility and requirements</li>
+                        <li>Integration with suppression systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Smoke Detection Technologies -->
+            <div class="slide">
+                <h2>Smoke Detection Technologies</h2>
+                
+                <h3>1. Photoelectric Smoke Detection</h3>
+                <div class="info-box">
+                    <h4>Operating Principle:</h4>
+                    <ul>
+                        <li><strong>Light Source:</strong> LED or laser emits light beam</li>
+                        <li><strong>Detection Chamber:</strong> Dark chamber prevents ambient light</li>
+                        <li><strong>Smoke Entry:</strong> Particles scatter light onto sensor</li>
+                        <li><strong>Alarm Threshold:</strong> Predetermined light level triggers alarm</li>
+                        <li><strong>Best For:</strong> Smoldering fires, larger particles</li>
+                    </ul>
+                </div>
+
+                <h3>2. Ionization Smoke Detection</h3>
+                <ul>
+                    <li><strong>Radioactive Source:</strong> Small amount of Americium-241</li>
+                    <li><strong>Ion Current:</strong> Creates charged particles between plates</li>
+                    <li><strong>Smoke Effect:</strong> Particles disrupt ion flow</li>
+                    <li><strong>Current Change:</strong> Reduced current triggers alarm</li>
+                    <li><strong>Best For:</strong> Fast flaming fires, smaller particles</li>
+                </ul>
+
+                <h3>3. Aspirating Smoke Detection (ASD/VESDA)</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">VESDA System Components</text>
+                        
+                        <!-- Detector Unit -->
+                        <rect x="50" y="150" width="150" height="100" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="125" y="180" text-anchor="middle" fill="white" font-weight="bold" font-size="14">VESDA</text>
+                        <text x="125" y="195" text-anchor="middle" fill="white" font-size="12">Detector</text>
+                        <text x="125" y="210" text-anchor="middle" fill="white" font-size="12">Unit</text>
+                        
+                        <!-- Sampling Network -->
+                        <rect x="300" y="100" width="400" height="200" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="10,5" rx="5"/>
+                        <text x="500" y="120" text-anchor="middle" font-weight="bold" font-size="14">Protected Area</text>
+                        
+                        <!-- Sampling Pipes -->
+                        <line x1="200" y1="200" x2="300" y2="200" stroke="#333" stroke-width="3"/>
+                        <line x1="300" y1="200" x2="700" y2="200" stroke="#333" stroke-width="3"/>
+                        
+                        <!-- Sampling Points -->
+                        <circle cx="350" cy="200" r="8" fill="#f44336"/>
+                        <circle cx="450" cy="200" r="8" fill="#f44336"/>
+                        <circle cx="550" cy="200" r="8" fill="#f44336"/>
+                        <circle cx="650" cy="200" r="8" fill="#f44336"/>
+                        
+                        <!-- Branch pipes -->
+                        <line x1="350" y1="200" x2="350" y2="150" stroke="#333" stroke-width="2"/>
+                        <line x1="450" y1="200" x2="450" y2="250" stroke="#333" stroke-width="2"/>
+                        <line x1="550" y1="200" x2="550" y2="150" stroke="#333" stroke-width="2"/>
+                        <line x1="650" y1="200" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- End caps -->
+                        <circle cx="350" cy="150" r="5" fill="#333"/>
+                        <circle cx="450" cy="250" r="5" fill="#333"/>
+                        <circle cx="550" cy="150" r="5" fill="#333"/>
+                        <circle cx="650" cy="250" r="5" fill="#333"/>
+                        
+                        <!-- Labels -->
+                        <text x="125" y="280" text-anchor="middle" font-size="12" fill="#333">Laser Detection</text>
+                        <text x="125" y="295" text-anchor="middle" font-size="12" fill="#333">Chamber</text>
+                        
+                        <text x="500" y="320" text-anchor="middle" font-size="12" fill="#333">Sampling Holes (3-5mm typical)</text>
+                        
+                        <!-- Air flow arrows -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#0066cc"/>
+                            </marker>
+                        </defs>
+                        
+                        <path d="M 270 190 L 230 190" stroke="#0066cc" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="250" y="180" text-anchor="middle" font-size="11" fill="#0066cc">Air Sample</text>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">VESDA continuously samples air through a pipe network for very early detection</p>
+                </div>
+
+                <div class="success-box">
+                    <h4>VESDA Advantages for Data Centers:</h4>
+                    <ul>
+                        <li><strong>Sensitivity:</strong> 1000x more sensitive than spot detectors</li>
+                        <li><strong>Early Warning:</strong> Multiple alarm levels (Alert, Action, Fire 1, Fire 2)</li>
+                        <li><strong>High Airflow Tolerance:</strong> Works in high velocity environments</li>
+                        <li><strong>Wide Coverage:</strong> One detector can protect large areas</li>
+                        <li><strong>Minimal Maintenance:</strong> Centralized filter replacement</li>
+                    </ul>
+                </div>
+
+                <h3>4. Video Smoke Detection</h3>
+                <ul>
+                    <li><strong>Camera-Based:</strong> Analyzes video for smoke patterns</li>
+                    <li><strong>Large Areas:</strong> Ideal for atriums, warehouses</li>
+                    <li><strong>Visual Verification:</strong> Operators can verify alarms</li>
+                    <li><strong>Analytics:</strong> AI-enhanced detection algorithms</li>
+                    <li><strong>Integration:</strong> Works with security systems</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Heat and Specialty Detection -->
+            <div class="slide">
+                <h2>Heat and Specialty Detection</h2>
+                
+                <h3>1. Heat Detection Types</h3>
+                
+                <div class="info-box">
+                    <h4>Fixed Temperature Detectors</h4>
+                    <ul>
+                        <li><strong>Operation:</strong> Alarm at specific temperature (135°F, 200°F typical)</li>
+                        <li><strong>Types:</strong> Fusible link, bimetallic, electronic</li>
+                        <li><strong>Response:</strong> Slower than smoke detection</li>
+                        <li><strong>Application:</strong> Areas where smoke detectors unsuitable</li>
+                        <li><strong>Advantages:</strong> No false alarms from dust/steam</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Rate-of-Rise Detectors</h4>
+                    <ul>
+                        <li><strong>Operation:</strong> Detect rapid temperature increase (15°F/min typical)</li>
+                        <li><strong>Combination:</strong> Often include fixed temperature element</li>
+                        <li><strong>Response:</strong> Faster than fixed temperature alone</li>
+                        <li><strong>Application:</strong> Areas with normal temperature fluctuations</li>
+                        <li><strong>Technology:</strong> Pneumatic or electronic sensing</li>
+                    </ul>
+                </div>
+
+                <h3>2. Linear Heat Detection</h3>
+                <ul>
+                    <li><strong>Cable Type:</strong> Heat-sensitive cable along entire length</li>
+                    <li><strong>Coverage:</strong> Continuous detection over distances</li>
+                    <li><strong>Applications:</strong> Cable trays, conveyors, tunnels</li>
+                    <li><strong>Types:</strong> Digital (addressable) or analog</li>
+                    <li><strong>Benefits:</strong> Precise location identification</li>
+                </ul>
+
+                <h3>3. Flame Detection</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Spectrum</th>
+                        <th>Range</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>UV</strong></td>
+                        <td>185-260 nm</td>
+                        <td>50 ft</td>
+                        <td>Fast response</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IR</strong></td>
+                        <td>4.3 μm CO₂</td>
+                        <td>200 ft</td>
+                        <td>Hydrocarbon fires</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UV/IR</strong></td>
+                        <td>Combined</td>
+                        <td>100 ft</td>
+                        <td>False alarm immunity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-IR</strong></td>
+                        <td>Multiple bands</td>
+                        <td>200 ft</td>
+                        <td>Highest reliability</td>
+                    </tr>
+                </table>
+
+                <h3>4. Gas Detection</h3>
+                
+                <div class="warning-box">
+                    <h4>Combustible Gas Detection:</h4>
+                    <ul>
+                        <li><strong>LEL Sensors:</strong> Detect % of Lower Explosive Limit</li>
+                        <li><strong>Applications:</strong> Battery rooms, generator rooms</li>
+                        <li><strong>Hydrogen Detection:</strong> Critical for UPS battery areas</li>
+                        <li><strong>Alarm Levels:</strong> Typically 10% and 20% LEL</li>
+                        <li><strong>Integration:</strong> Ventilation and alarm activation</li>
+                    </ul>
+                </div>
+
+                <h3>5. Air Sampling Systems</h3>
+                
+                <div class="success-box">
+                    <h4>Advanced Air Sampling Features:</h4>
+                    <ul>
+                        <li><strong>Multi-Level Detection:</strong> Alert → Action → Fire 1 → Fire 2</li>
+                        <li><strong>Environmental Compensation:</strong> Adapts to dust, humidity</li>
+                        <li><strong>Referencing:</strong> Clean air comparison for accuracy</li>
+                        <li><strong>Network Capability:</strong> Multiple units for large areas</li>
+                        <li><strong>Event Logging:</strong> Historical data and trends</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Control Panels and Notification -->
+            <div class="slide">
+                <h2>Control Panels and Notification</h2>
+                
+                <p>The Fire Alarm Control Panel (FACP) is the brain of the detection system, processing inputs and activating outputs.</p>
+
+                <h3>1. Fire Alarm Control Panel Components</h3>
+                
+                <div class="info-box">
+                    <h4>Main Control Panel Features:</h4>
+                    <ul>
+                        <li><strong>CPU:</strong> Processes detection signals and control logic</li>
+                        <li><strong>Display:</strong> LCD/LED showing system status and alarms</li>
+                        <li><strong>Controls:</strong> Acknowledge, silence, reset, drill functions</li>
+                        <li><strong>Power Supply:</strong> Primary and battery backup (24-72 hours)</li>
+                        <li><strong>Communication:</strong> Network cards for integration</li>
+                    </ul>
+                </div>
+
+                <h3>2. Detection Loops and Circuits</h3>
+                <ul>
+                    <li><strong>SLC (Signaling Line Circuit):</strong> Addressable device communication</li>
+                    <li><strong>IDC (Initiating Device Circuit):</strong> Conventional detector zones</li>
+                    <li><strong>NAC (Notification Appliance Circuit):</strong> Horns, strobes, speakers</li>
+                    <li><strong>Power Circuits:</strong> 24VDC for devices and auxiliaries</li>
+                    <li><strong>Communication Circuits:</strong> RS-485, Ethernet, fiber optic</li>
+                </ul>
+
+                <h3>3. Notification Systems</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Application</th>
+                        <th>Requirements</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Horns</strong></td>
+                        <td>Audible alert</td>
+                        <td>15 dB above ambient</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Strobes</strong></td>
+                        <td>Visual alert</td>
+                        <td>ADA compliant candela</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speakers</strong></td>
+                        <td>Voice evacuation</td>
+                        <td>Intelligible speech</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Text/Email</strong></td>
+                        <td>Remote notification</td>
+                        <td>Network connectivity</td>
+                    </tr>
+                </table>
+
+                <h3>4. Annunciation and Display</h3>
+                
+                <div class="success-box">
+                    <h4>Remote Annunciators:</h4>
+                    <ul>
+                        <li><strong>Lobby Display:</strong> First responder information</li>
+                        <li><strong>Graphic Annunciator:</strong> Building layout with zones</li>
+                        <li><strong>LCD Annunciator:</strong> Detailed text information</li>
+                        <li><strong>LED Annunciator:</strong> Zone status indicators</li>
+                        <li><strong>PC-Based:</strong> Full system monitoring and control</li>
+                    </ul>
+                </div>
+
+                <h3>5. Emergency Voice Communication</h3>
+                
+                <div class="warning-box">
+                    <h4>Voice Evacuation Features:</h4>
+                    <ul>
+                        <li>Pre-recorded evacuation messages</li>
+                        <li>Live voice capability from microphone</li>
+                        <li>Multiple message zones for phased evacuation</li>
+                        <li>Firefighter telephone system</li>
+                        <li>Integration with mass notification systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: System Integration -->
+            <div class="slide">
+                <h2>System Integration</h2>
+                
+                <p>Fire detection systems must integrate seamlessly with other data center systems for coordinated response.</p>
+
+                <h3>1. HVAC Integration</h3>
+                
+                <div class="info-box">
+                    <h4>Fire/Smoke Control Functions:</h4>
+                    <ul>
+                        <li><strong>Fan Shutdown:</strong> Prevent smoke spread via ductwork</li>
+                        <li><strong>Damper Control:</strong> Close fire/smoke dampers</li>
+                        <li><strong>Pressurization:</strong> Stairwell and exit route protection</li>
+                        <li><strong>Smoke Exhaust:</strong> Activate smoke removal systems</li>
+                        <li><strong>Equipment Protection:</strong> Shutdown before suppression discharge</li>
+                    </ul>
+                </div>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Fire Detection System Integration</text>
+                        
+                        <!-- Fire Panel (center) -->
+                        <rect x="300" y="150" width="200" height="100" fill="#d32f2f" stroke="#b71c1c" stroke-width="3" rx="5"/>
+                        <text x="400" y="190" text-anchor="middle" fill="white" font-weight="bold" font-size="16">Fire Alarm</text>
+                        <text x="400" y="210" text-anchor="middle" fill="white" font-size="14">Control Panel</text>
+                        
+                        <!-- HVAC -->
+                        <rect x="50" y="50" width="140" height="80" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="120" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="14">HVAC</text>
+                        <text x="120" y="105" text-anchor="middle" fill="white" font-size="12">Systems</text>
+                        
+                        <!-- Suppression -->
+                        <rect x="610" y="50" width="140" height="80" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="680" y="85" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Suppression</text>
+                        <text x="680" y="105" text-anchor="middle" fill="white" font-size="12">Systems</text>
+                        
+                        <!-- Security -->
+                        <rect x="50" y="270" width="140" height="80" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+                        <text x="120" y="305" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Security</text>
+                        <text x="120" y="325" text-anchor="middle" fill="white" font-size="12">Systems</text>
+                        
+                        <!-- BMS -->
+                        <rect x="330" y="320" width="140" height="80" fill="#FF9800" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="400" y="355" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Building</text>
+                        <text x="400" y="375" text-anchor="middle" fill="white" font-size="12">Management</text>
+                        
+                        <!-- EPO -->
+                        <rect x="610" y="270" width="140" height="80" fill="#F44336" stroke="#D32F2F" stroke-width="2" rx="5"/>
+                        <text x="680" y="305" text-anchor="middle" fill="white" font-weight="bold" font-size="14">EPO</text>
+                        <text x="680" y="325" text-anchor="middle" fill="white" font-size="12">System</text>
+                        
+                        <!-- Connection lines -->
+                        <line x1="190" y1="110" x2="300" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line x1="500" y1="180" x2="610" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line x1="190" y1="290" x2="300" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line x1="400" y1="250" x2="400" y2="320" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line x1="500" y1="220" x2="610" y2="290" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Arrow marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Fire detection integrates with multiple systems for coordinated response</p>
+                </div>
+
+                <h3>2. Suppression System Integration</h3>
+                <ul>
+                    <li><strong>Pre-Action Control:</strong> Cross-zoned detection for water release</li>
+                    <li><strong>Clean Agent Release:</strong> Automatic/manual release control</li>
+                    <li><strong>Abort Functions:</strong> Emergency stop capabilities</li>
+                    <li><strong>Discharge Delays:</strong> Personnel evacuation time</li>
+                    <li><strong>System Status:</strong> Monitor suppression system readiness</li>
+                </ul>
+
+                <h3>3. Security System Integration</h3>
+                
+                <div class="danger-box">
+                    <h4>Security Coordination:</h4>
+                    <ul>
+                        <li><strong>Door Release:</strong> Unlock egress paths automatically</li>
+                        <li><strong>Camera Control:</strong> PTZ to alarm location</li>
+                        <li><strong>Access Override:</strong> Emergency responder entry</li>
+                        <li><strong>Mustering:</strong> Track personnel evacuation</li>
+                        <li><strong>Communication:</strong> PA system activation</li>
+                    </ul>
+                </div>
+
+                <h3>4. EPO (Emergency Power Off) Coordination</h3>
+                <ul>
+                    <li>Sequential shutdown before suppression discharge</li>
+                    <li>Maintain critical systems (emergency lighting, exit signs)</li>
+                    <li>Prevent re-ignition from electrical sources</li>
+                    <li>Coordinate with gas suppression systems</li>
+                    <li>Clear indication of EPO activation status</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Testing and Maintenance -->
+            <div class="slide">
+                <h2>Testing and Maintenance</h2>
+                
+                <p>Regular testing and maintenance ensures reliable operation when detection is needed most.</p>
+
+                <h3>1. Testing Requirements (NFPA 72)</h3>
+                
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Visual</th>
+                        <th>Testing</th>
+                        <th>Frequency</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Control Panel</strong></td>
+                        <td>Weekly</td>
+                        <td>Annual</td>
+                        <td>Functions test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Batteries</strong></td>
+                        <td>Monthly</td>
+                        <td>Semi-annual</td>
+                        <td>Load test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detectors</strong></td>
+                        <td>Semi-annual</td>
+                        <td>Annual</td>
+                        <td>Functional test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VESDA</strong></td>
+                        <td>Monthly</td>
+                        <td>Quarterly</td>
+                        <td>Flow/sensitivity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notification</strong></td>
+                        <td>Semi-annual</td>
+                        <td>Annual</td>
+                        <td>Sound/visual</td>
+                    </tr>
+                </table>
+
+                <h3>2. Smoke Detector Testing</h3>
+                
+                <div class="info-box">
+                    <h4>Testing Methods:</h4>
+                    <ul>
+                        <li><strong>Smoke:</strong> Canned smoke or smoke generator</li>
+                        <li><strong>Sensitivity:</strong> Calibrated test equipment (±20% of listed)</li>
+                        <li><strong>Functional:</strong> Magnet test (not a substitute for smoke)</li>
+                        <li><strong>Visual:</strong> Check for obstruction, damage, cleanliness</li>
+                        <li><strong>Documentation:</strong> Record all test results and issues</li>
+                    </ul>
+                </div>
+
+                <h3>3. VESDA Maintenance</h3>
+                
+                <div class="success-box">
+                    <h4>Quarterly VESDA Service:</h4>
+                    <ul>
+                        <li>Clean or replace filters</li>
+                        <li>Test airflow at all sampling points</li>
+                        <li>Verify detector sensitivity settings</li>
+                        <li>Check and clean sampling pipe network</li>
+                        <li>Download and review event logs</li>
+                        <li>Test all alarm levels and outputs</li>
+                    </ul>
+                </div>
+
+                <h3>4. Common Issues and Troubleshooting</h3>
+                
+                <div class="warning-box">
+                    <h4>Typical Problems:</h4>
+                    <ul>
+                        <li><strong>False Alarms:</strong> Dust, steam, cooking, construction</li>
+                        <li><strong>Dirty Detectors:</strong> Reduced sensitivity or false alarms</li>
+                        <li><strong>Ground Faults:</strong> Moisture, damaged wiring</li>
+                        <li><strong>Battery Issues:</strong> Age, temperature, overcharging</li>
+                        <li><strong>Communication:</strong> Network issues, addressing conflicts</li>
+                    </ul>
+                </div>
+
+                <h3>5. Documentation Requirements</h3>
+                <ul>
+                    <li><strong>Test Records:</strong> Date, personnel, results, deficiencies</li>
+                    <li><strong>Inspection Forms:</strong> NFPA 72 compliant checklists</li>
+                    <li><strong>Detector Inventory:</strong> Location, type, sensitivity, last cleaned</li>
+                    <li><strong>System Changes:</strong> Additions, deletions, reprogramming</li>
+                    <li><strong>Certifications:</strong> Annual inspection certificates for AHJ</li>
+                </ul>
+            </div>
+
+            <!-- Slide 9: Best Practices -->
+            <div class="slide">
+                <h2>Best Practices for Data Centers</h2>
+                
+                <h3>Design Considerations</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Data Center-Specific Best Practices:</h4>
+                    <ul>
+                        <li>Use VESDA/ASD for earliest possible detection</li>
+                        <li>Install detectors at multiple levels (under floor, room, ceiling)</li>
+                        <li>Consider high airflow - use sampling tubes in airstream</li>
+                        <li>Cross-zone detection for pre-action sprinkler systems</li>
+                        <li>Integrate with EPO and suppression systems</li>
+                        <li>Provide detailed graphic annunciation for responders</li>
+                    </ul>
+                </div>
+
+                <h3>Environmental Challenges</h3>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Data Center Challenges:</h4>
+                    <ul>
+                        <li><strong>High Airflow:</strong> 2-5 air changes per minute dilutes smoke</li>
+                        <li><strong>Temperature:</strong> Cold aisles may affect detector operation</li>
+                        <li><strong>Humidity:</strong> Low humidity increases static and dust</li>
+                        <li><strong>Electrical Noise:</strong> EMI/RFI from equipment</li>
+                        <li><strong>Access:</strong> Detectors above cabinets hard to service</li>
+                    </ul>
+                </div>
+
+                <h3>Technology Selection Guide</h3>
+                
+                <table>
+                    <tr>
+                        <th>Area</th>
+                        <th>Recommended Detection</th>
+                        <th>Reason</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Server Room</strong></td>
+                        <td>VESDA + Spot</td>
+                        <td>Early warning critical</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Under Floor</strong></td>
+                        <td>VESDA sampling</td>
+                        <td>High airflow area</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Electrical Room</strong></td>
+                        <td>Smoke + Heat</td>
+                        <td>Multiple fire types</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Battery Room</strong></td>
+                        <td>Heat + H₂ gas</td>
+                        <td>Hydrogen risk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Office Areas</strong></td>
+                        <td>Photoelectric</td>
+                        <td>Standard protection</td>
+                    </tr>
+                </table>
+
+                <h3>Commissioning Best Practices</h3>
+                
+                <div class="info-box">
+                    <h4>Commissioning Steps:</h4>
+                    <ul>
+                        <li>Verify design meets code and standards</li>
+                        <li>Confirm proper device locations and spacing</li>
+                        <li>Test all devices with actual smoke (not just magnets)</li>
+                        <li>Verify all integration points function correctly</li>
+                        <li>Conduct full functional test with all trades present</li>
+                        <li>Train facility staff on system operation</li>
+                    </ul>
+                </div>
+
+                <h3>Ongoing Management</h3>
+                
+                <div class="success-box">
+                    <h4>Maintenance Program Elements:</h4>
+                    <ul>
+                        <li>Establish testing schedule per NFPA 72</li>
+                        <li>Contract with qualified service provider</li>
+                        <li>Maintain spare parts inventory</li>
+                        <li>Document all changes and modifications</li>
+                        <li>Regular training for operations staff</li>
+                        <li>Annual third-party inspection and certification</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Fire develops in stages - early detection is critical</li>
+                        <li>Multiple detection technologies serve different needs</li>
+                        <li>VESDA/ASD provides earliest warning for critical areas</li>
+                        <li>Integration with other systems enables coordinated response</li>
+                        <li>Regular testing and maintenance ensures reliability</li>
+                        <li>Data centers require specialized detection strategies</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Early Detection:</strong> Seconds count in preventing damage</li>
+                    <li><strong>Reliability:</strong> Lives and assets depend on proper operation</li>
+                    <li><strong>Integration:</strong> Coordinated response minimizes damage</li>
+                    <li><strong>Maintenance:</strong> Regular testing prevents failures</li>
+                    <li><strong>Training:</strong> Staff knowledge enables proper response</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's detection system design</li>
+                        <li>Understand alarm response procedures</li>
+                        <li>Participate in fire drills and training</li>
+                        <li>Know location of manual pull stations</li>
+                        <li>Understand integration with suppression systems</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading fire protection organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• NFPA 72 - National Fire Alarm and Signaling Code (2022 Edition)</li>
+                        <li>• NFPA 75 - Standard for Fire Protection of Information Technology Equipment</li>
+                        <li>• NFPA 76 - Standard for Fire Protection of Telecommunications Facilities</li>
+                        <li>• NFPA 2001 - Standard on Clean Agent Fire Extinguishing Systems</li>
+                        <li>• FM Global Data Sheet 5-32: Data Centers and Related Facilities</li>
+                        <li>• FM Global Data Sheet 5-48: Automatic Fire Detection</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• NFPA - National Fire Protection Association</li>
+                        <li>• FM Global - Factory Mutual Insurance Company</li>
+                        <li>• NICET - National Institute for Certification in Engineering Technologies</li>
+                        <li>• AFAA - Automatic Fire Alarm Association</li>
+                        <li>• The Uptime Institute - Data Center Standards</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Fire Detection and Suppression for Data Centers" - Siemens White Paper</li>
+                        <li>• "VESDA System Design Guide" - Xtralis Application Guide</li>
+                        <li>• "Data Center Fire Protection" - Honeywell Technical Guide</li>
+                        <li>• "Mission Critical Facilities Fire Protection" - SimplexGrinnell</li>
+                        <li>• Manufacturer training materials: Notifier, Simplex, Edwards, Siemens</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from equipment manufacturers, NFPA codes and standards, FM Global data sheets, and industry best practices. All detection methods, testing procedures, and maintenance recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Fire Detection Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. Which detection technology provides the earliest warning in data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Ionization smoke detectors</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Heat detectors</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> VESDA/Aspirating systems</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Beam detectors</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What is the typical alarm sequence for VESDA systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Alert → Fire → Evacuate</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Alert → Action → Fire 1 → Fire 2</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Pre-alarm → Alarm → Fire</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Warning → Alert → Evacuation</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. How often should smoke detectors be functionally tested per NFPA 72?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Monthly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Quarterly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Semi-annually</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Annually</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What type of detector is best for areas with high dust or steam?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Photoelectric smoke detector</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Ionization smoke detector</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Heat detector</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Beam detector</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the minimum battery backup time required for fire alarm systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 4 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 12 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 24 hours</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 72 hours</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. Which gas is commonly monitored in battery rooms?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Carbon monoxide</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Carbon dioxide</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Hydrogen</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Nitrogen</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What does SLC stand for in fire alarm systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> System Loop Circuit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Signaling Line Circuit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Safety Loop Control</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Signal Loss Circuit</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is the typical temperature rating for a fixed temperature detector in a data center?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> 100°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> 135°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> 200°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> 250°F</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is cross-zoning in fire detection?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Multiple detectors in one zone</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Detectors crossing between zones</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Two detectors must activate for alarm</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Zones that overlap coverage areas</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. How much more sensitive is VESDA compared to spot detectors?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 10x more sensitive</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 100x more sensitive</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 1000x more sensitive</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 10000x more sensitive</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'c',  // VESDA/Aspirating systems
+            q2: 'b',  // Alert → Action → Fire 1 → Fire 2
+            q3: 'd',  // Annually
+            q4: 'c',  // Heat detector
+            q5: 'c',  // 24 hours
+            q6: 'c',  // Hydrogen
+            q7: 'b',  // Signaling Line Circuit
+            q8: 'b',  // 135°F
+            q9: 'c',  // Two detectors must activate for alarm
+            q10: 'c'  // 1000x more sensitive
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Fire Detection Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
