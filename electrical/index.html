@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Training System - Data Centre 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease 0.4s both;
+            margin-top: 40px;
+        }
+
+        .intro-section h2 {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: white;
+        }
+
+        .module-card h3 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .module-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #888;
+        }
+
+        .module-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .module-button {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .module-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #2a5298;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Electrical Systems Training Centre</h1>
+        <p>Comprehensive training modules for data centre electrical infrastructure professionals</p>
+    </div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Electrical Systems Training</h2>
+            <p>Master the critical electrical systems that power modern data centres. Our comprehensive training modules cover everything from UPS systems to advanced power distribution, ensuring you have the knowledge and skills to maintain mission-critical infrastructure.</p>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">⚡</div>
+                <h3>UPS Systems Training</h3>
+                <p>Learn about Uninterruptible Power Supply systems, their critical role in data centres, and best practices for operation and maintenance.</p>
+                <div class="module-details">
+                    <span>Duration: 30-45 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/electrical/ups_systems/" class="module-button" target="_blank">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🔌</div>
+                <h3>Power Distribution Training</h3>
+                <p>Understand power distribution architecture, switchgear operations, and electrical safety in data centre environments.</p>
+                <div class="module-details">
+                    <span>Duration: 45-60 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/electrical/power_distribution/" class="module-button" target="_blank">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">⚙️</div>
+                <h3>Generator Systems Training</h3>
+                <p>Master backup generator operations, synchronisation, load testing, and maintenance procedures for reliable emergency power.</p>
+                <div class="module-details">
+                    <span>Duration: 45-60 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/electrical/generator/" class="module-button" target="_blank">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🔋</div>
+                <h3>Battery Systems Training</h3>
+                <p>Comprehensive training on battery technologies, maintenance, testing, and safety procedures for UPS and DC plant applications.</p>
+                <div class="module-details">
+                    <span>Duration: 40-50 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/electrical/battery_systems/" class="module-button" target="_blank">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🔧</div>
+                <h3>Electrical Testing Procedures</h3>
+                <p>Learn proper testing methodologies, safety protocols, and documentation requirements for electrical system commissioning and maintenance.</p>
+                <div class="module-details">
+                    <span>Duration: 60-75 mins</span>
+                    <span>Level: Intermediate</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/electrical/electrical_testing_procedures/" class="module-button" target="_blank">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">📚</div>
+                <h3>L2L System Integration</h3>
+                <p>Explore lessons learned from real-world incidents, best practices, and continuous improvement strategies for electrical systems.</p>
+                <div class="module-details">
+                    <span>Duration: 30-40 mins</span>
+                    <span>Level: All Levels</span>
+                </div>
+                <div class="module-status">Coming Soon</div>
+                <a href="#" class="module-button" style="opacity: 0.6; cursor: not-allowed;">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Data Centre Training Academy. All rights reserved.</p>
+    </div>
+</body>
+</html>
