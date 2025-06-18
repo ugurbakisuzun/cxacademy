@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chiller Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00796b 0%, #00acc1 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #00796b;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #00796b;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #00acc1;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #00796b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #00acc1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00796b, #00acc1);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #00796b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #00796b;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e0f2f1;
+            border-left: 5px solid #00796b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #00796b;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Chiller Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Cooling Infrastructure</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Chiller Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Chiller Systems for data centers. This course will provide you with essential knowledge about chiller technology, its critical components, and best practices for ensuring reliable cooling for your data center infrastructure.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand basic refrigeration cycle and chiller principles</li>
+                        <li>Learn about different chiller types and their applications</li>
+                        <li>Recognize critical chiller components and their functions</li>
+                        <li>Understand chiller plant configurations and redundancy</li>
+                        <li>Learn about efficiency metrics and optimization strategies</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of cooling concepts</p>
+            </div>
+
+            <!-- Slide 2: What is a Chiller? -->
+            <div class="slide">
+                <h2>What is a Chiller?</h2>
+                
+                <p><strong>A Chiller</strong> is a machine that removes heat from a liquid (typically water or water-glycol mixture) via a vapor-compression or absorption refrigeration cycle. This chilled liquid can then circulate through heat exchangers to cool equipment or spaces.</p>
+
+                <h3>Key Functions of Chillers in Data Centers:</h3>
+                <ul>
+                    <li><strong>Heat Removal:</strong> Extract heat from IT equipment via cooling systems</li>
+                    <li><strong>Temperature Control:</strong> Maintain precise cooling water temperatures</li>
+                    <li><strong>Efficiency:</strong> Provide cooling more efficiently than direct expansion systems</li>
+                    <li><strong>Scalability:</strong> Support large cooling loads and facility expansion</li>
+                    <li><strong>Flexibility:</strong> Enable various cooling distribution strategies</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Basic Chiller Cycle -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#00796b">Basic Refrigeration Cycle</text>
+                        
+                        <!-- Evaporator -->
+                        <rect x="50" y="100" width="120" height="80" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="110" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Evaporator</text>
+                        <text x="110" y="150" text-anchor="middle" fill="white" font-size="12">Low Pressure</text>
+                        <text x="110" y="165" text-anchor="middle" fill="white" font-size="12">Low Temp</text>
+                        
+                        <!-- Compressor -->
+                        <circle cx="400" cy="100" r="50" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <text x="400" y="100" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Compressor</text>
+                        <text x="400" y="115" text-anchor="middle" fill="white" font-size="12">Vapor → HP</text>
+                        
+                        <!-- Condenser -->
+                        <rect x="630" y="100" width="120" height="80" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="690" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Condenser</text>
+                        <text x="690" y="150" text-anchor="middle" fill="white" font-size="12">High Pressure</text>
+                        <text x="690" y="165" text-anchor="middle" fill="white" font-size="12">High Temp</text>
+                        
+                        <!-- Expansion Valve -->
+                        <polygon points="400,280 380,250 420,250" fill="#9b59b6" stroke="#8e44ad" stroke-width="2"/>
+                        <text x="400" y="310" text-anchor="middle" fill="#9b59b6" font-size="14" font-weight="bold">Expansion Valve</text>
+                        
+                        <!-- Flow arrows -->
+                        <path d="M 170 140 Q 250 100 350 100" stroke="#333" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <text x="260" y="90" font-size="12" fill="#333">Low Pressure Vapor</text>
+                        
+                        <path d="M 450 100 Q 550 100 630 140" stroke="#333" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <text x="540" y="90" font-size="12" fill="#333">High Pressure Vapor</text>
+                        
+                        <path d="M 690 180 L 690 250 L 420 250" stroke="#333" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <text x="550" y="270" font-size="12" fill="#333">High Pressure Liquid</text>
+                        
+                        <path d="M 380 250 L 110 250 L 110 180" stroke="#333" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <text x="200" y="270" font-size="12" fill="#333">Low Pressure Liquid</text>
+                        
+                        <!-- Heat arrows -->
+                        <path d="M 110 190 L 110 220" stroke="#3498db" stroke-width="4" marker-end="url(#bluearrow)"/>
+                        <text x="110" y="240" text-anchor="middle" font-size="12" fill="#3498db" font-weight="bold">Heat In</text>
+                        
+                        <path d="M 690 80 L 690 50" stroke="#e74c3c" stroke-width="4" marker-end="url(#redarrow)"/>
+                        <text x="690" y="40" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">Heat Out</text>
+                        
+                        <!-- Arrowhead markers -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                            <marker id="bluearrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#3498db"/>
+                            </marker>
+                            <marker id="redarrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#e74c3c"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">The Refrigeration Cycle: Heat absorbed at evaporator, rejected at condenser</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Refrigeration Cycle Basics:</h4>
+                    <ul>
+                        <li><strong>Evaporator:</strong> Absorbs heat from chilled water (cooling load)</li>
+                        <li><strong>Compressor:</strong> Increases refrigerant pressure and temperature</li>
+                        <li><strong>Condenser:</strong> Rejects heat to cooling tower water or air</li>
+                        <li><strong>Expansion Valve:</strong> Reduces pressure, enabling cooling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Types of Chillers -->
+            <div class="slide">
+                <h2>Types of Chillers</h2>
+                
+                <p>Data centers typically use different types of chillers based on capacity, efficiency requirements, and site conditions.</p>
+
+                <h3>1. By Cooling Method:</h3>
+                
+                <div class="info-box">
+                    <h4>Air-Cooled Chillers</h4>
+                    <ul>
+                        <li><strong>Heat Rejection:</strong> Direct to ambient air via fans</li>
+                        <li><strong>Capacity Range:</strong> 20-500 tons typical</li>
+                        <li><strong>Advantages:</strong> No cooling towers, lower water usage</li>
+                        <li><strong>Disadvantages:</strong> Lower efficiency, limited by ambient temperature</li>
+                        <li><strong>Application:</strong> Smaller facilities, water-scarce locations</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Water-Cooled Chillers</h4>
+                    <ul>
+                        <li><strong>Heat Rejection:</strong> To cooling tower water</li>
+                        <li><strong>Capacity Range:</strong> 100-3000+ tons</li>
+                        <li><strong>Advantages:</strong> Higher efficiency, larger capacities</li>
+                        <li><strong>Disadvantages:</strong> Requires cooling towers, water treatment</li>
+                        <li><strong>Application:</strong> Large data centers, efficiency focus</li>
+                    </ul>
+                </div>
+
+                <h3>2. By Compressor Type:</h3>
+
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Capacity Range</th>
+                        <th>Efficiency</th>
+                        <th>Applications</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Centrifugal</strong></td>
+                        <td>150-3000+ tons</td>
+                        <td>Highest (0.50-0.65 kW/ton)</td>
+                        <td>Large facilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Screw</strong></td>
+                        <td>70-500 tons</td>
+                        <td>Good (0.65-0.75 kW/ton)</td>
+                        <td>Medium facilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scroll</strong></td>
+                        <td>10-150 tons</td>
+                        <td>Moderate (0.75-0.85 kW/ton)</td>
+                        <td>Small facilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Absorption</strong></td>
+                        <td>100-1500 tons</td>
+                        <td>COP: 0.7-1.2</td>
+                        <td>Waste heat available</td>
+                    </tr>
+                </table>
+
+                <h3>3. Advanced Chiller Technologies:</h3>
+                
+                <div class="success-box">
+                    <h4>Variable Speed Drive (VSD) Chillers</h4>
+                    <ul>
+                        <li>Compressor speed varies with load demand</li>
+                        <li>Significant energy savings at part loads</li>
+                        <li>Better capacity control and staging</li>
+                        <li>Reduced mechanical stress and wear</li>
+                        <li>Premium efficiency: 0.45-0.55 kW/ton at full load</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Chiller Selection Considerations:</h4>
+                    <ul>
+                        <li>Cooling capacity requirements (current and future)</li>
+                        <li>Energy efficiency targets and utility costs</li>
+                        <li>Available utilities (water, power)</li>
+                        <li>Space constraints and noise restrictions</li>
+                        <li>Redundancy requirements (N+1, N+2)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Chiller Components -->
+            <div class="slide">
+                <h2>Critical Chiller Components</h2>
+                
+                <h3>1. Evaporator</h3>
+                <div class="info-box">
+                    <h4>Function and Features:</h4>
+                    <ul>
+                        <li><strong>Purpose:</strong> Transfer heat from chilled water to refrigerant</li>
+                        <li><strong>Types:</strong> Shell-and-tube, plate-and-frame</li>
+                        <li><strong>Temperature:</strong> Produces 42-45°F chilled water typically</li>
+                        <li><strong>Approach:</strong> 1-2°F between water and refrigerant</li>
+                        <li><strong>Protection:</strong> Freeze protection and flow switches</li>
+                    </ul>
+                </div>
+
+                <h3>2. Compressor Types</h3>
+                
+                <div class="info-box">
+                    <h4>Centrifugal Compressors:</h4>
+                    <ul>
+                        <li><strong>Operation:</strong> High-speed impeller creates pressure</li>
+                        <li><strong>Capacity Control:</strong> Inlet guide vanes or VSD</li>
+                        <li><strong>Oil-Free:</strong> Magnetic or air bearings available</li>
+                        <li><strong>Efficiency:</strong> Best at full load operation</li>
+                        <li><strong>Maintenance:</strong> Lower maintenance requirements</li>
+                    </ul>
+                </div>
+
+                <h3>3. Condenser</h3>
+                <ul>
+                    <li><strong>Shell-and-Tube:</strong> Water flows through tubes</li>
+                    <li><strong>Air-Cooled:</strong> Finned coils with fans</li>
+                    <li><strong>Approach Temperature:</strong> 5-7°F to entering water</li>
+                    <li><strong>Fouling Factor:</strong> Design for maintenance</li>
+                    <li><strong>Relief Devices:</strong> Pressure relief valves required</li>
+                </ul>
+
+                <h3>4. Control Systems</h3>
+                <div class="success-box">
+                    <h4>Modern Chiller Controls:</h4>
+                    <ul>
+                        <li><strong>Microprocessor Controls:</strong> Precise operation management</li>
+                        <li><strong>BMS Integration:</strong> Remote monitoring and control</li>
+                        <li><strong>Adaptive Controls:</strong> Self-optimizing algorithms</li>
+                        <li><strong>Predictive Diagnostics:</strong> Early fault detection</li>
+                        <li><strong>Data Logging:</strong> Performance trending and analysis</li>
+                    </ul>
+                </div>
+
+                <h3>5. Safety Devices</h3>
+                <table>
+                    <tr>
+                        <th>Device</th>
+                        <th>Function</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td><strong>High Pressure Cutout</strong></td>
+                        <td>Prevent over-pressure</td>
+                        <td>Shutdown</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low Pressure Cutout</strong></td>
+                        <td>Prevent vacuum</td>
+                        <td>Shutdown</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flow Switch</strong></td>
+                        <td>Ensure water flow</td>
+                        <td>Prevent start</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Freeze Protection</strong></td>
+                        <td>Prevent ice formation</td>
+                        <td>Alarm/Shutdown</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Motor Protection</strong></td>
+                        <td>Prevent overload</td>
+                        <td>Shutdown</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 5: Chiller Plant Design -->
+            <div class="slide">
+                <h2>Chiller Plant Design and Configuration</h2>
+                
+                <p>Data center chiller plants must be designed for reliability, efficiency, and scalability.</p>
+
+                <h3>1. Primary-Secondary Configuration</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Primary Loop:</strong> Constant flow through chillers</li>
+                        <li><strong>Secondary Loop:</strong> Variable flow to loads</li>
+                        <li><strong>Decoupler:</strong> Hydraulic separation between loops</li>
+                        <li><strong>Benefits:</strong> Chiller protection, flexible operation</li>
+                        <li><strong>Application:</strong> Traditional design, proven reliability</li>
+                    </ul>
+                </div>
+
+                <h3>2. Variable Primary Flow</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Single Loop:</strong> Variable flow through chillers and loads</li>
+                        <li><strong>Efficiency:</strong> Eliminates secondary pumps</li>
+                        <li><strong>Control:</strong> Requires minimum flow management</li>
+                        <li><strong>Savings:</strong> Reduced pumping energy</li>
+                        <li><strong>Trend:</strong> Modern best practice for efficiency</li>
+                    </ul>
+                </div>
+
+                <h3>3. Redundancy Configurations</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#00796b">N+1 Chiller Plant Configuration</text>
+                        
+                        <!-- Chillers -->
+                        <rect x="100" y="80" width="100" height="60" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="150" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Chiller 1</text>
+                        <text x="150" y="125" text-anchor="middle" fill="white" font-size="12">500 Tons</text>
+                        
+                        <rect x="250" y="80" width="100" height="60" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="300" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Chiller 2</text>
+                        <text x="300" y="125" text-anchor="middle" fill="white" font-size="12">500 Tons</text>
+                        
+                        <rect x="400" y="80" width="100" height="60" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="450" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Chiller 3</text>
+                        <text x="450" y="125" text-anchor="middle" fill="white" font-size="12">500 Tons</text>
+                        
+                        <rect x="550" y="80" width="100" height="60" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5" stroke-dasharray="5,5"/>
+                        <text x="600" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Chiller 4</text>
+                        <text x="600" y="125" text-anchor="middle" fill="white" font-size="12">Standby</text>
+                        
+                        <!-- Headers -->
+                        <rect x="50" y="200" width="700" height="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="400" y="220" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Common Headers</text>
+                        
+                        <!-- Load -->
+                        <rect x="300" y="300" width="200" height="60" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="400" y="330" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Data Center Load</text>
+                        <text x="400" y="345" text-anchor="middle" fill="white" font-size="12">1500 Tons Design</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 150 140 L 150 200" stroke="#333" stroke-width="3"/>
+                        <path d="M 300 140 L 300 200" stroke="#333" stroke-width="3"/>
+                        <path d="M 450 140 L 450 200" stroke="#333" stroke-width="3"/>
+                        <path d="M 600 140 L 600 200" stroke="#333" stroke-width="3" stroke-dasharray="5,5"/>
+                        
+                        <path d="M 400 230 L 400 300" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Legend -->
+                        <text x="50" y="380" font-size="12" font-weight="bold">N+1 = 3 chillers required + 1 standby</text>
+                    </svg>
+                </div>
+
+                <h3>4. Chiller Staging and Sequencing</h3>
+                <ul>
+                    <li><strong>Load-Based Staging:</strong> Start/stop based on load demand</li>
+                    <li><strong>Efficiency Optimization:</strong> Run most efficient combination</li>
+                    <li><strong>Runtime Equalization:</strong> Balance operating hours</li>
+                    <li><strong>Soft Loading:</strong> Gradual load application</li>
+                    <li><strong>Anti-Cycling:</strong> Minimum on/off timers</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Design Considerations:</h4>
+                    <ul>
+                        <li>Future expansion requirements</li>
+                        <li>Maintenance access and isolation</li>
+                        <li>Piping flexibility and headers</li>
+                        <li>Control system integration</li>
+                        <li>Water treatment and filtration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Efficiency and Performance -->
+            <div class="slide">
+                <h2>Efficiency and Performance</h2>
+                
+                <p>Understanding and optimizing chiller efficiency is crucial for data center operating costs and sustainability.</p>
+
+                <h3>1. Efficiency Metrics</h3>
+                
+                <div class="info-box">
+                    <h4>Key Performance Indicators:</h4>
+                    <ul>
+                        <li><strong>kW/ton:</strong> Power per ton of cooling (lower is better)</li>
+                        <li><strong>COP:</strong> Coefficient of Performance (higher is better)</li>
+                        <li><strong>IPLV:</strong> Integrated Part Load Value (weighted efficiency)</li>
+                        <li><strong>NPLV:</strong> Non-standard Part Load Value</li>
+                        <li><strong>Annual kWh/ton:</strong> Total energy per cooling delivered</li>
+                    </ul>
+                </div>
+
+                <h3>2. Typical Efficiency Ranges</h3>
+                
+                <table>
+                    <tr>
+                        <th>Chiller Type</th>
+                        <th>Full Load (kW/ton)</th>
+                        <th>IPLV (kW/ton)</th>
+                        <th>Best-in-Class</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Air-Cooled</strong></td>
+                        <td>1.0-1.2</td>
+                        <td>0.85-1.0</td>
+                        <td><0.90</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Water-Cooled Screw</strong></td>
+                        <td>0.65-0.75</td>
+                        <td>0.50-0.60</td>
+                        <td><0.50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Water-Cooled Centrifugal</strong></td>
+                        <td>0.55-0.65</td>
+                        <td>0.40-0.50</td>
+                        <td><0.40</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Magnetic Bearing</strong></td>
+                        <td>0.45-0.55</td>
+                        <td>0.35-0.45</td>
+                        <td><0.35</td>
+                    </tr>
+                </table>
+
+                <h3>3. Factors Affecting Efficiency</h3>
+                
+                <div class="warning-box">
+                    <h4>Operating Conditions Impact:</h4>
+                    <ul>
+                        <li><strong>Lift:</strong> Temperature difference between evaporator and condenser</li>
+                        <li><strong>Load:</strong> Chillers most efficient at 70-80% capacity</li>
+                        <li><strong>Condenser Water Temp:</strong> Lower is better (1°F = 1.5% efficiency)</li>
+                        <li><strong>Chilled Water Temp:</strong> Higher is better (1°F = 2% efficiency)</li>
+                        <li><strong>Fouling:</strong> Tube cleaning critical for performance</li>
+                    </ul>
+                </div>
+
+                <h3>4. Optimization Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Best Practices for Efficiency:</h4>
+                    <ul>
+                        <li><strong>Free Cooling:</strong> Use when ambient allows</li>
+                        <li><strong>Chilled Water Reset:</strong> Raise temperature when possible</li>
+                        <li><strong>Condenser Water Reset:</strong> Lower temperature in cool weather</li>
+                        <li><strong>Optimal Staging:</strong> Run chillers at sweet spot</li>
+                        <li><strong>VSD Application:</strong> Match speed to load</li>
+                        <li><strong>All-Variable Speed:</strong> Chillers, pumps, and towers</li>
+                    </ul>
+                </div>
+
+                <h3>5. Performance Monitoring</h3>
+                <ul>
+                    <li><strong>Real-Time Efficiency:</strong> Track kW/ton continuously</li>
+                    <li><strong>Trend Analysis:</strong> Identify degradation early</li>
+                    <li><strong>Benchmarking:</strong> Compare to design and peers</li>
+                    <li><strong>Diagnostics:</strong> Identify optimization opportunities</li>
+                    <li><strong>Reporting:</strong> Dashboard for operations team</li>
+                </ul>
+            </div>
+
+            <!-- Slide 7: Maintenance and Reliability -->
+            <div class="slide">
+                <h2>Maintenance and Reliability</h2>
+                
+                <p>Proper maintenance is essential for chiller reliability, efficiency, and longevity.</p>
+
+                <h3>1. Preventive Maintenance Schedule</h3>
+                
+                <table>
+                    <tr>
+                        <th>Task</th>
+                        <th>Daily</th>
+                        <th>Weekly</th>
+                        <th>Monthly</th>
+                        <th>Annual</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Operating Parameters</strong></td>
+                        <td>✓</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Oil Analysis</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vibration Analysis</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tube Cleaning</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eddy Current Test</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                    </tr>
+                </table>
+
+                <h3>2. Critical Maintenance Tasks</h3>
+                
+                <div class="info-box">
+                    <h4>Tube Maintenance:</h4>
+                    <ul>
+                        <li><strong>Cleaning:</strong> Annual mechanical or chemical cleaning</li>
+                        <li><strong>Inspection:</strong> Eddy current testing for tube integrity</li>
+                        <li><strong>Water Treatment:</strong> Prevent scale and corrosion</li>
+                        <li><strong>Approach Temperature:</strong> Monitor for fouling indication</li>
+                        <li><strong>Performance Impact:</strong> 10% efficiency loss possible</li>
+                    </ul>
+                </div>
+
+                <h3>3. Oil Analysis</h3>
+                <ul>
+                    <li><strong>Moisture Content:</strong> <50 ppm target</li>
+                    <li><strong>Acid Number:</strong> Indicates oil breakdown</li>
+                    <li><strong>Metal Content:</strong> Wear indication</li>
+                    <li><strong>Viscosity:</strong> Oil condition</li>
+                    <li><strong>Refrigerant Content:</strong> Seal condition</li>
+                </ul>
+
+                <h3>4. Common Issues and Troubleshooting</h3>
+                
+                <div class="warning-box">
+                    <h4>Typical Problems:</h4>
+                    <ul>
+                        <li><strong>High Head Pressure:</strong> Dirty condenser, non-condensables</li>
+                        <li><strong>Low Suction Pressure:</strong> Low refrigerant, restricted flow</li>
+                        <li><strong>Surge:</strong> Low load, high lift conditions</li>
+                        <li><strong>High Oil Temperature:</strong> Low refrigerant, bearing wear</li>
+                        <li><strong>Vibration:</strong> Misalignment, bearing issues</li>
+                    </ul>
+                </div>
+
+                <h3>5. Reliability Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Maximizing Uptime:</h4>
+                    <ul>
+                        <li><strong>Predictive Maintenance:</strong> Vibration and oil trending</li>
+                        <li><strong>Spare Parts:</strong> Critical components in stock</li>
+                        <li><strong>Training:</strong> Operator certification programs</li>
+                        <li><strong>Documentation:</strong> Detailed logs and history</li>
+                        <li><strong>Service Contracts:</strong> OEM or qualified providers</li>
+                        <li><strong>Remote Monitoring:</strong> 24/7 expert oversight</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Controls and Integration -->
+            <div class="slide">
+                <h2>Controls and Integration</h2>
+                
+                <p>Modern chiller controls enable optimization, integration, and remote management.</p>
+
+                <h3>1. Chiller Control Systems</h3>
+                
+                <div class="info-box">
+                    <h4>Control Functions:</h4>
+                    <ul>
+                        <li><strong>Capacity Control:</strong> Match cooling to load demand</li>
+                        <li><strong>Safety Protection:</strong> Prevent damage conditions</li>
+                        <li><strong>Optimization:</strong> Maximize efficiency</li>
+                        <li><strong>Diagnostics:</strong> Troubleshooting support</li>
+                        <li><strong>Communication:</strong> BMS and remote access</li>
+                    </ul>
+                </div>
+
+                <h3>2. Chiller Plant Manager</h3>
+                
+                <div class="success-box">
+                    <h4>Advanced Plant Control Features:</h4>
+                    <ul>
+                        <li><strong>Sequencing:</strong> Optimal chiller staging</li>
+                        <li><strong>Load Balancing:</strong> Distribute load efficiently</li>
+                        <li><strong>Efficiency Optimization:</strong> Run most efficient units</li>
+                        <li><strong>Predictive Staging:</strong> Anticipate load changes</li>
+                        <li><strong>System Coordination:</strong> Pumps, towers, valves</li>
+                    </ul>
+                </div>
+
+                <h3>3. BMS Integration Points</h3>
+                
+                <table>
+                    <tr>
+                        <th>Data Point</th>
+                        <th>Type</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Status</strong></td>
+                        <td>Read</td>
+                        <td>Running, alarm, available</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Capacity</strong></td>
+                        <td>Read</td>
+                        <td>Tons, %, kW</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperatures</strong></td>
+                        <td>Read</td>
+                        <td>CHW, CDW, refrigerant</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Setpoints</strong></td>
+                        <td>Read/Write</td>
+                        <td>CHW temp, current limit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Commands</strong></td>
+                        <td>Write</td>
+                        <td>Start, stop, reset</td>
+                    </tr>
+                </table>
+
+                <h3>4. Communication Protocols</h3>
+                <ul>
+                    <li><strong>BACnet:</strong> Industry standard, IP or MS/TP</li>
+                    <li><strong>Modbus:</strong> Simple, widely supported</li>
+                    <li><strong>LON:</strong> Legacy installations</li>
+                    <li><strong>Proprietary:</strong> Full functionality access</li>
+                    <li><strong>Web Services:</strong> Cloud connectivity</li>
+                </ul>
+
+                <h3>5. Advanced Control Strategies</h3>
+                
+                <div class="info-box">
+                    <h4>Optimization Algorithms:</h4>
+                    <ul>
+                        <li><strong>Demand Limiting:</strong> Cap power consumption</li>
+                        <li><strong>Chilled Water Reset:</strong> Adjust based on load</li>
+                        <li><strong>Condenser Relief:</strong> Optimize tower operation</li>
+                        <li><strong>Free Cooling:</strong> Automated economizer control</li>
+                        <li><strong>Predictive Control:</strong> Weather and occupancy based</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Advanced Chiller Technologies</h4>
+                    <ul>
+                        <li><strong>Oil-Free Magnetic Bearings:</strong> Higher efficiency, lower maintenance</li>
+                        <li><strong>Variable Speed Everything:</strong> Optimized part-load performance</li>
+                        <li><strong>Low-GWP Refrigerants:</strong> R-1234ze, R-513A replacing R-134a</li>
+                        <li><strong>Heat Recovery:</strong> Capture condenser heat for reuse</li>
+                        <li><strong>Adiabatic Cooling:</strong> Enhanced air-cooled efficiency</li>
+                    </ul>
+                </div>
+
+                <h3>2. Smart Chiller Plants</h3>
+                <ul>
+                    <li><strong>AI Optimization:</strong> Machine learning for efficiency</li>
+                    <li><strong>Digital Twins:</strong> Virtual plant modeling</li>
+                    <li><strong>Predictive Analytics:</strong> Failure prevention</li>
+                    <li><strong>Cloud Connectivity:</strong> Remote expertise access</li>
+                    <li><strong>Automated Commissioning:</strong> Self-optimizing systems</li>
+                </ul>
+
+                <h3>3. Sustainability Focus</h3>
+                <div class="info-box">
+                    <h4>Green Initiatives:</h4>
+                    <ul>
+                        <li><strong>Natural Refrigerants:</strong> Ammonia, CO2 systems</li>
+                        <li><strong>Water Conservation:</strong> Air-cooled and hybrid systems</li>
+                        <li><strong>Energy Recovery:</strong> Data center heat for district heating</li>
+                        <li><strong>Renewable Integration:</strong> Solar-powered cooling</li>
+                        <li><strong>Circular Economy:</strong> Equipment lifecycle optimization</li>
+                    </ul>
+                </div>
+
+                <h3>4. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Design for efficiency at part loads (IPLV focus)</li>
+                        <li>Implement comprehensive monitoring and analytics</li>
+                        <li>Maintain water treatment and tube cleanliness</li>
+                        <li>Train operators on optimization strategies</li>
+                        <li>Plan for refrigerant phase-outs and regulations</li>
+                        <li>Consider total cost of ownership, not just first cost</li>
+                    </ul>
+                </div>
+
+                <h3>5. Industry Standards</h3>
+                <ul>
+                    <li><strong>ASHRAE 90.1:</strong> Energy efficiency requirements</li>
+                    <li><strong>ASHRAE 90.4:</strong> Data center specific standards</li>
+                    <li><strong>AHRI 550/590:</strong> Chiller performance ratings</li>
+                    <li><strong>ASHRAE 147:</strong> Refrigerant safety standards</li>
+                    <li><strong>Title 24:</strong> California efficiency standards</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Chillers remove heat through the refrigeration cycle</li>
+                        <li>Multiple chiller types suit different applications</li>
+                        <li>Efficiency measured in kW/ton, affected by conditions</li>
+                        <li>Redundancy critical for data center reliability</li>
+                        <li>Maintenance essential for performance and longevity</li>
+                        <li>Controls enable optimization and integration</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Efficiency:</strong> Small improvements yield large savings</li>
+                    <li><strong>Reliability:</strong> Redundancy and maintenance are key</li>
+                    <li><strong>Optimization:</strong> Controls unlock efficiency potential</li>
+                    <li><strong>Trends:</strong> Stay current with technology advances</li>
+                    <li><strong>Training:</strong> Operator knowledge drives performance</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's chiller plant design</li>
+                        <li>Understand efficiency metrics and targets</li>
+                        <li>Learn control system interfaces</li>
+                        <li>Participate in maintenance activities</li>
+                        <li>Track performance trends</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE Handbook - HVAC Systems and Equipment (2020)</li>
+                        <li>• ASHRAE Standard 90.1 - Energy Standard for Buildings</li>
+                        <li>• ASHRAE Standard 90.4 - Energy Standard for Data Centers</li>
+                        <li>• AHRI Standard 550/590 - Performance Rating of Water-Chilling Packages</li>
+                        <li>• Trane Engineers Newsletter - Chiller Plant Design and Control</li>
+                        <li>• Carrier System Design Manual - Chiller Plant Design</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• ASHRAE - American Society of Heating, Refrigerating and Air-Conditioning Engineers</li>
+                        <li>• AHRI - Air-Conditioning, Heating, and Refrigeration Institute</li>
+                        <li>• DOE - Department of Energy Better Buildings Program</li>
+                        <li>• The Green Grid - Data Center Efficiency Metrics</li>
+                        <li>• Uptime Institute - Data Center Design Standards</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Data Center Cooling Best Practices" - ASHRAE TC 9.9</li>
+                        <li>• "Chiller System Design and Control" - Trane Applications Manual</li>
+                        <li>• "Water-Cooled Chiller Plant Efficiency" - Johnson Controls White Paper</li>
+                        <li>• "Variable Primary Flow Systems" - Carrier Technical Development</li>
+                        <li>• Manufacturer training materials: Trane, Carrier, York, Daikin</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from equipment manufacturers, industry standards, and engineering best practices. All efficiency values, operating parameters, and maintenance recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Chiller Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the typical chilled water supply temperature for data center applications?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> 35-38°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> 42-45°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> 50-55°F</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> 60-65°F</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which type of chiller typically has the best efficiency?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Air-cooled scroll</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Water-cooled screw</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Water-cooled centrifugal with magnetic bearings</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Absorption chiller</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What does IPLV stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Integrated Power Load Value</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Integrated Part Load Value</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Internal Performance Load Variable</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Improved Performance Level Value</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. In a primary-secondary chilled water system, what is the purpose of the decoupler?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> To increase system pressure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> To provide hydraulic separation between loops</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> To filter the chilled water</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> To add chemicals to the water</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. How much efficiency improvement typically results from a 1°F reduction in condenser water temperature?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 0.5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 1.5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 3%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 5%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the recommended moisture content limit for chiller oil?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> <200 ppm</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> <100 ppm</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> <50 ppm</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> <10 ppm</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. In an N+1 chiller plant with 1500 tons design load and 500-ton chillers, how many chillers are required?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> 3 chillers</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> 4 chillers</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> 5 chillers</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> 6 chillers</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is surge in a centrifugal chiller?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Sudden increase in cooling capacity</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Unstable operation at low load/high lift conditions</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Power surge during startup</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Refrigerant leak condition</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the typical efficiency range for a modern water-cooled centrifugal chiller at full load?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 0.35-0.45 kW/ton</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 0.55-0.65 kW/ton</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 0.75-0.85 kW/ton</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 1.0-1.2 kW/ton</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. Which maintenance task should be performed annually on chillers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Oil analysis</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Operating parameter checks</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Tube cleaning</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> Vibration analysis</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // 42-45°F
+            q2: 'c',  // Water-cooled centrifugal with magnetic bearings
+            q3: 'b',  // Integrated Part Load Value
+            q4: 'b',  // To provide hydraulic separation between loops
+            q5: 'b',  // 1.5%
+            q6: 'c',  // <50 ppm
+            q7: 'b',  // 4 chillers (3+1)
+            q8: 'b',  // Unstable operation at low load/high lift conditions
+            q9: 'b',  // 0.55-0.65 kW/ton
+            q10: 'c'  // Tube cleaning
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Chiller Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

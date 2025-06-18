@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surveillance Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #ecf0f1;
+            border-left: 5px solid #2c3e50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Surveillance Systems Training Module</h1>
+            <p>Data Center 101 - Video Surveillance and Monitoring</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Surveillance Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Surveillance Systems for data centers. This course will provide you with essential knowledge about video surveillance technology, system design, and best practices for monitoring critical infrastructure.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand surveillance system fundamentals and components</li>
+                        <li>Learn about camera types and technologies</li>
+                        <li>Recognize system architecture and storage requirements</li>
+                        <li>Understand video analytics and intelligent features</li>
+                        <li>Learn integration with security systems</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of security concepts</p>
+            </div>
+
+            <!-- Slide 2: What is Video Surveillance? -->
+            <div class="slide">
+                <h2>What is Video Surveillance?</h2>
+                
+                <p><strong>Video Surveillance</strong> is the use of video cameras to monitor and record activities in specific areas for security, safety, and operational purposes. In data centers, it provides visual verification, forensic evidence, and real-time situational awareness.</p>
+
+                <h3>Key Functions of Surveillance Systems:</h3>
+                <ul>
+                    <li><strong>Deterrence:</strong> Visible cameras discourage unauthorized activities</li>
+                    <li><strong>Detection:</strong> Identify security incidents as they occur</li>
+                    <li><strong>Documentation:</strong> Record events for investigation and evidence</li>
+                    <li><strong>Verification:</strong> Confirm alarms and access events visually</li>
+                    <li><strong>Remote Monitoring:</strong> Enable off-site security supervision</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Surveillance System Overview -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#2c3e50">Video Surveillance System Components</text>
+                        
+                        <!-- Cameras -->
+                        <rect x="50" y="80" width="100" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="100" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Cameras</text>
+                        <text x="100" y="120" text-anchor="middle" fill="white" font-size="12">Capture</text>
+                        
+                        <rect x="50" y="160" width="100" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <text x="100" y="185" text-anchor="middle" fill="white" font-size="14" font-weight="bold">PTZ</text>
+                        <text x="100" y="200" text-anchor="middle" fill="white" font-size="12">Cameras</text>
+                        
+                        <!-- Network -->
+                        <rect x="220" y="120" width="120" height="60" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="280" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Network</text>
+                        <text x="280" y="160" text-anchor="middle" fill="white" font-size="12">Infrastructure</text>
+                        
+                        <!-- Recording -->
+                        <rect x="410" y="80" width="120" height="60" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="470" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Recording</text>
+                        <text x="470" y="120" text-anchor="middle" fill="white" font-size="12">Storage</text>
+                        
+                        <!-- Management -->
+                        <rect x="410" y="160" width="120" height="60" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="470" y="185" text-anchor="middle" fill="white" font-size="14" font-weight="bold">VMS</text>
+                        <text x="470" y="200" text-anchor="middle" fill="white" font-size="12">Software</text>
+                        
+                        <!-- Monitoring -->
+                        <rect x="600" y="120" width="120" height="60" fill="#28a745" stroke="#218838" stroke-width="2" rx="5"/>
+                        <text x="660" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Monitoring</text>
+                        <text x="660" y="160" text-anchor="middle" fill="white" font-size="12">Stations</text>
+                        
+                        <!-- Analytics -->
+                        <ellipse cx="400" cy="300" rx="80" ry="40" fill="#16a085" stroke="#138a72" stroke-width="2"/>
+                        <text x="400" y="295" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Video</text>
+                        <text x="400" y="310" text-anchor="middle" fill="white" font-size="12">Analytics</text>
+                        
+                        <!-- Flow arrows -->
+                        <path d="M 150 110 L 220 140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 150 190 L 220 160" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 340 150 L 410 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 340 150 L 410 190" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 530 110 L 600 140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 530 190 L 600 160" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 470 220 L 430 260" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Arrowhead markers -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Complete Surveillance System: From capture to intelligent analysis</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Surveillance System Benefits:</h4>
+                    <ul>
+                        <li><strong>24/7 Monitoring:</strong> Continuous surveillance coverage</li>
+                        <li><strong>Evidence Collection:</strong> Legal-grade video recording</li>
+                        <li><strong>Operational Oversight:</strong> Monitor processes and procedures</li>
+                        <li><strong>Incident Response:</strong> Real-time situation assessment</li>
+                        <li><strong>Compliance:</strong> Meet regulatory requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Camera Types and Technologies -->
+            <div class="slide">
+                <h2>Camera Types and Technologies</h2>
+                
+                <p>Modern surveillance systems use various camera types, each suited for specific applications and environments.</p>
+
+                <h3>1. Camera Form Factors:</h3>
+                
+                <div class="info-box">
+                    <h4>Fixed Cameras</h4>
+                    <ul>
+                        <li><strong>Box Cameras:</strong> Versatile, interchangeable lenses</li>
+                        <li><strong>Dome Cameras:</strong> Vandal-resistant, discreet</li>
+                        <li><strong>Bullet Cameras:</strong> Weather-resistant, long-range</li>
+                        <li><strong>Turret Cameras:</strong> Flexible positioning, compact</li>
+                        <li><strong>Covert Cameras:</strong> Hidden or disguised units</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>PTZ Cameras (Pan-Tilt-Zoom)</h4>
+                    <ul>
+                        <li><strong>360° Pan:</strong> Full horizontal rotation</li>
+                        <li><strong>180° Tilt:</strong> Vertical movement range</li>
+                        <li><strong>Optical Zoom:</strong> 20x-40x typical</li>
+                        <li><strong>Presets:</strong> Programmed positions</li>
+                        <li><strong>Auto-Tracking:</strong> Follow moving objects</li>
+                    </ul>
+                </div>
+
+                <h3>2. Camera Technologies:</h3>
+
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Standard</th>
+                        <th>Enhanced</th>
+                        <th>Advanced</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Resolution</strong></td>
+                        <td>2MP (1080p)</td>
+                        <td>4MP-5MP</td>
+                        <td>4K (8MP)+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low Light</strong></td>
+                        <td>0.1 lux</td>
+                        <td>0.01 lux</td>
+                        <td>0.001 lux</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WDR</strong></td>
+                        <td>120dB</td>
+                        <td>130dB</td>
+                        <td>140dB+</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frame Rate</strong></td>
+                        <td>15-30 fps</td>
+                        <td>30-60 fps</td>
+                        <td>60+ fps</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics</strong></td>
+                        <td>Motion</td>
+                        <td>Basic AI</td>
+                        <td>Deep Learning</td>
+                    </tr>
+                </table>
+
+                <h3>3. Specialized Cameras:</h3>
+                
+                <div class="success-box">
+                    <h4>Data Center Specific Camera Types</h4>
+                    <ul>
+                        <li><strong>Thermal Cameras:</strong> Detect heat signatures, fire prevention</li>
+                        <li><strong>360° Panoramic:</strong> Complete area coverage, no blind spots</li>
+                        <li><strong>License Plate Recognition:</strong> Vehicle access control</li>
+                        <li><strong>Explosion-Proof:</strong> For hazardous areas (batteries, generators)</li>
+                        <li><strong>Corridor Mode:</strong> Optimized for narrow aisles</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Camera Selection Considerations:</h4>
+                    <ul>
+                        <li>Lighting conditions (indoor/outdoor, day/night)</li>
+                        <li>Coverage area and distance requirements</li>
+                        <li>Environmental factors (temperature, humidity)</li>
+                        <li>Network bandwidth limitations</li>
+                        <li>Storage capacity and retention needs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Video Management Systems -->
+            <div class="slide">
+                <h2>Video Management Systems (VMS)</h2>
+                
+                <h3>1. VMS Core Functions</h3>
+                <div class="info-box">
+                    <h4>Essential VMS Capabilities:</h4>
+                    <ul>
+                        <li><strong>Live Viewing:</strong> Real-time multi-camera display</li>
+                        <li><strong>Recording:</strong> Continuous, motion, and event-based</li>
+                        <li><strong>Playback:</strong> Search and review recorded video</li>
+                        <li><strong>User Management:</strong> Role-based access control</li>
+                        <li><strong>System Health:</strong> Camera and storage monitoring</li>
+                    </ul>
+                </div>
+
+                <h3>2. VMS Architecture Types</h3>
+                <ul>
+                    <li><strong>Centralized:</strong> Single server for small systems</li>
+                    <li><strong>Distributed:</strong> Multiple servers for large deployments</li>
+                    <li><strong>Cloud-Based:</strong> Hosted VMS solutions</li>
+                    <li><strong>Hybrid:</strong> On-premise with cloud backup</li>
+                    <li><strong>Edge Recording:</strong> Camera-based storage</li>
+                </ul>
+
+                <h3>3. Recording and Storage</h3>
+                <div class="success-box">
+                    <h4>Storage Calculation Factors:</h4>
+                    <ul>
+                        <li><strong>Resolution:</strong> Higher resolution = more storage</li>
+                        <li><strong>Frame Rate:</strong> More fps = more storage</li>
+                        <li><strong>Compression:</strong> H.264, H.265, or proprietary</li>
+                        <li><strong>Retention:</strong> Days/weeks/months of storage</li>
+                        <li><strong>Recording Mode:</strong> Continuous vs. motion-based</li>
+                    </ul>
+                </div>
+
+                <h3>4. Storage Calculation Example</h3>
+                <table>
+                    <tr>
+                        <th>Camera Specs</th>
+                        <th>Bitrate</th>
+                        <th>Daily Storage</th>
+                        <th>30-Day Storage</th>
+                    </tr>
+                    <tr>
+                        <td>1080p, 30fps, H.264</td>
+                        <td>4 Mbps</td>
+                        <td>43 GB</td>
+                        <td>1.3 TB</td>
+                    </tr>
+                    <tr>
+                        <td>4K, 30fps, H.264</td>
+                        <td>12 Mbps</td>
+                        <td>130 GB</td>
+                        <td>3.9 TB</td>
+                    </tr>
+                    <tr>
+                        <td>4K, 30fps, H.265</td>
+                        <td>6 Mbps</td>
+                        <td>65 GB</td>
+                        <td>1.95 TB</td>
+                    </tr>
+                </table>
+
+                <h3>5. Advanced VMS Features</h3>
+                <ul>
+                    <li><strong>Failover:</strong> Automatic backup recording</li>
+                    <li><strong>Load Balancing:</strong> Distribute processing</li>
+                    <li><strong>Federation:</strong> Multi-site management</li>
+                    <li><strong>Mobile Apps:</strong> Remote access and alerts</li>
+                    <li><strong>API Integration:</strong> Third-party connections</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Network Infrastructure -->
+            <div class="slide">
+                <h2>Network Infrastructure for Surveillance</h2>
+                
+                <p>IP-based surveillance systems require robust network infrastructure to handle high-bandwidth video streams.</p>
+
+                <h3>1. Network Architecture</h3>
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#2c3e50">Surveillance Network Architecture</text>
+                        
+                        <!-- Core Switch -->
+                        <rect x="350" y="80" width="100" height="60" fill="#2c3e50" stroke="#1a252f" stroke-width="2" rx="5"/>
+                        <text x="400" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Core</text>
+                        <text x="400" y="120" text-anchor="middle" fill="white" font-size="12">Switch</text>
+                        
+                        <!-- Edge Switches -->
+                        <rect x="100" y="200" width="100" height="50" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="150" y="220" text-anchor="middle" fill="white" font-size="12">Edge Switch</text>
+                        <text x="150" y="235" text-anchor="middle" fill="white" font-size="10">Building A</text>
+                        
+                        <rect x="350" y="200" width="100" height="50" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="400" y="220" text-anchor="middle" fill="white" font-size="12">Edge Switch</text>
+                        <text x="400" y="235" text-anchor="middle" fill="white" font-size="10">Data Hall</text>
+                        
+                        <rect x="600" y="200" width="100" height="50" fill="#34495e" stroke="#2c3e50" stroke-width="2" rx="5"/>
+                        <text x="650" y="220" text-anchor="middle" fill="white" font-size="12">Edge Switch</text>
+                        <text x="650" y="235" text-anchor="middle" fill="white" font-size="10">Perimeter</text>
+                        
+                        <!-- Cameras -->
+                        <circle cx="80" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="80" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="150" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="150" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="220" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="220" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="330" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="330" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="400" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="400" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="470" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="470" y="325" text-anchor="middle" fill="white" font-size="11">CAM</text>
+                        
+                        <circle cx="580" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="580" y="325" text-anchor="middle" fill="white" font-size="11">PTZ</text>
+                        
+                        <circle cx="650" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="650" y="325" text-anchor="middle" fill="white" font-size="11">PTZ</text>
+                        
+                        <circle cx="720" cy="320" r="25" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+                        <text x="720" y="325" text-anchor="middle" fill="white" font-size="11">LPR</text>
+                        
+                        <!-- Storage -->
+                        <rect x="520" y="80" width="100" height="60" fill="#e74c3c" stroke="#c0392b" stroke-width="2" rx="5"/>
+                        <text x="570" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Storage</text>
+                        <text x="570" y="120" text-anchor="middle" fill="white" font-size="12">Array</text>
+                        
+                        <!-- VMS Server -->
+                        <rect x="180" y="80" width="100" height="60" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="230" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">VMS</text>
+                        <text x="230" y="120" text-anchor="middle" fill="white" font-size="12">Server</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 150 250 L 150 295" stroke="#333" stroke-width="2"/>
+                        <path d="M 80 295 L 220 295" stroke="#333" stroke-width="2"/>
+                        <path d="M 400 250 L 400 295" stroke="#333" stroke-width="2"/>
+                        <path d="M 330 295 L 470 295" stroke="#333" stroke-width="2"/>
+                        <path d="M 650 250 L 650 295" stroke="#333" stroke-width="2"/>
+                        <path d="M 580 295 L 720 295" stroke="#333" stroke-width="2"/>
+                        
+                        <path d="M 150 200 L 380 140" stroke="#333" stroke-width="3"/>
+                        <path d="M 400 200 L 400 140" stroke="#333" stroke-width="3"/>
+                        <path d="M 650 200 L 420 140" stroke="#333" stroke-width="3"/>
+                        
+                        <path d="M 350 110 L 280 110" stroke="#333" stroke-width="3"/>
+                        <path d="M 450 110 L 520 110" stroke="#333" stroke-width="3"/>
+                        
+                        <!-- VLAN Labels -->
+                        <text x="400" y="420" text-anchor="middle" font-size="14" fill="#2c3e50" font-weight="bold">Segregated VLANs for Security</text>
+                        <text x="150" y="380" text-anchor="middle" font-size="12" fill="#666">VLAN 10</text>
+                        <text x="400" y="380" text-anchor="middle" font-size="12" fill="#666">VLAN 20</text>
+                        <text x="650" y="380" text-anchor="middle" font-size="12" fill="#666">VLAN 30</text>
+                    </svg>
+                </div>
+
+                <h3>2. Bandwidth Requirements</h3>
+                <div class="info-box">
+                    <h4>Network Design Considerations:</h4>
+                    <ul>
+                        <li><strong>Camera Bandwidth:</strong> 2-15 Mbps per camera typical</li>
+                        <li><strong>Network Utilization:</strong> Keep below 50% capacity</li>
+                        <li><strong>PoE Requirements:</strong> 15-30W per camera</li>
+                        <li><strong>Uplink Capacity:</strong> Aggregate bandwidth planning</li>
+                        <li><strong>Redundancy:</strong> Dual paths for critical cameras</li>
+                    </ul>
+                </div>
+
+                <h3>3. Network Best Practices</h3>
+                <div class="warning-box">
+                    <h4>⚠️ Critical Network Requirements:</h4>
+                    <ul>
+                        <li>Dedicated surveillance VLAN for security</li>
+                        <li>QoS prioritization for video traffic</li>
+                        <li>Multicast configuration for live viewing</li>
+                        <li>Spanning tree optimization</li>
+                        <li>Network segmentation from corporate LAN</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Video Analytics -->
+            <div class="slide">
+                <h2>Video Analytics and Intelligence</h2>
+                
+                <p>Modern surveillance systems use artificial intelligence and analytics to automate detection and enhance security effectiveness.</p>
+
+                <h3>1. Basic Analytics</h3>
+                
+                <div class="info-box">
+                    <h4>Traditional Video Analytics:</h4>
+                    <ul>
+                        <li><strong>Motion Detection:</strong> Detect pixel changes</li>
+                        <li><strong>Virtual Tripwire:</strong> Line crossing detection</li>
+                        <li><strong>Object Left/Removed:</strong> Unattended items</li>
+                        <li><strong>Camera Tampering:</strong> Obstruction detection</li>
+                        <li><strong>People Counting:</strong> Entry/exit tracking</li>
+                    </ul>
+                </div>
+
+                <h3>2. AI-Powered Analytics</h3>
+                
+                <table>
+                    <tr>
+                        <th>Analytics Type</th>
+                        <th>Function</th>
+                        <th>Data Center Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Facial Recognition</strong></td>
+                        <td>Identity verification</td>
+                        <td>Access control integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vehicle Recognition</strong></td>
+                        <td>License plate, make/model</td>
+                        <td>Loading dock security</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Behavior Analysis</strong></td>
+                        <td>Abnormal activity detection</td>
+                        <td>Tailgating, loitering</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Object Classification</strong></td>
+                        <td>Person, vehicle, animal</td>
+                        <td>Reduce false alarms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Heat Mapping</strong></td>
+                        <td>Activity patterns</td>
+                        <td>Traffic flow optimization</td>
+                    </tr>
+                </table>
+
+                <h3>3. Deep Learning Applications</h3>
+                <div class="success-box">
+                    <h4>Advanced AI Capabilities:</h4>
+                    <ul>
+                        <li><strong>Crowd Detection:</strong> Unauthorized gatherings</li>
+                        <li><strong>PPE Detection:</strong> Safety compliance monitoring</li>
+                        <li><strong>Weapon Detection:</strong> Threat identification</li>
+                        <li><strong>Slip and Fall:</strong> Safety incident detection</li>
+                        <li><strong>Smoke/Fire Detection:</strong> Early warning system</li>
+                    </ul>
+                </div>
+
+                <h3>4. Analytics Deployment Options</h3>
+                <ul>
+                    <li><strong>Server-Based:</strong> Centralized processing power</li>
+                    <li><strong>Edge Analytics:</strong> In-camera processing</li>
+                    <li><strong>Cloud Analytics:</strong> Scalable AI services</li>
+                    <li><strong>Hybrid Approach:</strong> Distributed intelligence</li>
+                    <li><strong>GPU Acceleration:</strong> High-performance processing</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Analytics Considerations:</h4>
+                    <ul>
+                        <li>Privacy regulations and compliance</li>
+                        <li>Processing power requirements</li>
+                        <li>False positive management</li>
+                        <li>Training data quality</li>
+                        <li>Integration complexity</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Data Center Specific Design -->
+            <div class="slide">
+                <h2>Data Center Surveillance Design</h2>
+                
+                <h3>1. Coverage Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>Critical Surveillance Areas:</h4>
+                    <ul>
+                        <li><strong>Perimeter:</strong> Fence line, gates, barriers</li>
+                        <li><strong>Building Exterior:</strong> All entry/exit points</li>
+                        <li><strong>Loading Docks:</strong> Delivery and equipment areas</li>
+                        <li><strong>Lobbies:</strong> Visitor entry and security checkpoints</li>
+                        <li><strong>Data Halls:</strong> Row ends, hot/cold aisles</li>
+                        <li><strong>Network Rooms:</strong> Critical infrastructure</li>
+                        <li><strong>Mechanical Rooms:</strong> Power and cooling equipment</li>
+                    </ul>
+                </div>
+
+                <h3>2. Camera Placement Strategy</h3>
+                
+                <table>
+                    <tr>
+                        <th>Location</th>
+                        <th>Camera Type</th>
+                        <th>Coverage Goal</th>
+                        <th>Special Features</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Perimeter</strong></td>
+                        <td>PTZ + Thermal</td>
+                        <td>Detection/Tracking</td>
+                        <td>Analytics, IR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Entry Points</strong></td>
+                        <td>Fixed HD</td>
+                        <td>Identification</td>
+                        <td>Facial Recognition</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Hall</strong></td>
+                        <td>360° Panoramic</td>
+                        <td>Overview</td>
+                        <td>Heat Detection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aisles</strong></td>
+                        <td>Corridor Mode</td>
+                        <td>Cabinet Access</td>
+                        <td>Motion Analytics</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Loading</strong></td>
+                        <td>LPR + Overview</td>
+                        <td>Vehicle/Activity</td>
+                        <td>License Plate</td>
+                    </tr>
+                </table>
+
+                <h3>3. Compliance and Standards</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Regulatory Requirements:</h4>
+                    <ul>
+                        <li><strong>Data Retention:</strong> 30-90 days typical requirement</li>
+                        <li><strong>Export Control:</strong> Encrypted video export</li>
+                        <li><strong>Chain of Custody:</strong> Evidence management</li>
+                        <li><strong>Privacy Laws:</strong> GDPR, CCPA compliance</li>
+                        <li><strong>Access Logging:</strong> Who viewed what, when</li>
+                    </ul>
+                </div>
+
+                <h3>4. Environmental Considerations</h3>
+                <ul>
+                    <li><strong>Temperature:</strong> Cameras rated for data center conditions</li>
+                    <li><strong>Humidity:</strong> Sealed units for high humidity areas</li>
+                    <li><strong>Vibration:</strong> Stable mounting in equipment areas</li>
+                    <li><strong>EMI/RFI:</strong> Shielded cables near power systems</li>
+                    <li><strong>Lighting:</strong> Low-light capability for efficiency</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Integration and Management -->
+            <div class="slide">
+                <h2>System Integration and Management</h2>
+                
+                <p>Effective surveillance requires integration with other security systems and proper operational management.</p>
+
+                <h3>1. Security System Integration</h3>
+                
+                <div class="info-box">
+                    <h4>Access Control Integration:</h4>
+                    <ul>
+                        <li><strong>Event Correlation:</strong> Card swipe triggers recording</li>
+                        <li><strong>Video Verification:</strong> Visual confirmation of identity</li>
+                        <li><strong>Alarm Response:</strong> Automatic camera positioning</li>
+                        <li><strong>Forensic Search:</strong> Find video by access events</li>
+                        <li><strong>Live Monitoring:</strong> Pop-up video on access</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Procedures</h3>
+                
+                <table>
+                    <tr>
+                        <th>Task</th>
+                        <th>Frequency</th>
+                        <th>Responsibility</th>
+                        <th>Documentation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Camera Cleaning</strong></td>
+                        <td>Quarterly</td>
+                        <td>Maintenance</td>
+                        <td>Checklist</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Focus Check</strong></td>
+                        <td>Monthly</td>
+                        <td>Security</td>
+                        <td>Report</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage Verification</strong></td>
+                        <td>Weekly</td>
+                        <td>IT/Security</td>
+                        <td>Log</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Backup Test</strong></td>
+                        <td>Monthly</td>
+                        <td>IT</td>
+                        <td>Test Results</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Audit</strong></td>
+                        <td>Quarterly</td>
+                        <td>Management</td>
+                        <td>Audit Report</td>
+                    </tr>
+                </table>
+
+                <h3>3. Incident Response</h3>
+                <ul>
+                    <li><strong>Detection:</strong> Real-time alerts and notifications</li>
+                    <li><strong>Assessment:</strong> Quick video review capabilities</li>
+                    <li><strong>Response:</strong> Guard dispatch and tracking</li>
+                    <li><strong>Documentation:</strong> Incident report generation</li>
+                    <li><strong>Evidence:</strong> Video export and chain of custody</li>
+                </ul>
+
+                <h3>4. Performance Monitoring</h3>
+                <div class="warning-box">
+                    <h4>System Health Indicators:</h4>
+                    <ul>
+                        <li>Camera online/offline status</li>
+                        <li>Recording failure alerts</li>
+                        <li>Storage capacity warnings</li>
+                        <li>Network bandwidth utilization</li>
+                        <li>System CPU and memory usage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Advanced Technologies</h4>
+                    <ul>
+                        <li><strong>8K Resolution:</strong> Ultra-high detail capture</li>
+                        <li><strong>AI Chipsets:</strong> Advanced edge processing</li>
+                        <li><strong>Multi-Sensor Fusion:</strong> Combined data analysis</li>
+                        <li><strong>5G Connectivity:</strong> Wireless high-bandwidth</li>
+                        <li><strong>Quantum Encryption:</strong> Future-proof security</li>
+                    </ul>
+                </div>
+
+                <h3>2. Cloud and Hybrid Solutions</h3>
+                <ul>
+                    <li><strong>VSaaS:</strong> Video Surveillance as a Service</li>
+                    <li><strong>Cloud Storage:</strong> Scalable retention options</li>
+                    <li><strong>Remote Management:</strong> Anywhere administration</li>
+                    <li><strong>AI Services:</strong> Cloud-based analytics</li>
+                    <li><strong>Disaster Recovery:</strong> Automatic failover</li>
+                </ul>
+
+                <h3>3. Cybersecurity Focus</h3>
+                <div class="info-box">
+                    <h4>Security Hardening:</h4>
+                    <ul>
+                        <li><strong>Firmware Updates:</strong> Regular patching schedule</li>
+                        <li><strong>Encrypted Streams:</strong> TLS/SSL video protection</li>
+                        <li><strong>Zero Trust:</strong> Continuous authentication</li>
+                        <li><strong>Penetration Testing:</strong> Regular assessments</li>
+                        <li><strong>Supply Chain:</strong> Trusted vendor verification</li>
+                    </ul>
+                </div>
+
+                <h3>4. Operational Intelligence</h3>
+                <ul>
+                    <li><strong>Business Analytics:</strong> Beyond security metrics</li>
+                    <li><strong>Process Optimization:</strong> Workflow improvements</li>
+                    <li><strong>Predictive Insights:</strong> Trend analysis</li>
+                    <li><strong>Integration Platform:</strong> Unified operations</li>
+                    <li><strong>Automation:</strong> Response procedures</li>
+                </ul>
+
+                <h3>5. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Design for scalability and future growth</li>
+                        <li>Implement defense-in-depth security</li>
+                        <li>Regular system health monitoring</li>
+                        <li>Comprehensive staff training program</li>
+                        <li>Document all procedures and configurations</li>
+                        <li>Plan for technology refresh cycles</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Surveillance provides deterrence, detection, and documentation</li>
+                        <li>Various camera types suit different applications</li>
+                        <li>VMS manages recording, viewing, and user access</li>
+                        <li>Network infrastructure is critical for IP video</li>
+                        <li>Analytics add intelligence and automation</li>
+                        <li>Integration enhances overall security effectiveness</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Coverage:</strong> Eliminate blind spots in critical areas</li>
+                    <li><strong>Quality:</strong> Resolution must meet identification needs</li>
+                    <li><strong>Retention:</strong> Storage must meet compliance requirements</li>
+                    <li><strong>Integration:</strong> Maximize value through system coordination</li>
+                    <li><strong>Maintenance:</strong> Regular care ensures reliability</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's camera coverage</li>
+                        <li>Understand VMS operation basics</li>
+                        <li>Learn incident response procedures</li>
+                        <li>Practice video search and export</li>
+                        <li>Stay updated on privacy regulations</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading surveillance technology organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• Security Industry Association (SIA) - Video Surveillance Standards</li>
+                        <li>• ONVIF Profile S - Standardization for IP Video Systems</li>
+                        <li>• ASIS International - Video Surveillance Guidelines</li>
+                        <li>• IEC 62676 - Video Surveillance Systems Standards</li>
+                        <li>• NIST - Video Analytics Technology Primer</li>
+                        <li>• TIA-942 - Data Center Infrastructure Standard</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• Security Industry Association (SIA)</li>
+                        <li>• ONVIF (Open Network Video Interface Forum)</li>
+                        <li>• Physical Security Interoperability Alliance (PSIA)</li>
+                        <li>• International Organization for Standardization (ISO)</li>
+                        <li>• National Institute of Standards and Technology (NIST)</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "IP Video Surveillance Design Guide" - Axis Communications</li>
+                        <li>• "Video Analytics Handbook" - Agent Vi</li>
+                        <li>• "CCTV Surveillance: Video Practices and Technology" - Herman Kruegle</li>
+                        <li>• Manufacturer resources: Axis, Hikvision, Dahua, Hanwha, Avigilon</li>
+                        <li>• "Intelligent Network Video" - Fredrik Nilsson & Communications</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from surveillance equipment manufacturers, industry standards organizations, and security best practices. All technical specifications, features, and recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Surveillance Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What does VMS stand for in surveillance systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Virtual Monitoring System</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Video Management System</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Visual Motion Sensor</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Video Memory Storage</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What is the typical retention period for data center surveillance footage?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> 7-14 days</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> 30-90 days</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> 6-12 months</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> 1-2 years</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. Which camera feature is most important for data center aisle monitoring?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> PTZ capability</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Thermal imaging</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Corridor mode</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> 360° view</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What does WDR stand for in camera specifications?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Wide Distance Range</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Wide Dynamic Range</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Wireless Data Recording</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Water Damage Resistance</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. Which video compression standard typically provides 50% better compression than H.264?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> MJPEG</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> MPEG-4</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> H.265</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> AVI</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the primary purpose of edge analytics in surveillance?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Store video at the camera</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Process video intelligence at the camera</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Improve camera image quality</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Reduce camera power consumption</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What network feature is critical for IP surveillance systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Bluetooth connectivity</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> PoE (Power over Ethernet)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Dial-up backup</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Token ring protocol</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. Which camera type is best for perimeter detection?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Fixed dome cameras</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Thermal cameras with analytics</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Indoor box cameras</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Covert cameras</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the recommended network utilization for surveillance systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Below 50%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 75-80%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 90-95%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 100%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. How often should camera lenses be cleaned in a data center environment?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Daily</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Weekly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Monthly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> Quarterly</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Video Management System
+            q2: 'b',  // 30-90 days
+            q3: 'c',  // Corridor mode
+            q4: 'b',  // Wide Dynamic Range
+            q5: 'c',  // H.265
+            q6: 'b',  // Process video intelligence at the camera
+            q7: 'b',  // PoE (Power over Ethernet)
+            q8: 'b',  // Thermal cameras with analytics
+            q9: 'a',  // Below 50%
+            q10: 'd'  // Quarterly
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Surveillance Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

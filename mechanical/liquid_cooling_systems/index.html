@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Cooling Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00796b 0%, #00acc1 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #00796b;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #00796b;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #00acc1;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #00796b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #00acc1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00796b, #00acc1);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #00796b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #00796b;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e0f2f1;
+            border-left: 5px solid #00796b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #00796b;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Liquid Cooling Systems Training Module</h1>
+            <p>Data Center 101 - Advanced Cooling Solutions for High-Density Computing</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Liquid Cooling Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Liquid Cooling Systems for data centers. As computing densities continue to increase, liquid cooling is becoming essential for modern data center operations. This course will provide you with fundamental knowledge about liquid cooling technologies, implementation strategies, and best practices.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the need for liquid cooling in modern data centers</li>
+                        <li>Learn about different liquid cooling technologies and approaches</li>
+                        <li>Recognize key components and system architectures</li>
+                        <li>Understand implementation considerations and best practices</li>
+                        <li>Learn about safety, maintenance, and operational requirements</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of data center cooling concepts</p>
+            </div>
+
+            <!-- Slide 2: Why Liquid Cooling? -->
+            <div class="slide">
+                <h2>Why Liquid Cooling?</h2>
+                
+                <p>The increasing power density of modern IT equipment is pushing traditional air cooling to its limits. Liquid cooling offers superior heat removal capabilities for high-density computing environments.</p>
+
+                <h3>Drivers for Liquid Cooling Adoption</h3>
+                <ul>
+                    <li><strong>Power Density:</strong> Server racks exceeding 30-50kW becoming common</li>
+                    <li><strong>GPU/AI Workloads:</strong> High-performance computing with 400W+ processors</li>
+                    <li><strong>Energy Efficiency:</strong> Reduce cooling energy by 30-50%</li>
+                    <li><strong>Space Constraints:</strong> Eliminate need for raised floors and large air handlers</li>
+                    <li><strong>Sustainability:</strong> Enable heat reuse and reduce water consumption</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Heat Transfer Comparison:</h4>
+                    <ul>
+                        <li><strong>Air:</strong> Heat capacity ~0.24 BTU/lb·°F</li>
+                        <li><strong>Water:</strong> Heat capacity ~1.0 BTU/lb·°F (4x better)</li>
+                        <li><strong>Thermal Conductivity:</strong> Water is 24x more conductive than air</li>
+                        <li><strong>Density:</strong> Water is ~800x denser than air</li>
+                        <li><strong>Result:</strong> Water can remove heat 3,000-4,000x more efficiently</li>
+                    </ul>
+                </div>
+
+                <h3>Benefits of Liquid Cooling</h3>
+                
+                <div class="success-box">
+                    <h4>Key Advantages:</h4>
+                    <ul>
+                        <li><strong>Higher Density:</strong> Support 100kW+ per rack</li>
+                        <li><strong>Lower PUE:</strong> Achieve PUE of 1.1-1.2</li>
+                        <li><strong>Noise Reduction:</strong> Eliminate server fans</li>
+                        <li><strong>Heat Reuse:</strong> Higher-grade heat for district heating</li>
+                        <li><strong>Component Longevity:</strong> Lower, more stable temperatures</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Types of Liquid Cooling -->
+            <div class="slide">
+                <h2>Types of Liquid Cooling</h2>
+                
+                <p>Liquid cooling systems can be categorized by how close the liquid comes to the heat source and the cooling method employed.</p>
+
+                <h3>1. Direct-to-Chip Cooling (D2C)</h3>
+                <div class="info-box">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li><strong>Method:</strong> Cold plates attached directly to processors</li>
+                        <li><strong>Heat Removal:</strong> 70-80% of server heat via liquid</li>
+                        <li><strong>Coolant:</strong> Water or dielectric fluid</li>
+                        <li><strong>Temperature:</strong> Supply at 15-45°C</li>
+                        <li><strong>Application:</strong> High-performance CPUs and GPUs</li>
+                    </ul>
+                </div>
+
+                <h3>2. Immersion Cooling</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Method</th>
+                        <th>Coolant</th>
+                        <th>Advantages</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Single-Phase</strong></td>
+                        <td>Components submerged, fluid remains liquid</td>
+                        <td>Mineral oil, synthetic fluids</td>
+                        <td>Simple, 100% heat capture</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Two-Phase</strong></td>
+                        <td>Fluid boils and condenses</td>
+                        <td>Engineered fluids (3M Novec)</td>
+                        <td>Superior heat transfer, passive</td>
+                    </tr>
+                </table>
+
+                <h3>3. Rear Door Heat Exchangers (RDHx)</h3>
+                <ul>
+                    <li><strong>Passive:</strong> No fans, relies on server airflow</li>
+                    <li><strong>Active:</strong> Integrated fans for enhanced cooling</li>
+                    <li><strong>Heat Removal:</strong> 60-100% of rack heat</li>
+                    <li><strong>Retrofit:</strong> Works with existing air-cooled servers</li>
+                    <li><strong>Temperature:</strong> Neutral air to cold aisle</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#00796b">Liquid Cooling Technologies Comparison</text>
+                        
+                        <!-- Direct to Chip -->
+                        <rect x="50" y="70" width="200" height="120" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="150" y="100" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Direct-to-Chip</text>
+                        <rect x="80" y="120" width="60" height="30" fill="#fff" stroke="#333" stroke-width="1"/>
+                        <text x="110" y="140" text-anchor="middle" font-size="10">CPU</text>
+                        <rect x="160" y="120" width="60" height="30" fill="#fff" stroke="#333" stroke-width="1"/>
+                        <text x="190" y="140" text-anchor="middle" font-size="10">GPU</text>
+                        <circle cx="110" cy="135" r="20" fill="none" stroke="#e74c3c" stroke-width="2"/>
+                        <circle cx="190" cy="135" r="20" fill="none" stroke="#e74c3c" stroke-width="2"/>
+                        <text x="150" y="170" text-anchor="middle" fill="white" font-size="12">Cold Plates</text>
+                        
+                        <!-- Immersion -->
+                        <rect x="300" y="70" width="200" height="120" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="400" y="100" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Immersion Cooling</text>
+                        <rect x="320" y="110" width="160" height="60" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                        <rect x="340" y="125" width="40" height="30" fill="#333" stroke="#333" stroke-width="1"/>
+                        <rect x="390" y="125" width="40" height="30" fill="#333" stroke="#333" stroke-width="1"/>
+                        <rect x="440" y="125" width="40" height="30" fill="#333" stroke="#333" stroke-width="1"/>
+                        <text x="400" y="145" text-anchor="middle" fill="white" font-size="10">Servers in Fluid</text>
+                        
+                        <!-- Rear Door -->
+                        <rect x="550" y="70" width="200" height="120" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" rx="5"/>
+                        <text x="650" y="100" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Rear Door HX</text>
+                        <rect x="580" y="115" width="140" height="60" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                        <rect x="590" y="125" width="120" height="10" fill="#e74c3c"/>
+                        <rect x="590" y="140" width="120" height="10" fill="#3498db"/>
+                        <rect x="590" y="155" width="120" height="10" fill="#e74c3c"/>
+                        <text x="650" y="190" text-anchor="middle" fill="white" font-size="10">Heat Exchanger</text>
+                        
+                        <!-- Labels -->
+                        <text x="150" y="220" text-anchor="middle" font-size="12" fill="#333">70-80% Heat Removal</text>
+                        <text x="150" y="235" text-anchor="middle" font-size="12" fill="#333">Targeted Cooling</text>
+                        
+                        <text x="400" y="220" text-anchor="middle" font-size="12" fill="#333">100% Heat Removal</text>
+                        <text x="400" y="235" text-anchor="middle" font-size="12" fill="#333">No Server Fans</text>
+                        
+                        <text x="650" y="220" text-anchor="middle" font-size="12" fill="#333">60-100% Heat Removal</text>
+                        <text x="650" y="235" text-anchor="middle" font-size="12" fill="#333">Retrofit Option</text>
+                    </svg>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Selection Considerations:</h4>
+                    <ul>
+                        <li>Server compatibility and warranty implications</li>
+                        <li>Retrofit vs. new deployment</li>
+                        <li>Maintenance and serviceability requirements</li>
+                        <li>Initial cost vs. operational savings</li>
+                        <li>Facility infrastructure requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Direct-to-Chip Cooling Details -->
+            <div class="slide">
+                <h2>Direct-to-Chip Cooling Systems</h2>
+                
+                <p>Direct-to-chip cooling is the most common form of liquid cooling in data centers today, offering a balance between cooling effectiveness and implementation complexity.</p>
+
+                <h3>System Components</h3>
+                
+                <div class="info-box">
+                    <h4>Primary Components:</h4>
+                    <ul>
+                        <li><strong>Cold Plates:</strong> Copper or aluminum blocks with microchannels</li>
+                        <li><strong>Quick Disconnects:</strong> Dripless connectors for serviceability</li>
+                        <li><strong>Manifolds:</strong> Distribute coolant to multiple servers</li>
+                        <li><strong>CDU (Coolant Distribution Unit):</strong> Heat exchanger and pumps</li>
+                        <li><strong>Piping:</strong> Supply and return lines with proper insulation</li>
+                    </ul>
+                </div>
+
+                <h3>Coolant Types</h3>
+                
+                <table>
+                    <tr>
+                        <th>Coolant</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Water + Glycol</strong></td>
+                        <td>Excellent heat transfer, low cost</td>
+                        <td>Conductive, corrosion risk</td>
+                        <td>Facility side</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deionized Water</strong></td>
+                        <td>Best heat transfer</td>
+                        <td>Requires monitoring, conductive</td>
+                        <td>Some IT loops</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dielectric Fluids</strong></td>
+                        <td>Non-conductive, safe</td>
+                        <td>Lower heat capacity, expensive</td>
+                        <td>IT equipment side</td>
+                    </tr>
+                </table>
+
+                <h3>Design Considerations</h3>
+                
+                <div class="success-box">
+                    <h4>Best Practices:</h4>
+                    <ul>
+                        <li><strong>Flow Rate:</strong> 0.5-2.0 GPM per server typical</li>
+                        <li><strong>Pressure Drop:</strong> <15 PSI across cold plate</li>
+                        <li><strong>Supply Temperature:</strong> 15-45°C depending on application</li>
+                        <li><strong>ΔT Design:</strong> 10-15°C rise across servers</li>
+                        <li><strong>Redundancy:</strong> N+1 CDUs and pumps</li>
+                    </ul>
+                </div>
+
+                <h3>Implementation Architecture</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#00796b">Direct-to-Chip Cooling Architecture</text>
+                        
+                        <!-- Facility Loop -->
+                        <rect x="50" y="60" width="300" height="320" fill="#e0f2f1" stroke="#00796b" stroke-width="2" rx="5" stroke-dasharray="5,5"/>
+                        <text x="200" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#00796b">Facility Water Loop</text>
+                        
+                        <!-- Chiller -->
+                        <rect x="80" y="110" width="100" height="60" fill="#00acc1" stroke="#00796b" stroke-width="2" rx="5"/>
+                        <text x="130" y="145" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Chiller</text>
+                        
+                        <!-- CDU -->
+                        <rect x="220" y="200" width="100" height="80" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                        <text x="270" y="230" text-anchor="middle" fill="white" font-size="12" font-weight="bold">CDU</text>
+                        <text x="270" y="245" text-anchor="middle" fill="white" font-size="10">Heat</text>
+                        <text x="270" y="260" text-anchor="middle" fill="white" font-size="10">Exchanger</text>
+                        
+                        <!-- IT Loop -->
+                        <rect x="400" y="60" width="350" height="320" fill="#fff3cd" stroke="#ffc107" stroke-width="2" rx="5"/>
+                        <text x="575" y="85" text-anchor="middle" font-size="14" font-weight="bold" fill="#856404">IT Equipment Loop</text>
+                        
+                        <!-- Rack -->
+                        <rect x="450" y="120" width="250" height="200" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="575" y="340" text-anchor="middle" font-size="12" fill="#333">Server Rack</text>
+                        
+                        <!-- Servers with cold plates -->
+                        <rect x="470" y="140" width="210" height="40" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1"/>
+                        <circle cx="520" cy="160" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <circle cx="630" cy="160" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <text x="575" y="165" text-anchor="middle" font-size="10">Server 1</text>
+                        
+                        <rect x="470" y="190" width="210" height="40" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1"/>
+                        <circle cx="520" cy="210" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <circle cx="630" cy="210" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <text x="575" y="215" text-anchor="middle" font-size="10">Server 2</text>
+                        
+                        <rect x="470" y="240" width="210" height="40" fill="#95a5a6" stroke="#7f8c8d" stroke-width="1"/>
+                        <circle cx="520" cy="260" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <circle cx="630" cy="260" r="15" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+                        <text x="575" y="265" text-anchor="middle" font-size="10">Server 3</text>
+                        
+                        <!-- Flow paths -->
+                        <path d="M 180 140 L 220 140 L 220 220" stroke="#3498db" stroke-width="3" marker-end="url(#arrowblue)"/>
+                        <path d="M 220 260 L 220 300 L 130 300 L 130 170" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowred)"/>
+                        
+                        <path d="M 320 220 L 380 220 L 380 160 L 470 160" stroke="#3498db" stroke-width="3" marker-end="url(#arrowblue)"/>
+                        <path d="M 470 260 L 380 260 L 380 260 L 320 260" stroke="#e74c3c" stroke-width="3" marker-end="url(#arrowred)"/>
+                        
+                        <!-- Labels -->
+                        <text x="130" y="330" text-anchor="middle" font-size="11" fill="#00796b">10-20°C Supply</text>
+                        <text x="575" y="105" text-anchor="middle" font-size="11" fill="#856404">25-45°C Supply</text>
+                        
+                        <!-- Arrow markers -->
+                        <defs>
+                            <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#3498db"/>
+                            </marker>
+                            <marker id="arrowred" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#e74c3c"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 5: Immersion Cooling -->
+            <div class="slide">
+                <h2>Immersion Cooling Systems</h2>
+                
+                <p>Immersion cooling represents the most comprehensive liquid cooling approach, completely eliminating air from the cooling equation by submerging IT equipment in dielectric fluid.</p>
+
+                <h3>Single-Phase Immersion Cooling</h3>
+                
+                <div class="info-box">
+                    <h4>System Characteristics:</h4>
+                    <ul>
+                        <li><strong>Fluid State:</strong> Remains liquid throughout operation</li>
+                        <li><strong>Coolants:</strong> Mineral oil, synthetic hydrocarbons</li>
+                        <li><strong>Heat Removal:</strong> Convection and pumped circulation</li>
+                        <li><strong>Operating Temp:</strong> 35-60°C typical</li>
+                        <li><strong>Cooling Capacity:</strong> Up to 100kW per tank</li>
+                    </ul>
+                </div>
+
+                <h3>Two-Phase Immersion Cooling</h3>
+                
+                <div class="success-box">
+                    <h4>Advanced Features:</h4>
+                    <ul>
+                        <li><strong>Phase Change:</strong> Fluid boils at 40-60°C</li>
+                        <li><strong>Coolants:</strong> Engineered fluids (3M Novec, Fluorinert)</li>
+                        <li><strong>Heat Removal:</strong> Latent heat of vaporization</li>
+                        <li><strong>Efficiency:</strong> 1,000x better than air cooling</li>
+                        <li><strong>Self-Regulating:</strong> Boiling rate matches heat load</li>
+                    </ul>
+                </div>
+
+                <h3>Implementation Considerations</h3>
+                
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Single-Phase</th>
+                        <th>Two-Phase</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Initial Cost</strong></td>
+                        <td>Moderate</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fluid Cost</strong></td>
+                        <td>$30-50/gallon</td>
+                        <td>$200-400/gallon</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maintenance</strong></td>
+                        <td>Filter changes, pumps</td>
+                        <td>Minimal, passive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Server Mods</strong></td>
+                        <td>Remove fans, seal</td>
+                        <td>Remove fans, thermal interface</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Serviceability</strong></td>
+                        <td>Lift and drain</td>
+                        <td>Quick evaporation</td>
+                    </tr>
+                </table>
+
+                <h3>Tank Design and Layout</h3>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Design Requirements:</h4>
+                    <ul>
+                        <li><strong>Tank Material:</strong> Steel or reinforced polymer</li>
+                        <li><strong>Sealing:</strong> Vapor-tight lids to prevent fluid loss</li>
+                        <li><strong>Access:</strong> Overhead hoists for server handling</li>
+                        <li><strong>Safety:</strong> Spill containment and fluid recovery</li>
+                        <li><strong>Monitoring:</strong> Fluid level, temperature, and quality sensors</li>
+                    </ul>
+                </div>
+
+                <h3>Benefits and Challenges</h3>
+                
+                <div class="info-box">
+                    <h4>Benefits:</h4>
+                    <ul>
+                        <li>100% heat capture for reuse applications</li>
+                        <li>Silent operation - no moving parts in servers</li>
+                        <li>Increased component reliability (no thermal cycling)</li>
+                        <li>Higher server density - no airflow requirements</li>
+                        <li>Protection from environmental contaminants</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <h4>Challenges:</h4>
+                    <ul>
+                        <li>Server warranty and OEM support concerns</li>
+                        <li>Specialized training for maintenance staff</li>
+                        <li>Higher initial investment</li>
+                        <li>Fluid compatibility testing required</li>
+                        <li>Limited vendor ecosystem</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: System Components -->
+            <div class="slide">
+                <h2>Liquid Cooling System Components</h2>
+                
+                <p>Understanding the key components of liquid cooling systems is essential for proper design, operation, and maintenance.</p>
+
+                <h3>1. Coolant Distribution Units (CDU)</h3>
+                
+                <div class="info-box">
+                    <h4>CDU Functions:</h4>
+                    <ul>
+                        <li><strong>Heat Exchange:</strong> Isolate IT loop from facility water</li>
+                        <li><strong>Pumping:</strong> Maintain flow and pressure to IT equipment</li>
+                        <li><strong>Filtration:</strong> Remove particulates from coolant</li>
+                        <li><strong>Monitoring:</strong> Flow, pressure, temperature sensors</li>
+                        <li><strong>Control:</strong> Maintain temperature and pressure setpoints</li>
+                    </ul>
+                </div>
+
+                <table>
+                    <tr>
+                        <th>CDU Type</th>
+                        <th>Capacity</th>
+                        <th>Application</th>
+                        <th>Features</th>
+                    </tr>
+                    <tr>
+                        <td><strong>In-Row</strong></td>
+                        <td>50-200kW</td>
+                        <td>1-2 racks</td>
+                        <td>Close-coupled, modular</td>
+                    </tr>
+                    <tr>
+                        <td><strong>End-of-Row</strong></td>
+                        <td>200-500kW</td>
+                        <td>4-8 racks</td>
+                        <td>Shared resource</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Centralized</strong></td>
+                        <td>500kW-2MW+</td>
+                        <td>Entire room</td>
+                        <td>N+1 redundancy</td>
+                    </tr>
+                </table>
+
+                <h3>2. Cold Plates and Cooling Blocks</h3>
+                
+                <div class="success-box">
+                    <h4>Cold Plate Technologies:</h4>
+                    <ul>
+                        <li><strong>Microchannel:</strong> Maximum heat transfer, higher pressure drop</li>
+                        <li><strong>Fin-Enhanced:</strong> Lower pressure drop, good performance</li>
+                        <li><strong>Vapor Chamber:</strong> Excellent heat spreading</li>
+                        <li><strong>Custom Designs:</strong> Optimized for specific processors</li>
+                        <li><strong>Materials:</strong> Copper (best), aluminum (lighter)</li>
+                    </ul>
+                </div>
+
+                <h3>3. Quick Disconnects</h3>
+                <ul>
+                    <li><strong>Dripless Design:</strong> No fluid loss during connection/disconnection</li>
+                    <li><strong>Blind-Mate:</strong> Automatic connection during server insertion</li>
+                    <li><strong>Manual:</strong> Push-to-connect or threaded designs</li>
+                    <li><strong>Materials:</strong> Brass, stainless steel, or engineered plastics</li>
+                    <li><strong>Flow Capacity:</strong> Match to server requirements (0.5-2 GPM typical)</li>
+                </ul>
+
+                <h3>4. Manifolds and Distribution</h3>
+                
+                <div class="info-box">
+                    <h4>Manifold Design Considerations:</h4>
+                    <ul>
+                        <li><strong>Flow Balancing:</strong> Equal distribution to all servers</li>
+                        <li><strong>Pressure Drop:</strong> Minimize to reduce pumping power</li>
+                        <li><strong>Serviceability:</strong> Individual server isolation valves</li>
+                        <li><strong>Monitoring:</strong> Flow meters for each branch</li>
+                        <li><strong>Materials:</strong> Copper, stainless steel, or PEX</li>
+                    </ul>
+                </div>
+
+                <h3>5. Monitoring and Control Systems</h3>
+                
+                <div class="warning-box">
+                    <h4>Critical Monitoring Points:</h4>
+                    <ul>
+                        <li><strong>Flow Rate:</strong> Each server and total system flow</li>
+                        <li><strong>Temperature:</strong> Supply, return, and differential</li>
+                        <li><strong>Pressure:</strong> System pressure and differential</li>
+                        <li><strong>Leak Detection:</strong> Rope sensors and point detectors</li>
+                        <li><strong>Fluid Quality:</strong> Conductivity, pH, particulates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Design and Implementation -->
+            <div class="slide">
+                <h2>Design and Implementation Best Practices</h2>
+                
+                <p>Successful liquid cooling deployment requires careful planning, design, and implementation following industry best practices.</p>
+
+                <h3>1. System Design Process</h3>
+                
+                <div class="info-box">
+                    <h4>Design Steps:</h4>
+                    <ul>
+                        <li><strong>Heat Load Analysis:</strong> Current and future IT loads</li>
+                        <li><strong>Technology Selection:</strong> Match cooling to workload</li>
+                        <li><strong>Hydraulic Design:</strong> Flow rates, pressure drops, pipe sizing</li>
+                        <li><strong>Redundancy Planning:</strong> N+1 or 2N as required</li>
+                        <li><strong>Integration Design:</strong> Facility water and power systems</li>
+                    </ul>
+                </div>
+
+                <h3>2. Infrastructure Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>System</th>
+                        <th>Requirements</th>
+                        <th>Considerations</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Facility Water</strong></td>
+                        <td>10-25°C supply typical</td>
+                        <td>Year-round availability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power</strong></td>
+                        <td>CDU pumps, controls</td>
+                        <td>Emergency power for pumps</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Floor Loading</strong></td>
+                        <td>150-300 lbs/sq ft</td>
+                        <td>Immersion tanks weight</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leak Protection</strong></td>
+                        <td>Detection and containment</td>
+                        <td>Under-floor systems</td>
+                    </tr>
+                </table>
+
+                <h3>3. Implementation Phases</h3>
+                
+                <div class="success-box">
+                    <h4>Phased Approach:</h4>
+                    <ul>
+                        <li><strong>Phase 1:</strong> Pilot deployment (1-2 racks)</li>
+                        <li><strong>Phase 2:</strong> Validate performance and procedures</li>
+                        <li><strong>Phase 3:</strong> Scale to row or pod</li>
+                        <li><strong>Phase 4:</strong> Full production deployment</li>
+                        <li><strong>Phase 5:</strong> Optimization and expansion</li>
+                    </ul>
+                </div>
+
+                <h3>4. Risk Mitigation</h3>
+                
+                <div class="danger-box">
+                    <h4>Key Risks and Mitigation:</h4>
+                    <ul>
+                        <li><strong>Leaks:</strong> Quality components, leak detection, containment</li>
+                        <li><strong>Compatibility:</strong> Test fluids with all materials</li>
+                        <li><strong>Skills Gap:</strong> Comprehensive training program</li>
+                        <li><strong>Vendor Lock-in:</strong> Standards-based approach</li>
+                        <li><strong>Scalability:</strong> Modular design philosophy</li>
+                    </ul>
+                </div>
+
+                <h3>5. Commissioning Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>Commissioning Steps:</h4>
+                    <ul>
+                        <li><strong>Pressure Testing:</strong> 1.5x operating pressure</li>
+                        <li><strong>Flushing:</strong> Remove debris and contaminants</li>
+                        <li><strong>Flow Balancing:</strong> Verify design flow rates</li>
+                        <li><strong>Control Verification:</strong> All sequences and alarms</li>
+                        <li><strong>Load Testing:</strong> Verify capacity at design conditions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Operations and Maintenance -->
+            <div class="slide">
+                <h2>Operations and Maintenance</h2>
+                
+                <p>Proper operation and maintenance procedures are critical for liquid cooling system reliability and longevity.</p>
+
+                <h3>1. Operational Procedures</h3>
+                
+                <div class="info-box">
+                    <h4>Daily Operations:</h4>
+                    <ul>
+                        <li><strong>System Monitoring:</strong> Temperature, flow, pressure checks</li>
+                        <li><strong>Alarm Response:</strong> Investigate and resolve promptly</li>
+                        <li><strong>Visual Inspection:</strong> Check for leaks or anomalies</li>
+                        <li><strong>Data Logging:</strong> Track trends and performance</li>
+                        <li><strong>Coordination:</strong> With IT for server changes</li>
+                    </ul>
+                </div>
+
+                <h3>2. Preventive Maintenance</h3>
+                
+                <table>
+                    <tr>
+                        <th>Frequency</th>
+                        <th>Task</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Weekly</strong></td>
+                        <td>System Check</td>
+                        <td>Pressures, temperatures, flow rates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monthly</strong></td>
+                        <td>Fluid Analysis</td>
+                        <td>Quality, contamination, additives</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quarterly</strong></td>
+                        <td>Filter Service</td>
+                        <td>Clean/replace filters, strainers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annual</strong></td>
+                        <td>Deep Service</td>
+                        <td>Heat exchanger cleaning, pump service</td>
+                    </tr>
+                </table>
+
+                <h3>3. Fluid Management</h3>
+                
+                <div class="success-box">
+                    <h4>Fluid Quality Parameters:</h4>
+                    <ul>
+                        <li><strong>Conductivity:</strong> <5 μS/cm for deionized water</li>
+                        <li><strong>pH:</strong> 7.0-8.5 typical range</li>
+                        <li><strong>Particulates:</strong> <10 micron filtration</li>
+                        <li><strong>Biological:</strong> Biocide treatment as needed</li>
+                        <li><strong>Corrosion Inhibitors:</strong> Maintain proper levels</li>
+                    </ul>
+                </div>
+
+                <h3>4. Troubleshooting Guide</h3>
+                
+                <div class="warning-box">
+                    <h4>Common Issues and Solutions:</h4>
+                    <ul>
+                        <li><strong>Low Flow:</strong> Check filters, pumps, valves</li>
+                        <li><strong>High Temperature:</strong> Verify CDU operation, facility water</li>
+                        <li><strong>Pressure Loss:</strong> Look for leaks, check expansion tank</li>
+                        <li><strong>Poor Heat Transfer:</strong> Check for air, fouling, flow distribution</li>
+                        <li><strong>Alarms:</strong> Follow escalation procedures</li>
+                    </ul>
+                </div>
+
+                <h3>5. Safety Procedures</h3>
+                
+                <div class="danger-box">
+                    <h4>Safety Requirements:</h4>
+                    <ul>
+                        <li><strong>Lockout/Tagout:</strong> For all maintenance work</li>
+                        <li><strong>PPE:</strong> Safety glasses, gloves for fluid handling</li>
+                        <li><strong>Spill Response:</strong> Kits and procedures in place</li>
+                        <li><strong>Electrical Safety:</strong> De-energize servers before service</li>
+                        <li><strong>Emergency Procedures:</strong> Leak response and shutdown</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Advanced Cooling Technologies</h4>
+                    <ul>
+                        <li><strong>Chip-Integrated Cooling:</strong> Microfluidics within processors</li>
+                        <li><strong>Phase-Change Materials:</strong> Thermal energy storage</li>
+                        <li><strong>Nanofluids:</strong> Enhanced heat transfer properties</li>
+                        <li><strong>Direct Refrigerant Cooling:</strong> Eliminate secondary loops</li>
+                        <li><strong>Hybrid Systems:</strong> Combined air and liquid cooling</li>
+                    </ul>
+                </div>
+
+                <h3>2. Industry Standardization</h3>
+                <ul>
+                    <li><strong>OCP Standards:</strong> Open Compute Project specifications</li>
+                    <li><strong>ASHRAE Guidelines:</strong> Liquid cooling best practices</li>
+                    <li><strong>Connector Standards:</strong> Universal quick disconnects</li>
+                    <li><strong>Fluid Standards:</strong> Compatible coolant specifications</li>
+                    <li><strong>Safety Standards:</strong> UL and regulatory compliance</li>
+                </ul>
+
+                <h3>3. Sustainability Focus</h3>
+                <div class="info-box">
+                    <h4>Green Initiatives:</h4>
+                    <ul>
+                        <li><strong>Heat Reuse:</strong> District heating, agriculture, aquaculture</li>
+                        <li><strong>Water Conservation:</strong> Closed-loop systems</li>
+                        <li><strong>Natural Cooling:</strong> Free cooling integration</li>
+                        <li><strong>Renewable Energy:</strong> Solar-powered cooling</li>
+                        <li><strong>Carbon Neutral:</strong> Offset through efficiency gains</li>
+                    </ul>
+                </div>
+
+                <h3>4. Market Drivers</h3>
+                
+                <table>
+                    <tr>
+                        <th>Driver</th>
+                        <th>Impact</th>
+                        <th>Timeline</th>
+                    </tr>
+                    <tr>
+                        <td><strong>AI/ML Workloads</strong></td>
+                        <td>400W+ GPUs standard</td>
+                        <td>Now</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Edge Computing</strong></td>
+                        <td>Compact liquid cooling</td>
+                        <td>2-3 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantum Computing</strong></td>
+                        <td>Cryogenic cooling</td>
+                        <td>5+ years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Regulations</strong></td>
+                        <td>Efficiency mandates</td>
+                        <td>Ongoing</td>
+                    </tr>
+                </table>
+
+                <h3>5. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Start with pilot projects to gain experience</li>
+                        <li>Partner with experienced vendors and consultants</li>
+                        <li>Invest in staff training and skill development</li>
+                        <li>Design for flexibility and future expansion</li>
+                        <li>Focus on total cost of ownership, not just CapEx</li>
+                        <li>Implement comprehensive monitoring and analytics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Liquid cooling enables higher density computing than air cooling</li>
+                        <li>Multiple technologies available: D2C, immersion, rear door</li>
+                        <li>Water removes heat 3,000-4,000x more efficiently than air</li>
+                        <li>Proper design and implementation critical for success</li>
+                        <li>Maintenance and fluid management ensure reliability</li>
+                        <li>Industry moving toward liquid cooling for sustainability</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Start Small:</strong> Pilot projects reduce risk</li>
+                    <li><strong>Safety First:</strong> Proper procedures prevent incidents</li>
+                    <li><strong>Quality Matters:</strong> Use proven components</li>
+                    <li><strong>Plan Ahead:</strong> Design for growth and change</li>
+                    <li><strong>Stay Current:</strong> Technology evolving rapidly</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Assess your facility's liquid cooling readiness</li>
+                        <li>Identify high-density zones for pilot projects</li>
+                        <li>Engage with liquid cooling vendors and consultants</li>
+                        <li>Develop staff training plans</li>
+                        <li>Create business case for liquid cooling adoption</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations in liquid cooling technology.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE Technical Committee 9.9 - Liquid Cooling Guidelines (2021)</li>
+                        <li>• Open Compute Project - Liquid Cooling Specifications v2.0</li>
+                        <li>• The Green Grid - Liquid Cooling Metrics and Best Practices</li>
+                        <li>• ASHRAE Datacom Series Book 14 - Liquid Cooling Guidelines</li>
+                        <li>• Intel Technology Providers - Direct Liquid Cooling Guide</li>
+                        <li>• NVIDIA DGX Liquid Cooling Implementation Guide</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• ASHRAE TC 9.9 - Mission Critical Facilities</li>
+                        <li>• Open Compute Project (OCP) - Advanced Cooling Solutions</li>
+                        <li>• The Green Grid - Data Center Efficiency Consortium</li>
+                        <li>• Uptime Institute - Data Center Standards</li>
+                        <li>• AFCOM - Data Center Professionals Association</li>
+                        <li>• iMasons - Infrastructure Masons</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Liquid Cooling in Data Centers" - Springer (2022)</li>
+                        <li>• "Direct-to-Chip Liquid Cooling" - IEEE Computer Society</li>
+                        <li>• "Immersion Cooling Best Practices" - Data Center Dynamics</li>
+                        <li>• Vendor white papers: CoolIT, Motivair, Vertiv, Asetek</li>
+                        <li>• Case studies from hyperscale operators</li>
+                        <li>• DOE Better Buildings - Liquid Cooling Case Studies</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from equipment manufacturers, research institutions, and industry best practices. All specifications, efficiency values, and operational parameters reflect current industry standards as of 2024. Technology in this field is rapidly evolving, so always consult latest vendor specifications and industry guidelines for specific implementations.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Liquid Cooling Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. How much more efficient is water at removing heat compared to air?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> 10-20 times</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> 100-200 times</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> 3,000-4,000 times</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> 10,000+ times</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What percentage of server heat can direct-to-chip cooling typically remove?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> 30-40%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> 50-60%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> 70-80%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> 95-100%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What does CDU stand for in liquid cooling systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Central Distribution Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Coolant Distribution Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Cooling Delivery Unit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Computer Distribution Unit</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. Which type of immersion cooling uses phase change for heat removal?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Single-phase immersion</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Two-phase immersion</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Direct-to-chip</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Rear door heat exchanger</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the typical supply temperature range for direct-to-chip cooling?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 5-10°C</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 15-45°C</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 50-60°C</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 65-75°C</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. Which component provides dripless connection for server maintenance?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Cold plate</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Manifold</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Quick disconnect</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> CDU</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the main advantage of dielectric fluids in IT cooling loops?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Lower cost</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Better heat transfer</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Non-conductive properties</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Higher boiling point</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What PUE can typically be achieved with liquid cooling systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> 1.8-2.0</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> 1.4-1.6</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> 1.1-1.2</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> 0.8-1.0</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the typical flow rate per server for direct-to-chip cooling?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 0.1-0.3 GPM</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 0.5-2.0 GPM</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 3.0-5.0 GPM</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 10-15 GPM</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. Which liquid cooling method is best for retrofit applications?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Two-phase immersion</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Single-phase immersion</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Direct-to-chip</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> Rear door heat exchanger</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'c',  // 3,000-4,000 times
+            q2: 'c',  // 70-80%
+            q3: 'b',  // Coolant Distribution Unit
+            q4: 'b',  // Two-phase immersion
+            q5: 'b',  // 15-45°C
+            q6: 'c',  // Quick disconnect
+            q7: 'c',  // Non-conductive properties
+            q8: 'c',  // 1.1-1.2
+            q9: 'b',  // 0.5-2.0 GPM
+            q10: 'd' // Rear door heat exchanger
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Liquid Cooling Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

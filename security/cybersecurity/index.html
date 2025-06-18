@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #d32f2f;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #d32f2f;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #f44336;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #f44336;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #d32f2f, #f44336);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #ffebee;
+            border-left: 5px solid #d32f2f;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #d32f2f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Cybersecurity Training Module</h1>
+            <p>Data Center 101 - Protecting Critical Digital Infrastructure</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Data Center Cybersecurity Training</h2>
+                <p>Welcome to this comprehensive training module on Cybersecurity for data centers. This course will provide you with essential knowledge about protecting critical digital infrastructure from cyber threats, implementing defense strategies, and maintaining compliance with security standards.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the data center threat landscape</li>
+                        <li>Learn about defense-in-depth security architecture</li>
+                        <li>Recognize physical-cyber security convergence</li>
+                        <li>Understand network security and segmentation</li>
+                        <li>Learn about security monitoring and incident response</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of IT infrastructure</p>
+            </div>
+
+            <!-- Slide 2: Data Center Threat Landscape -->
+            <div class="slide">
+                <h2>Data Center Threat Landscape</h2>
+                
+                <p>Data centers face unique cybersecurity challenges due to their critical role in business operations and the valuable data they contain.</p>
+
+                <h3>Key Threat Categories:</h3>
+                
+                <div class="danger-box">
+                    <h4>External Threats:</h4>
+                    <ul>
+                        <li><strong>Ransomware:</strong> Encryption-based attacks demanding payment</li>
+                        <li><strong>DDoS Attacks:</strong> Service disruption through traffic flooding</li>
+                        <li><strong>APT Groups:</strong> Advanced persistent threats targeting data</li>
+                        <li><strong>Supply Chain Attacks:</strong> Compromising vendor systems</li>
+                        <li><strong>Zero-Day Exploits:</strong> Unknown vulnerabilities</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Insider Threats:</h4>
+                    <ul>
+                        <li><strong>Malicious Insiders:</strong> Employees with harmful intent</li>
+                        <li><strong>Negligent Users:</strong> Accidental security breaches</li>
+                        <li><strong>Compromised Credentials:</strong> Stolen login information</li>
+                        <li><strong>Third-Party Access:</strong> Vendor and contractor risks</li>
+                        <li><strong>Privileged Account Abuse:</strong> Misuse of admin access</li>
+                    </ul>
+                </div>
+
+                <h3>Attack Vectors Specific to Data Centers:</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Data Center Attack Surface</text>
+                        
+                        <!-- Data Center Core -->
+                        <rect x="300" y="200" width="200" height="100" fill="#d32f2f" stroke="#b71c1c" stroke-width="2" rx="10"/>
+                        <text x="400" y="240" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Data Center</text>
+                        <text x="400" y="260" text-anchor="middle" fill="white" font-size="14">Critical Assets</text>
+                        
+                        <!-- Attack Vectors -->
+                        <!-- Network -->
+                        <rect x="50" y="80" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="125" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Network</text>
+                        <text x="125" y="125" text-anchor="middle" fill="white" font-size="12">Internet/WAN</text>
+                        
+                        <!-- Physical -->
+                        <rect x="250" y="50" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="325" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Physical</text>
+                        <text x="325" y="95" text-anchor="middle" fill="white" font-size="12">Facility Access</text>
+                        
+                        <!-- Applications -->
+                        <rect x="450" y="50" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="525" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Applications</text>
+                        <text x="525" y="95" text-anchor="middle" fill="white" font-size="12">Web/APIs</text>
+                        
+                        <!-- Supply Chain -->
+                        <rect x="650" y="80" width="130" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="715" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Supply Chain</text>
+                        <text x="715" y="125" text-anchor="middle" fill="white" font-size="12">Vendors</text>
+                        
+                        <!-- Users -->
+                        <rect x="100" y="360" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="175" y="385" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Users</text>
+                        <text x="175" y="405" text-anchor="middle" fill="white" font-size="12">Internal/Remote</text>
+                        
+                        <!-- Cloud -->
+                        <rect x="300" y="380" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="375" y="405" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Cloud Services</text>
+                        <text x="375" y="425" text-anchor="middle" fill="white" font-size="12">Hybrid/Multi</text>
+                        
+                        <!-- IoT/OT -->
+                        <rect x="500" y="360" width="150" height="60" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="575" y="385" text-anchor="middle" fill="white" font-size="14" font-weight="bold">IoT/OT</text>
+                        <text x="575" y="405" text-anchor="middle" fill="white" font-size="12">Sensors/BMS</text>
+                        
+                        <!-- Attack arrows -->
+                        <path d="M 175 140 L 330 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 325 110 L 380 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 525 110 L 420 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 650 140 L 470 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 250 360 L 330 300" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 375 380 L 400 300" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 500 360 L 470 300" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Multiple attack vectors converge on data center infrastructure</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Critical Data Center Assets at Risk:</h4>
+                    <ul>
+                        <li><strong>Customer Data:</strong> PII, financial records, health information</li>
+                        <li><strong>Intellectual Property:</strong> Trade secrets, source code</li>
+                        <li><strong>Infrastructure:</strong> Servers, storage, network equipment</li>
+                        <li><strong>Availability:</strong> Service uptime and business continuity</li>
+                        <li><strong>Reputation:</strong> Trust and brand value</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Defense-in-Depth Architecture -->
+            <div class="slide">
+                <h2>Defense-in-Depth Security Architecture</h2>
+                
+                <p>Defense-in-depth creates multiple layers of security controls to protect data center assets, ensuring that if one layer fails, others continue to provide protection.</p>
+
+                <h3>Security Layers:</h3>
+                
+                <div class="info-box">
+                    <h4>1. Perimeter Security:</h4>
+                    <ul>
+                        <li><strong>Firewalls:</strong> Network traffic filtering and inspection</li>
+                        <li><strong>IDS/IPS:</strong> Intrusion detection and prevention</li>
+                        <li><strong>DDoS Protection:</strong> Traffic scrubbing and mitigation</li>
+                        <li><strong>Web Application Firewalls:</strong> Application-layer protection</li>
+                        <li><strong>Email Security:</strong> Anti-spam and anti-phishing</li>
+                    </ul>
+                </div>
+
+                <h3>2. Network Security Layers</h3>
+                
+                <table>
+                    <tr>
+                        <th>Layer</th>
+                        <th>Components</th>
+                        <th>Function</th>
+                    </tr>
+                    <tr>
+                        <td><strong>DMZ</strong></td>
+                        <td>Public-facing servers</td>
+                        <td>Isolate external services</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Application</strong></td>
+                        <td>Web/app servers</td>
+                        <td>Business logic isolation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database</strong></td>
+                        <td>Data repositories</td>
+                        <td>Sensitive data protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Management</strong></td>
+                        <td>Admin systems</td>
+                        <td>Privileged access control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>SAN/NAS</td>
+                        <td>Data-at-rest security</td>
+                    </tr>
+                </table>
+
+                <h3>3. Host-Based Security</h3>
+                
+                <div class="success-box">
+                    <h4>Endpoint Protection:</h4>
+                    <ul>
+                        <li><strong>Antivirus/Anti-malware:</strong> Signature and behavior-based detection</li>
+                        <li><strong>Host Firewalls:</strong> Local traffic filtering</li>
+                        <li><strong>HIPS:</strong> Host intrusion prevention</li>
+                        <li><strong>Application Control:</strong> Whitelisting and sandboxing</li>
+                        <li><strong>Patch Management:</strong> Automated updates and vulnerability remediation</li>
+                    </ul>
+                </div>
+
+                <h3>4. Data Security</h3>
+                <ul>
+                    <li><strong>Encryption at Rest:</strong> Full disk and database encryption</li>
+                    <li><strong>Encryption in Transit:</strong> TLS/SSL for all communications</li>
+                    <li><strong>Data Loss Prevention:</strong> Monitor and prevent data exfiltration</li>
+                    <li><strong>Backup Security:</strong> Encrypted, immutable backups</li>
+                    <li><strong>Key Management:</strong> HSM and secure key storage</li>
+                </ul>
+
+                <h3>5. Identity and Access Management</h3>
+                
+                <div class="warning-box">
+                    <h4>Access Control Measures:</h4>
+                    <ul>
+                        <li><strong>Multi-Factor Authentication:</strong> Something you know + have + are</li>
+                        <li><strong>Privileged Access Management:</strong> Just-in-time access</li>
+                        <li><strong>Role-Based Access Control:</strong> Least privilege principle</li>
+                        <li><strong>Identity Federation:</strong> Single sign-on with strong authentication</li>
+                        <li><strong>Session Management:</strong> Timeout and monitoring</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Network Security and Segmentation -->
+            <div class="slide">
+                <h2>Network Security and Segmentation</h2>
+                
+                <p>Proper network segmentation is crucial for containing breaches and protecting critical assets within the data center.</p>
+
+                <h3>1. Network Segmentation Strategies</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">Data Center Network Segmentation</text>
+                        
+                        <!-- Internet -->
+                        <rect x="350" y="50" width="100" height="40" fill="#666" stroke="#333" stroke-width="2" rx="5"/>
+                        <text x="400" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Internet</text>
+                        
+                        <!-- Firewall 1 -->
+                        <rect x="325" y="110" width="150" height="30" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="400" y="130" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Perimeter Firewall</text>
+                        
+                        <!-- DMZ -->
+                        <rect x="250" y="160" width="300" height="60" fill="#FFA726" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="400" y="185" text-anchor="middle" fill="white" font-size="14" font-weight="bold">DMZ</text>
+                        <text x="400" y="205" text-anchor="middle" fill="white" font-size="12">Web Servers, Proxies</text>
+                        
+                        <!-- Firewall 2 -->
+                        <rect x="325" y="240" width="150" height="30" fill="#FF5722" stroke="#D84315" stroke-width="2" rx="5"/>
+                        <text x="400" y="260" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Internal Firewall</text>
+                        
+                        <!-- Application Tier -->
+                        <rect x="100" y="290" width="200" height="60" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="200" y="315" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Application Tier</text>
+                        <text x="200" y="335" text-anchor="middle" fill="white" font-size="12">App Servers</text>
+                        
+                        <!-- Database Tier -->
+                        <rect x="350" y="290" width="200" height="60" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="450" y="315" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Database Tier</text>
+                        <text x="450" y="335" text-anchor="middle" fill="white" font-size="12">Critical Data</text>
+                        
+                        <!-- Management -->
+                        <rect x="600" y="290" width="150" height="60" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+                        <text x="675" y="315" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Management</text>
+                        <text x="675" y="335" text-anchor="middle" fill="white" font-size="12">Admin Access</text>
+                        
+                        <!-- Storage Network -->
+                        <rect x="225" y="380" width="350" height="60" fill="#607D8B" stroke="#455A64" stroke-width="2" rx="5"/>
+                        <text x="400" y="405" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Storage Network</text>
+                        <text x="400" y="425" text-anchor="middle" fill="white" font-size="12">Isolated SAN/NAS</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 400 90 L 400 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 140 L 400 160" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 220 L 400 240" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 270 L 200 290" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 270 L 450 290" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 475 270 L 600 290" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 200 350 L 300 380" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 450 350 L 400 380" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    </svg>
+                </div>
+
+                <h3>2. Micro-Segmentation</h3>
+                
+                <div class="info-box">
+                    <h4>Zero Trust Network Principles:</h4>
+                    <ul>
+                        <li><strong>Never Trust, Always Verify:</strong> No implicit trust based on location</li>
+                        <li><strong>Least Privilege Access:</strong> Minimal necessary permissions</li>
+                        <li><strong>Assume Breach:</strong> Design assuming compromise has occurred</li>
+                        <li><strong>Verify Explicitly:</strong> Continuous authentication and authorization</li>
+                        <li><strong>Inspect All Traffic:</strong> East-west and north-south</li>
+                    </ul>
+                </div>
+
+                <h3>3. Network Security Controls</h3>
+                
+                <table>
+                    <tr>
+                        <th>Control Type</th>
+                        <th>Technology</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Control Lists</strong></td>
+                        <td>Router/Switch ACLs</td>
+                        <td>Basic traffic filtering</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VLANs</strong></td>
+                        <td>802.1Q tagging</td>
+                        <td>Layer 2 segmentation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Private VLANs</strong></td>
+                        <td>Isolated ports</td>
+                        <td>Host isolation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VRF</strong></td>
+                        <td>Virtual routing</td>
+                        <td>Layer 3 isolation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SDN</strong></td>
+                        <td>Software-defined</td>
+                        <td>Dynamic segmentation</td>
+                    </tr>
+                </table>
+
+                <h3>4. Network Monitoring</h3>
+                
+                <div class="success-box">
+                    <h4>Visibility Requirements:</h4>
+                    <ul>
+                        <li><strong>NetFlow/sFlow:</strong> Traffic flow analysis</li>
+                        <li><strong>Packet Capture:</strong> Deep packet inspection</li>
+                        <li><strong>SPAN/TAP:</strong> Traffic mirroring for analysis</li>
+                        <li><strong>Network Behavior Analysis:</strong> Baseline and anomaly detection</li>
+                        <li><strong>SSL/TLS Inspection:</strong> Encrypted traffic visibility</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Physical-Cyber Convergence -->
+            <div class="slide">
+                <h2>Physical-Cyber Security Convergence</h2>
+                
+                <p>Modern data centers require integrated physical and cybersecurity strategies to protect against blended threats.</p>
+
+                <h3>1. Converged Threat Scenarios</h3>
+                
+                <div class="danger-box">
+                    <h4>Blended Attack Examples:</h4>
+                    <ul>
+                        <li><strong>USB Drop Attack:</strong> Physical access to plant malware</li>
+                        <li><strong>Rogue Device Insertion:</strong> Network tap or keylogger installation</li>
+                        <li><strong>Insider Data Theft:</strong> Physical access for digital exfiltration</li>
+                        <li><strong>Social Engineering:</strong> Tailgating for system access</li>
+                        <li><strong>Supply Chain Tampering:</strong> Hardware implants</li>
+                    </ul>
+                </div>
+
+                <h3>2. Integrated Security Controls</h3>
+                
+                <table>
+                    <tr>
+                        <th>Physical Control</th>
+                        <th>Cyber Control</th>
+                        <th>Integration Benefit</th>
+                    </tr>
+                    <tr>
+                        <td>Badge Access</td>
+                        <td>Network Login</td>
+                        <td>Correlated access patterns</td>
+                    </tr>
+                    <tr>
+                        <td>Video Surveillance</td>
+                        <td>User Activity Monitoring</td>
+                        <td>Behavior correlation</td>
+                    </tr>
+                    <tr>
+                        <td>Biometric Auth</td>
+                        <td>MFA Systems</td>
+                        <td>Strong identity verification</td>
+                    </tr>
+                    <tr>
+                        <td>Rack Locks</td>
+                        <td>Port Security</td>
+                        <td>Hardware protection</td>
+                    </tr>
+                    <tr>
+                        <td>Environmental</td>
+                        <td>System Monitoring</td>
+                        <td>Holistic visibility</td>
+                    </tr>
+                </table>
+
+                <h3>3. IT/OT Security Convergence</h3>
+                
+                <div class="info-box">
+                    <h4>Operational Technology Risks:</h4>
+                    <ul>
+                        <li><strong>BMS Systems:</strong> HVAC, power, environmental controls</li>
+                        <li><strong>Industrial Protocols:</strong> Modbus, BACnet vulnerabilities</li>
+                        <li><strong>Legacy Systems:</strong> Unpatched, unsupported platforms</li>
+                        <li><strong>Air-Gapped Myths:</strong> Infected media and maintenance laptops</li>
+                        <li><strong>Supply Chain:</strong> Vendor access and third-party risks</li>
+                    </ul>
+                </div>
+
+                <h3>4. Converged Security Operations</h3>
+                
+                <div class="success-box">
+                    <h4>Unified SOC Benefits:</h4>
+                    <ul>
+                        <li>Correlated threat intelligence across domains</li>
+                        <li>Faster incident detection and response</li>
+                        <li>Reduced security gaps between teams</li>
+                        <li>Comprehensive risk assessment</li>
+                        <li>Integrated compliance reporting</li>
+                    </ul>
+                </div>
+
+                <h3>5. Best Practices for Convergence</h3>
+                <ul>
+                    <li><strong>Unified Policies:</strong> Consistent security standards</li>
+                    <li><strong>Cross-Training:</strong> Physical and cyber team collaboration</li>
+                    <li><strong>Integrated Tools:</strong> SIEM with physical security data</li>
+                    <li><strong>Joint Exercises:</strong> Combined incident response drills</li>
+                    <li><strong>Shared Metrics:</strong> Holistic security KPIs</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Security Monitoring and SIEM -->
+            <div class="slide">
+                <h2>Security Monitoring and SIEM</h2>
+                
+                <p>Continuous monitoring and security information event management (SIEM) are essential for detecting and responding to threats in real-time.</p>
+
+                <h3>1. SIEM Architecture</h3>
+                
+                <div class="info-box">
+                    <h4>Core SIEM Components:</h4>
+                    <ul>
+                        <li><strong>Log Collection:</strong> Centralized log aggregation</li>
+                        <li><strong>Normalization:</strong> Standardized event formatting</li>
+                        <li><strong>Correlation Engine:</strong> Pattern matching and analytics</li>
+                        <li><strong>Storage:</strong> Long-term retention and compliance</li>
+                        <li><strong>Reporting:</strong> Dashboards and compliance reports</li>
+                    </ul>
+                </div>
+
+                <h3>2. Data Sources for Monitoring</h3>
+                
+                <table>
+                    <tr>
+                        <th>Source Type</th>
+                        <th>Examples</th>
+                        <th>Key Events</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Network Devices</strong></td>
+                        <td>Firewalls, routers, switches</td>
+                        <td>Traffic patterns, blocks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Servers</strong></td>
+                        <td>Windows, Linux, Unix</td>
+                        <td>Logins, processes, changes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Applications</strong></td>
+                        <td>Web servers, databases</td>
+                        <td>Access, errors, performance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Tools</strong></td>
+                        <td>AV, IDS/IPS, DLP</td>
+                        <td>Detections, blocks, alerts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Physical Security</strong></td>
+                        <td>Badge, video, sensors</td>
+                        <td>Access, motion, alarms</td>
+                    </tr>
+                </table>
+
+                <h3>3. Threat Detection Use Cases</h3>
+                
+                <div class="warning-box">
+                    <h4>Critical Detection Scenarios:</h4>
+                    <ul>
+                        <li><strong>Brute Force Attacks:</strong> Multiple failed login attempts</li>
+                        <li><strong>Data Exfiltration:</strong> Unusual outbound data transfers</li>
+                        <li><strong>Privilege Escalation:</strong> Unauthorized admin access</li>
+                        <li><strong>Lateral Movement:</strong> Abnormal system-to-system access</li>
+                        <li><strong>Malware Indicators:</strong> Known bad IPs, domains, hashes</li>
+                    </ul>
+                </div>
+
+                <h3>4. Security Orchestration (SOAR)</h3>
+                
+                <div class="success-box">
+                    <h4>Automated Response Actions:</h4>
+                    <ul>
+                        <li><strong>Containment:</strong> Isolate infected systems</li>
+                        <li><strong>Investigation:</strong> Gather forensic data</li>
+                        <li><strong>Remediation:</strong> Block IPs, disable accounts</li>
+                        <li><strong>Communication:</strong> Alert teams, create tickets</li>
+                        <li><strong>Documentation:</strong> Generate incident reports</li>
+                    </ul>
+                </div>
+
+                <h3>5. Key Performance Indicators</h3>
+                <ul>
+                    <li><strong>Mean Time to Detect (MTTD):</strong> Speed of threat identification</li>
+                    <li><strong>Mean Time to Respond (MTTR):</strong> Incident resolution speed</li>
+                    <li><strong>False Positive Rate:</strong> Alert accuracy</li>
+                    <li><strong>Coverage:</strong> Percentage of systems monitored</li>
+                    <li><strong>Compliance:</strong> Log retention and reporting</li>
+                </ul>
+            </div>
+
+            <!-- Slide 7: Incident Response -->
+            <div class="slide">
+                <h2>Incident Response Planning</h2>
+                
+                <p>A well-defined incident response plan ensures rapid, effective action when security incidents occur in the data center.</p>
+
+                <h3>1. Incident Response Phases</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#d32f2f">NIST Incident Response Lifecycle</text>
+                        
+                        <!-- Preparation -->
+                        <rect x="50" y="80" width="150" height="80" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="125" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">1. Preparation</text>
+                        <text x="125" y="130" text-anchor="middle" fill="white" font-size="11">• IR Plan</text>
+                        <text x="125" y="145" text-anchor="middle" fill="white" font-size="11">• Tools • Training</text>
+                        
+                        <!-- Detection -->
+                        <rect x="250" y="80" width="150" height="80" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="325" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">2. Detection &</text>
+                        <text x="325" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Analysis</text>
+                        <text x="325" y="145" text-anchor="middle" fill="white" font-size="11">• Alerts • Triage</text>
+                        
+                        <!-- Containment -->
+                        <rect x="450" y="80" width="150" height="80" fill="#FF9800" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="525" y="105" text-anchor="middle" fill="white" font-size="14" font-weight="bold">3. Containment,</text>
+                        <text x="525" y="120" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Eradication &</text>
+                        <text x="525" y="135" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Recovery</text>
+                        <text x="525" y="150" text-anchor="middle" fill="white" font-size="11">• Isolate • Clean</text>
+                        
+                        <!-- Post-Incident -->
+                        <rect x="650" y="80" width="130" height="80" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+                        <text x="715" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">4. Post-</text>
+                        <text x="715" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Incident</text>
+                        <text x="715" y="145" text-anchor="middle" fill="white" font-size="11">• Lessons</text>
+                        
+                        <!-- Cycle arrows -->
+                        <path d="M 200 120 L 250 120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 120 L 450 120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 600 120 L 650 120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Feedback loop -->
+                        <path d="M 715 160 Q 715 250, 400 250 Q 125 250, 125 160" stroke="#666" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                        <text x="400" y="270" text-anchor="middle" font-size="12" fill="#666">Continuous Improvement</text>
+                    </svg>
+                </div>
+
+                <h3>2. Incident Response Team</h3>
+                
+                <table>
+                    <tr>
+                        <th>Role</th>
+                        <th>Responsibilities</th>
+                        <th>Skills Required</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Incident Commander</strong></td>
+                        <td>Overall coordination</td>
+                        <td>Leadership, decision-making</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Analyst</strong></td>
+                        <td>Technical investigation</td>
+                        <td>Forensics, malware analysis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Admin</strong></td>
+                        <td>System remediation</td>
+                        <td>OS, network, applications</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Legal/Compliance</strong></td>
+                        <td>Regulatory requirements</td>
+                        <td>Laws, regulations, contracts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communications</strong></td>
+                        <td>Stakeholder updates</td>
+                        <td>Clear communication</td>
+                    </tr>
+                </table>
+
+                <h3>3. Incident Classification</h3>
+                
+                <div class="info-box">
+                    <h4>Severity Levels:</h4>
+                    <ul>
+                        <li><strong>Critical:</strong> Business-critical systems compromised</li>
+                        <li><strong>High:</strong> Significant data breach or service impact</li>
+                        <li><strong>Medium:</strong> Limited impact, contained threat</li>
+                        <li><strong>Low:</strong> Minor security event, no data loss</li>
+                        <li><strong>Informational:</strong> Suspicious activity requiring monitoring</li>
+                    </ul>
+                </div>
+
+                <h3>4. Response Procedures</h3>
+                
+                <div class="danger-box">
+                    <h4>Critical First Steps:</h4>
+                    <ul>
+                        <li>Verify the incident is real (not false positive)</li>
+                        <li>Assess scope and impact</li>
+                        <li>Preserve evidence for forensics</li>
+                        <li>Contain the threat to prevent spread</li>
+                        <li>Notify stakeholders per escalation matrix</li>
+                    </ul>
+                </div>
+
+                <h3>5. Recovery and Lessons Learned</h3>
+                <ul>
+                    <li><strong>System Restoration:</strong> Clean rebuild from known-good backups</li>
+                    <li><strong>Monitoring Enhancement:</strong> Improved detection rules</li>
+                    <li><strong>Process Improvement:</strong> Update response procedures</li>
+                    <li><strong>Training Updates:</strong> Address identified gaps</li>
+                    <li><strong>Tool Enhancement:</strong> New capabilities needed</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Compliance and Regulations -->
+            <div class="slide">
+                <h2>Compliance and Security Standards</h2>
+                
+                <p>Data centers must comply with various regulations and standards based on the types of data they process and their geographic locations.</p>
+
+                <h3>1. Major Compliance Frameworks</h3>
+                
+                <table>
+                    <tr>
+                        <th>Framework</th>
+                        <th>Scope</th>
+                        <th>Key Requirements</th>
+                    </tr>
+                    <tr>
+                        <td><strong>PCI DSS</strong></td>
+                        <td>Payment card data</td>
+                        <td>Encryption, access control, monitoring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HIPAA</strong></td>
+                        <td>Healthcare data</td>
+                        <td>PHI protection, audit trails, encryption</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GDPR</strong></td>
+                        <td>EU personal data</td>
+                        <td>Privacy by design, data protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SOC 2</strong></td>
+                        <td>Service providers</td>
+                        <td>Security, availability, confidentiality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ISO 27001</strong></td>
+                        <td>Information security</td>
+                        <td>ISMS, risk management, controls</td>
+                    </tr>
+                </table>
+
+                <h3>2. Security Control Families</h3>
+                
+                <div class="info-box">
+                    <h4>NIST 800-53 Control Categories:</h4>
+                    <ul>
+                        <li><strong>Access Control (AC):</strong> User permissions and authentication</li>
+                        <li><strong>Audit and Accountability (AU):</strong> Logging and monitoring</li>
+                        <li><strong>Security Assessment (CA):</strong> Testing and validation</li>
+                        <li><strong>Incident Response (IR):</strong> Detection and handling</li>
+                        <li><strong>System and Communications Protection (SC):</strong> Network security</li>
+                    </ul>
+                </div>
+
+                <h3>3. Audit Preparation</h3>
+                
+                <div class="success-box">
+                    <h4>Documentation Requirements:</h4>
+                    <ul>
+                        <li><strong>Policies and Procedures:</strong> Current, approved documentation</li>
+                        <li><strong>Evidence Collection:</strong> Logs, reports, test results</li>
+                        <li><strong>Gap Analysis:</strong> Identified deficiencies and remediation</li>
+                        <li><strong>Control Testing:</strong> Proof of implementation</li>
+                        <li><strong>Continuous Monitoring:</strong> Ongoing compliance verification</li>
+                    </ul>
+                </div>
+
+                <h3>4. Data Protection Requirements</h3>
+                <ul>
+                    <li><strong>Data Classification:</strong> Public, internal, confidential, restricted</li>
+                    <li><strong>Encryption Standards:</strong> AES-256, TLS 1.2+</li>
+                    <li><strong>Key Management:</strong> HSM, key rotation, escrow</li>
+                    <li><strong>Data Retention:</strong> Defined periods, secure deletion</li>
+                    <li><strong>Cross-Border Transfer:</strong> Legal requirements, adequacy</li>
+                </ul>
+
+                <h3>5. Compliance Automation</h3>
+                
+                <div class="warning-box">
+                    <h4>Continuous Compliance Tools:</h4>
+                    <ul>
+                        <li>Configuration management and drift detection</li>
+                        <li>Automated compliance scanning</li>
+                        <li>Policy as code implementation</li>
+                        <li>Real-time compliance dashboards</li>
+                        <li>Automated evidence collection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Best Practices and Future Trends -->
+            <div class="slide">
+                <h2>Cybersecurity Best Practices and Future Trends</h2>
+                
+                <h3>Current Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Essential Security Practices:</h4>
+                    <ul>
+                        <li>Implement Zero Trust architecture principles</li>
+                        <li>Maintain comprehensive asset inventory</li>
+                        <li>Automate security operations where possible</li>
+                        <li>Conduct regular penetration testing</li>
+                        <li>Implement robust backup and recovery</li>
+                        <li>Establish security awareness training</li>
+                    </ul>
+                </div>
+
+                <h3>Emerging Threats</h3>
+                
+                <div class="danger-box">
+                    <h4>Future Threat Landscape:</h4>
+                    <ul>
+                        <li><strong>AI-Powered Attacks:</strong> Automated, adaptive threats</li>
+                        <li><strong>Supply Chain Complexity:</strong> Third-party risks</li>
+                        <li><strong>Quantum Computing:</strong> Encryption vulnerabilities</li>
+                        <li><strong>IoT Proliferation:</strong> Expanded attack surface</li>
+                        <li><strong>Nation-State Actors:</strong> Advanced persistent threats</li>
+                    </ul>
+                </div>
+
+                <h3>Security Technology Trends</h3>
+                
+                <div class="info-box">
+                    <h4>Advancing Technologies:</h4>
+                    <ul>
+                        <li><strong>AI/ML Security:</strong> Behavioral analytics and anomaly detection</li>
+                        <li><strong>SASE:</strong> Secure Access Service Edge convergence</li>
+                        <li><strong>XDR:</strong> Extended Detection and Response platforms</li>
+                        <li><strong>Cloud-Native Security:</strong> Container and serverless protection</li>
+                        <li><strong>DevSecOps:</strong> Security integrated into CI/CD</li>
+                    </ul>
+                </div>
+
+                <h3>Building Security Culture</h3>
+                
+                <table>
+                    <tr>
+                        <th>Element</th>
+                        <th>Implementation</th>
+                        <th>Outcome</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Leadership</strong></td>
+                        <td>Executive sponsorship</td>
+                        <td>Top-down commitment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Training</strong></td>
+                        <td>Regular security education</td>
+                        <td>Aware workforce</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Incentives</strong></td>
+                        <td>Reward secure behavior</td>
+                        <td>Positive reinforcement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communication</strong></td>
+                        <td>Open security discussions</td>
+                        <td>Transparency</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accountability</strong></td>
+                        <td>Clear responsibilities</td>
+                        <td>Ownership</td>
+                    </tr>
+                </table>
+
+                <h3>Investment Priorities</h3>
+                <ul>
+                    <li><strong>People:</strong> Skilled security professionals</li>
+                    <li><strong>Process:</strong> Mature security operations</li>
+                    <li><strong>Technology:</strong> Modern security stack</li>
+                    <li><strong>Intelligence:</strong> Threat intelligence feeds</li>
+                    <li><strong>Resilience:</strong> Business continuity planning</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Data centers face diverse cyber threats requiring comprehensive protection</li>
+                        <li>Defense-in-depth creates multiple security layers</li>
+                        <li>Network segmentation contains potential breaches</li>
+                        <li>Physical and cyber security must be integrated</li>
+                        <li>Continuous monitoring enables rapid threat detection</li>
+                        <li>Incident response planning is critical for minimizing damage</li>
+                    </ul>
+                </div>
+
+                <h3>Critical Success Factors</h3>
+                <ul>
+                    <li><strong>Visibility:</strong> You can't protect what you can't see</li>
+                    <li><strong>Speed:</strong> Rapid detection and response minimize damage</li>
+                    <li><strong>Integration:</strong> Siloed security creates gaps</li>
+                    <li><strong>Automation:</strong> Scale security operations effectively</li>
+                    <li><strong>Culture:</strong> Security is everyone's responsibility</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Assess your current security posture</li>
+                        <li>Identify and prioritize gaps</li>
+                        <li>Develop improvement roadmap</li>
+                        <li>Implement quick wins</li>
+                        <li>Build long-term security program</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <p><strong>"Security is not a product, but a process."</strong> - Bruce Schneier</p>
+                
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading cybersecurity organizations and frameworks.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• NIST Cybersecurity Framework v1.1</li>
+                        <li>• NIST SP 800-53 Rev 5 - Security and Privacy Controls</li>
+                        <li>• ISO/IEC 27001:2022 - Information Security Management</li>
+                        <li>• CIS Critical Security Controls v8</li>
+                        <li>• SANS Top 20 Critical Security Controls</li>
+                        <li>• MITRE ATT&CK Framework</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• (ISC)² - International Information System Security Certification Consortium</li>
+                        <li>• ISACA - Information Systems Audit and Control Association</li>
+                        <li>• SANS Institute - SysAdmin, Audit, Network, and Security</li>
+                        <li>• Cloud Security Alliance (CSA)</li>
+                        <li>• Open Web Application Security Project (OWASP)</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Data Center Security: Best Practices" - Uptime Institute</li>
+                        <li>• "Zero Trust Architecture" - NIST SP 800-207</li>
+                        <li>• "Cloud Security Guidance" - Cloud Security Alliance</li>
+                        <li>• "Incident Response Guide" - SANS Institute</li>
+                        <li>• Industry Reports: Verizon DBIR, Mandiant M-Trends</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from cybersecurity frameworks, industry standards, and professional organizations. All security recommendations and best practices reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Data Center Cybersecurity. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the primary principle of Zero Trust architecture?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Trust internal network traffic by default</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Never trust, always verify</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Trust verified users indefinitely</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Trust based on network location</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which layer is NOT part of defense-in-depth architecture?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Perimeter security</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Network segmentation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Physical security only</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Data encryption</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What does SIEM stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Security Integration and Event Management</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Security Information and Event Management</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> System Integration and Error Management</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Security Infrastructure and Endpoint Management</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. Which attack type involves physical access to plant malware?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> DDoS attack</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Phishing attack</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> USB drop attack</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> SQL injection</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the recommended encryption standard for data at rest?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> DES</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> MD5</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> AES-256</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> ROT13</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. Which phase is NOT part of the NIST Incident Response lifecycle?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Preparation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Detection and Analysis</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Prevention</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Post-Incident Activity</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the purpose of network segmentation?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Increase network speed</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Contain breaches and limit lateral movement</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Reduce hardware costs</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Simplify network management</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. Which compliance framework is specific to payment card data?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> HIPAA</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> GDPR</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> PCI DSS</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> SOC 2</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What does MTTD stand for in security metrics?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Maximum Time to Deploy</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Mean Time to Detect</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Minimum Time to Defend</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Mean Time to Develop</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. Which technology trend involves security integrated into CI/CD pipelines?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> SIEM</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> DevSecOps</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> DDoS</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> VPN</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Never trust, always verify
+            q2: 'c',  // Physical security only
+            q3: 'b',  // Security Information and Event Management
+            q4: 'c',  // USB drop attack
+            q5: 'c',  // AES-256
+            q6: 'c',  // Prevention (not part of NIST cycle)
+            q7: 'b',  // Contain breaches and limit lateral movement
+            q8: 'c',  // PCI DSS
+            q9: 'b',  // Mean Time to Detect
+            q10: 'b'  // DevSecOps
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Data Center Cybersecurity.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

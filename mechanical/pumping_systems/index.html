@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pumping Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1976d2;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #42a5f5;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #42a5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1976d2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1976d2;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pumping Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Fluid Movement and Control</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Pumping Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Pumping Systems for data centers. This course will provide you with essential knowledge about pump technology, system design, and best practices for ensuring reliable fluid circulation throughout your facility.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand pump principles and performance characteristics</li>
+                        <li>Learn about different pump types and their applications</li>
+                        <li>Recognize critical system components and configurations</li>
+                        <li>Understand pump control strategies and efficiency</li>
+                        <li>Learn maintenance practices and troubleshooting</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of fluid mechanics and HVAC systems</p>
+            </div>
+
+            <!-- Slide 2: What is a Pumping System? -->
+            <div class="slide">
+                <h2>What is a Pumping System?</h2>
+                
+                <p><strong>A Pumping System</strong> is a combination of pumps, piping, valves, and controls that work together to move fluids (typically water or glycol solutions) through a facility's cooling infrastructure.</p>
+
+                <h3>Key Functions in Data Centers:</h3>
+                <ul>
+                    <li><strong>Chilled Water Distribution:</strong> Circulate cooled water from chillers to cooling units</li>
+                    <li><strong>Condenser Water Circulation:</strong> Move heat rejection water between chillers and cooling towers</li>
+                    <li><strong>Pressure Maintenance:</strong> Ensure adequate pressure throughout the system</li>
+                    <li><strong>Flow Control:</strong> Regulate flow to match cooling demands</li>
+                    <li><strong>Heat Transfer:</strong> Enable efficient thermal energy movement</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Basic Pump Operation -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1976d2">Centrifugal Pump Operation</text>
+                        
+                        <!-- Pump Housing -->
+                        <circle cx="200" cy="200" r="80" fill="#42a5f5" stroke="#1976d2" stroke-width="3"/>
+                        <text x="200" y="205" text-anchor="middle" fill="white" font-size="14" font-weight="bold">PUMP</text>
+                        
+                        <!-- Impeller -->
+                        <circle cx="200" cy="200" r="40" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                        
+                        <!-- Suction -->
+                        <rect x="20" y="180" width="80" height="40" fill="#64b5f6" stroke="#1976d2" stroke-width="2"/>
+                        <text x="60" y="205" text-anchor="middle" fill="white" font-size="12">Suction</text>
+                        <path d="M 100 200 L 120 200" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Discharge -->
+                        <rect x="300" y="130" width="80" height="40" fill="#2196f3" stroke="#1976d2" stroke-width="2"/>
+                        <text x="340" y="155" text-anchor="middle" fill="white" font-size="12">Discharge</text>
+                        <path d="M 280 200 L 280 150 L 300 150" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- System Curve -->
+                        <g transform="translate(450, 100)">
+                            <text x="150" y="0" text-anchor="middle" font-size="16" font-weight="bold" fill="#1976d2">Pump & System Curves</text>
+                            <!-- Axes -->
+                            <line x1="20" y1="180" x2="280" y2="180" stroke="#333" stroke-width="2"/>
+                            <line x1="20" y1="180" x2="20" y2="20" stroke="#333" stroke-width="2"/>
+                            <text x="150" y="210" text-anchor="middle" font-size="12">Flow (GPM)</text>
+                            <text x="-10" y="100" text-anchor="middle" font-size="12" transform="rotate(-90 -10 100)">Head (ft)</text>
+                            
+                            <!-- Pump Curve -->
+                            <path d="M 40 40 Q 120 60 220 140" stroke="#e74c3c" stroke-width="3" fill="none"/>
+                            <text x="240" y="145" font-size="12" fill="#e74c3c">Pump Curve</text>
+                            
+                            <!-- System Curve -->
+                            <path d="M 40 160 Q 120 120 220 40" stroke="#3498db" stroke-width="3" fill="none"/>
+                            <text x="240" y="45" font-size="12" fill="#3498db">System Curve</text>
+                            
+                            <!-- Operating Point -->
+                            <circle cx="130" cy="90" r="5" fill="#333"/>
+                            <text x="140" y="85" font-size="12" fill="#333">Operating Point</text>
+                        </g>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Centrifugal Pump Operation: Impeller rotation creates pressure differential</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>System Components:</h4>
+                    <ul>
+                        <li><strong>Pumps:</strong> Provide energy to move fluid</li>
+                        <li><strong>Piping:</strong> Conveys fluid throughout facility</li>
+                        <li><strong>Valves:</strong> Control flow and isolation</li>
+                        <li><strong>Expansion Tanks:</strong> Accommodate thermal expansion</li>
+                        <li><strong>Controls:</strong> Maintain system operation parameters</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Types of Pumps -->
+            <div class="slide">
+                <h2>Types of Pumps</h2>
+                
+                <p>Data centers primarily use centrifugal pumps due to their reliability, efficiency, and continuous flow characteristics.</p>
+
+                <h3>1. Centrifugal Pump Types:</h3>
+                
+                <div class="info-box">
+                    <h4>End Suction Pumps</h4>
+                    <ul>
+                        <li><strong>Design:</strong> Single suction, perpendicular discharge</li>
+                        <li><strong>Flow Range:</strong> 50-5,000 GPM</li>
+                        <li><strong>Head Range:</strong> 50-500 feet</li>
+                        <li><strong>Advantages:</strong> Compact, economical, easy maintenance</li>
+                        <li><strong>Applications:</strong> Secondary loops, smaller systems</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Split Case Pumps</h4>
+                    <ul>
+                        <li><strong>Design:</strong> Double suction, horizontally split casing</li>
+                        <li><strong>Flow Range:</strong> 200-50,000 GPM</li>
+                        <li><strong>Head Range:</strong> 100-600 feet</li>
+                        <li><strong>Advantages:</strong> High efficiency, balanced design, long life</li>
+                        <li><strong>Applications:</strong> Primary loops, large systems</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Vertical In-Line Pumps</h4>
+                    <ul>
+                        <li><strong>Design:</strong> Vertical shaft, in-line piping</li>
+                        <li><strong>Flow Range:</strong> 50-2,000 GPM</li>
+                        <li><strong>Head Range:</strong> 50-300 feet</li>
+                        <li><strong>Advantages:</strong> Space-saving, no foundation required</li>
+                        <li><strong>Applications:</strong> Space-constrained areas</li>
+                    </ul>
+                </div>
+
+                <h3>2. Pump Configurations:</h3>
+
+                <table>
+                    <tr>
+                        <th>Configuration</th>
+                        <th>Description</th>
+                        <th>Advantages</th>
+                        <th>Applications</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Single Pump</strong></td>
+                        <td>One pump per circuit</td>
+                        <td>Simple, low cost</td>
+                        <td>Non-critical systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Parallel Pumps</strong></td>
+                        <td>Multiple pumps, same head</td>
+                        <td>Redundancy, staging</td>
+                        <td>Variable flow systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Series Pumps</strong></td>
+                        <td>Multiple pumps, additive head</td>
+                        <td>High head applications</td>
+                        <td>Tall buildings</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary-Secondary</strong></td>
+                        <td>Decoupled loops</td>
+                        <td>Flow isolation</td>
+                        <td>Chiller protection</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <h4>⚠️ Pump Selection Considerations:</h4>
+                    <ul>
+                        <li>System flow and head requirements</li>
+                        <li>Efficiency at operating points</li>
+                        <li>NPSH (Net Positive Suction Head) available</li>
+                        <li>Material compatibility with fluids</li>
+                        <li>Space and maintenance access</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Pump Performance -->
+            <div class="slide">
+                <h2>Pump Performance Characteristics</h2>
+                
+                <h3>1. Performance Curves</h3>
+                <div class="info-box">
+                    <h4>Understanding Pump Curves:</h4>
+                    <ul>
+                        <li><strong>Head-Flow Curve:</strong> Shows head vs. flow rate relationship</li>
+                        <li><strong>Efficiency Curve:</strong> Indicates best efficiency point (BEP)</li>
+                        <li><strong>Power Curve:</strong> Shows power consumption vs. flow</li>
+                        <li><strong>NPSH Required:</strong> Minimum suction pressure needed</li>
+                        <li><strong>Operating Region:</strong> Recommended operating range</li>
+                    </ul>
+                </div>
+
+                <h3>2. Affinity Laws</h3>
+                <div class="success-box">
+                    <h4>Variable Speed Pump Laws:</h4>
+                    <ul>
+                        <li><strong>Flow:</strong> Q₂/Q₁ = N₂/N₁ (Flow proportional to speed)</li>
+                        <li><strong>Head:</strong> H₂/H₁ = (N₂/N₁)² (Head proportional to speed squared)</li>
+                        <li><strong>Power:</strong> P₂/P₁ = (N₂/N₁)³ (Power proportional to speed cubed)</li>
+                        <li><strong>Example:</strong> 50% speed = 50% flow, 25% head, 12.5% power</li>
+                    </ul>
+                </div>
+
+                <h3>3. System Curves</h3>
+                <ul>
+                    <li><strong>Static Head:</strong> Elevation difference and pressure</li>
+                    <li><strong>Friction Head:</strong> Pipe and fitting losses</li>
+                    <li><strong>Control Head:</strong> Valve and device pressure drops</li>
+                    <li><strong>Total Dynamic Head:</strong> Sum of all heads</li>
+                    <li><strong>Operating Point:</strong> Intersection of pump and system curves</li>
+                </ul>
+
+                <h3>4. Efficiency Considerations</h3>
+                <table>
+                    <tr>
+                        <th>Factor</th>
+                        <th>Impact on Efficiency</th>
+                        <th>Best Practice</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Operating Point</strong></td>
+                        <td>Peak at BEP</td>
+                        <td>Select pump for 80-110% of BEP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Impeller Trim</strong></td>
+                        <td>Reduces head and power</td>
+                        <td>Fine-tune for exact requirements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speed Control</strong></td>
+                        <td>Maintains high efficiency</td>
+                        <td>Use VFDs for variable flow</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pump Wear</strong></td>
+                        <td>Decreases over time</td>
+                        <td>Regular maintenance</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <h4>⚠️ Common Performance Issues:</h4>
+                    <ul>
+                        <li><strong>Cavitation:</strong> Insufficient NPSH causing vapor bubbles</li>
+                        <li><strong>Recirculation:</strong> Operating too far left of BEP</li>
+                        <li><strong>Overloading:</strong> Operating too far right of BEP</li>
+                        <li><strong>Vibration:</strong> Off-design operation or mechanical issues</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: System Design -->
+            <div class="slide">
+                <h2>Pumping System Design</h2>
+                
+                <p>Proper system design ensures reliable operation, energy efficiency, and maintainability.</p>
+
+                <h3>1. Primary-Secondary Systems</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Primary Loop:</strong> Constant flow through chillers</li>
+                        <li><strong>Secondary Loop:</strong> Variable flow to loads</li>
+                        <li><strong>Decoupler:</strong> Common pipe or low-loss header</li>
+                        <li><strong>Benefits:</strong> Protects chillers, enables variable flow</li>
+                        <li><strong>Control:</strong> Differential pressure or flow-based</li>
+                    </ul>
+                </div>
+
+                <h3>2. Variable Primary Flow</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Design:</strong> Single loop with variable flow</li>
+                        <li><strong>Efficiency:</strong> Eliminates secondary pumps</li>
+                        <li><strong>Requirements:</strong> Minimum flow protection</li>
+                        <li><strong>Control:</strong> Differential pressure at critical point</li>
+                        <li><strong>Savings:</strong> 30-50% pumping energy reduction</li>
+                    </ul>
+                </div>
+
+                <h3>3. Piping Design Considerations</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1976d2">Proper Pump Piping Installation</text>
+                        
+                        <!-- Pump -->
+                        <circle cx="400" cy="200" r="50" fill="#42a5f5" stroke="#1976d2" stroke-width="3"/>
+                        <text x="400" y="205" text-anchor="middle" fill="white" font-size="14" font-weight="bold">PUMP</text>
+                        
+                        <!-- Suction Piping -->
+                        <rect x="50" y="180" width="200" height="40" fill="#90caf9" stroke="#1976d2" stroke-width="2"/>
+                        <text x="150" y="205" text-anchor="middle" font-size="12">5D Straight Run</text>
+                        
+                        <!-- Suction Reducer -->
+                        <path d="M 250 180 L 350 190 L 350 210 L 250 220 Z" fill="#64b5f6" stroke="#1976d2" stroke-width="2"/>
+                        <text x="300" y="170" text-anchor="middle" font-size="11">Eccentric Reducer</text>
+                        <text x="300" y="160" text-anchor="middle" font-size="11">(Flat on Top)</text>
+                        
+                        <!-- Discharge Piping -->
+                        <rect x="550" y="180" width="200" height="40" fill="#90caf9" stroke="#1976d2" stroke-width="2"/>
+                        
+                        <!-- Check Valve -->
+                        <circle cx="500" cy="200" r="20" fill="#2196f3" stroke="#1976d2" stroke-width="2"/>
+                        <path d="M 485 200 L 515 200" stroke="white" stroke-width="3"/>
+                        <text x="500" y="240" text-anchor="middle" font-size="11">Check Valve</text>
+                        
+                        <!-- Isolation Valves -->
+                        <rect x="290" y="190" width="20" height="20" fill="#1565c0" stroke="#0d47a1" stroke-width="2"/>
+                        <text x="300" y="240" text-anchor="middle" font-size="11">Isolation</text>
+                        
+                        <rect x="540" y="190" width="20" height="20" fill="#1565c0" stroke="#0d47a1" stroke-width="2"/>
+                        <text x="550" y="240" text-anchor="middle" font-size="11">Isolation</text>
+                        
+                        <!-- Flow Direction -->
+                        <path d="M 100 200 L 200 200" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 450 200 L 550 200" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <path d="M 650 200 L 700 200" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Labels -->
+                        <text x="400" y="300" text-anchor="middle" font-size="14" font-weight="bold">Key Requirements:</text>
+                        <text x="400" y="320" text-anchor="middle" font-size="12">• 5D straight suction run</text>
+                        <text x="400" y="340" text-anchor="middle" font-size="12">• Eccentric reducer flat on top</text>
+                        <text x="400" y="360" text-anchor="middle" font-size="12">• Check valve on discharge</text>
+                        <text x="400" y="380" text-anchor="middle" font-size="12">• Isolation valves for maintenance</text>
+                    </svg>
+                </div>
+
+                <h3>4. Expansion Tank Sizing</h3>
+                <ul>
+                    <li><strong>Purpose:</strong> Accommodate thermal expansion</li>
+                    <li><strong>Location:</strong> Suction side of pumps</li>
+                    <li><strong>Sizing:</strong> Based on system volume and temperature range</li>
+                    <li><strong>Type:</strong> Bladder or diaphragm for closed systems</li>
+                    <li><strong>Pressure:</strong> Pre-charge to system static pressure</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Design Best Practices:</h4>
+                    <ul>
+                        <li>Size pipes for 4-8 fps velocity (2-4 fps for suction)</li>
+                        <li>Provide adequate NPSH margin (minimum 5 feet)</li>
+                        <li>Install pressure gauges and temperature sensors</li>
+                        <li>Include flow measurement devices</li>
+                        <li>Plan for future expansion</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Pump Control Strategies -->
+            <div class="slide">
+                <h2>Pump Control Strategies</h2>
+                
+                <p>Effective control strategies optimize energy consumption while maintaining system performance.</p>
+
+                <h3>1. Constant Speed Control</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Operation:</strong> Pump runs at fixed speed</li>
+                        <li><strong>Flow Control:</strong> Throttling valves</li>
+                        <li><strong>Efficiency:</strong> Lower due to valve losses</li>
+                        <li><strong>Cost:</strong> Lower initial cost</li>
+                        <li><strong>Application:</strong> Constant flow systems</li>
+                    </ul>
+                </div>
+
+                <h3>2. Variable Speed Control (VFD)</h3>
+                <div class="success-box">
+                    <h4>Benefits of Variable Speed:</h4>
+                    <ul>
+                        <li><strong>Energy Savings:</strong> 30-50% typical reduction</li>
+                        <li><strong>Soft Start:</strong> Reduced mechanical stress</li>
+                        <li><strong>Precise Control:</strong> Maintain exact setpoint</li>
+                        <li><strong>Reduced Wear:</strong> Lower average speed</li>
+                        <li><strong>Noise Reduction:</strong> Quieter operation</li>
+                    </ul>
+                </div>
+
+                <h3>3. Control Methods</h3>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>Sensor Location</th>
+                        <th>Advantages</th>
+                        <th>Applications</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Differential Pressure</strong></td>
+                        <td>Critical circuit</td>
+                        <td>Simple, reliable</td>
+                        <td>Most common</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DP Reset</strong></td>
+                        <td>Multiple points</td>
+                        <td>Energy savings</td>
+                        <td>Large systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flow Control</strong></td>
+                        <td>Main header</td>
+                        <td>Direct measurement</td>
+                        <td>Primary pumps</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature</strong></td>
+                        <td>Supply/return</td>
+                        <td>Load-based</td>
+                        <td>Secondary pumps</td>
+                    </tr>
+                </table>
+
+                <h3>4. Staging Multiple Pumps</h3>
+                <ul>
+                    <li><strong>Lead/Lag:</strong> Automatic alternation for wear leveling</li>
+                    <li><strong>Parallel Operation:</strong> Stage based on flow demand</li>
+                    <li><strong>Efficiency Staging:</strong> Run most efficient combination</li>
+                    <li><strong>Minimum Flow:</strong> Prevent operation below minimum</li>
+                    <li><strong>Deadheading Protection:</strong> Ensure path for flow</li>
+                </ul>
+
+                <h3>5. Advanced Control Features</h3>
+                <div class="info-box">
+                    <h4>Smart Pump Controls:</h4>
+                    <ul>
+                        <li><strong>Sensorless Control:</strong> Estimate flow from power/speed</li>
+                        <li><strong>Adaptive Control:</strong> Self-adjusting setpoints</li>
+                        <li><strong>Predictive Staging:</strong> Anticipate load changes</li>
+                        <li><strong>Energy Optimization:</strong> Minimize wire-to-water efficiency</li>
+                        <li><strong>Fault Detection:</strong> Early warning of issues</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Energy Efficiency -->
+            <div class="slide">
+                <h2>Energy Efficiency</h2>
+                
+                <p>Pumping systems can consume 20-30% of a data center's cooling energy. Optimization is crucial.</p>
+
+                <h3>1. Efficiency Metrics</h3>
+                
+                <div class="info-box">
+                    <h4>Key Performance Indicators:</h4>
+                    <ul>
+                        <li><strong>Wire-to-Water Efficiency:</strong> Overall pump and motor efficiency</li>
+                        <li><strong>Specific Power:</strong> kW per GPM or W/GPM</li>
+                        <li><strong>Part Load Efficiency:</strong> Performance at typical operating points</li>
+                        <li><strong>System Efficiency:</strong> Including piping and control losses</li>
+                        <li><strong>Annual Energy:</strong> kWh per year based on load profile</li>
+                    </ul>
+                </div>
+
+                <h3>2. Energy Optimization Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Best Practices:</h4>
+                    <ul>
+                        <li><strong>Right-Sizing:</strong> Select pumps for actual, not future loads</li>
+                        <li><strong>Variable Speed:</strong> Implement VFDs on all major pumps</li>
+                        <li><strong>System Curve:</strong> Minimize static head and pressure drops</li>
+                        <li><strong>Impeller Trim:</strong> Match pump to exact requirements</li>
+                        <li><strong>Premium Motors:</strong> Use IE3/IE4 efficiency motors</li>
+                        <li><strong>Two-Way Valves:</strong> Enable true variable flow</li>
+                    </ul>
+                </div>
+
+                <h3>3. Typical Energy Savings</h3>
+                
+                <table>
+                    <tr>
+                        <th>Measure</th>
+                        <th>Typical Savings</th>
+                        <th>Payback</th>
+                    </tr>
+                    <tr>
+                        <td><strong>VFD Addition</strong></td>
+                        <td>30-50%</td>
+                        <td>1-3 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DP Reset</strong></td>
+                        <td>10-20%</td>
+                        <td><1 year</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Primary-Only</strong></td>
+                        <td>20-30%</td>
+                        <td>2-4 years</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pipe Sizing</strong></td>
+                        <td>5-15%</td>
+                        <td>New construction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Motors</strong></td>
+                        <td>2-5%</td>
+                        <td>5-10 years</td>
+                    </tr>
+                </table>
+
+                <h3>4. System Optimization</h3>
+                <ul>
+                    <li><strong>Pump Scheduling:</strong> Run minimum pumps needed</li>
+                    <li><strong>Free Cooling:</strong> Reduce pumping during economizer</li>
+                    <li><strong>Temperature Reset:</strong> Increase CHW temp when possible</li>
+                    <li><strong>Balancing:</strong> Ensure proper flow distribution</li>
+                    <li><strong>Maintenance:</strong> Keep systems at peak efficiency</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Common Efficiency Losses:</h4>
+                    <ul>
+                        <li>Oversized pumps operating far from BEP</li>
+                        <li>Throttled valves wasting pump energy</li>
+                        <li>Excessive system pressure drops</li>
+                        <li>Unbalanced flow causing overflows</li>
+                        <li>Fouled strainers and heat exchangers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Maintenance -->
+            <div class="slide">
+                <h2>Maintenance and Troubleshooting</h2>
+                
+                <p>Regular maintenance ensures reliability, efficiency, and extended equipment life.</p>
+
+                <h3>1. Preventive Maintenance Schedule</h3>
+                
+                <table>
+                    <tr>
+                        <th>Task</th>
+                        <th>Daily</th>
+                        <th>Monthly</th>
+                        <th>Quarterly</th>
+                        <th>Annual</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Visual Inspection</strong></td>
+                        <td>✓</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bearing Temperature</strong></td>
+                        <td>✓</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vibration Check</strong></td>
+                        <td>-</td>
+                        <td>✓</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seal Inspection</strong></td>
+                        <td>-</td>
+                        <td>✓</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alignment Check</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance Test</strong></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>✓</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+
+                <h3>2. Key Maintenance Tasks</h3>
+                
+                <div class="info-box">
+                    <h4>Mechanical Seals:</h4>
+                    <ul>
+                        <li><strong>Inspection:</strong> Check for leaks and wear</li>
+                        <li><strong>Flush System:</strong> Ensure proper seal cooling</li>
+                        <li><strong>Spring Tension:</strong> Verify proper compression</li>
+                        <li><strong>Face Condition:</strong> Look for scoring or damage</li>
+                        <li><strong>Replacement:</strong> Typically 3-5 year life</li>
+                    </ul>
+                </div>
+
+                <h3>3. Common Problems and Solutions</h3>
+                
+                <div class="warning-box">
+                    <h4>Troubleshooting Guide:</h4>
+                    <ul>
+                        <li><strong>No Flow:</strong> Check valves, air lock, wrong rotation</li>
+                        <li><strong>Low Flow:</strong> Clogged strainer, worn impeller, high system head</li>
+                        <li><strong>Noise/Vibration:</strong> Cavitation, misalignment, bearing wear</li>
+                        <li><strong>Overheating:</strong> Low flow, mechanical seal failure</li>
+                        <li><strong>High Power:</strong> Throttled discharge, oversized impeller</li>
+                    </ul>
+                </div>
+
+                <h3>4. Vibration Analysis</h3>
+                <ul>
+                    <li><strong>Baseline:</strong> Establish new equipment baseline</li>
+                    <li><strong>Trending:</strong> Monitor changes over time</li>
+                    <li><strong>Alarm Levels:</strong> Set based on ISO 10816 standards</li>
+                    <li><strong>Spectrum Analysis:</strong> Identify specific issues</li>
+                    <li><strong>Corrective Action:</strong> Address before failure</li>
+                </ul>
+
+                <h3>5. Performance Testing</h3>
+                <div class="success-box">
+                    <h4>Test Procedures:</h4>
+                    <ul>
+                        <li><strong>Flow Measurement:</strong> Verify pump output</li>
+                        <li><strong>Head Calculation:</strong> Measure suction/discharge pressure</li>
+                        <li><strong>Power Draw:</strong> Check motor amperage</li>
+                        <li><strong>Efficiency:</strong> Calculate and trend</li>
+                        <li><strong>NPSH Check:</strong> Ensure adequate margin</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Integration and Monitoring -->
+            <div class="slide">
+                <h2>Integration and Monitoring</h2>
+                
+                <p>Modern pumping systems integrate with building automation for optimal control and monitoring.</p>
+
+                <h3>1. BMS Integration Points</h3>
+                
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Status</strong></td>
+                        <td>Input</td>
+                        <td>Running, fault, available</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speed</strong></td>
+                        <td>Input/Output</td>
+                        <td>VFD control and feedback</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flow</strong></td>
+                        <td>Input</td>
+                        <td>System flow monitoring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pressure</strong></td>
+                        <td>Input</td>
+                        <td>Differential pressure control</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power</strong></td>
+                        <td>Input</td>
+                        <td>Energy monitoring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature</strong></td>
+                        <td>Input</td>
+                        <td>Bearing and motor temp</td>
+                    </tr>
+                </table>
+
+                <h3>2. Monitoring Dashboard Elements</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>System Overview:</strong> Graphical display of pump status</li>
+                        <li><strong>Flow Diagram:</strong> Real-time flow and pressure</li>
+                        <li><strong>Trend Charts:</strong> Historical performance data</li>
+                        <li><strong>Alarm Summary:</strong> Active and historical alarms</li>
+                        <li><strong>Energy Metrics:</strong> Real-time and accumulated consumption</li>
+                    </ul>
+                </div>
+
+                <h3>3. Alarm Management</h3>
+                <ul>
+                    <li><strong>Critical:</strong> Pump failure, loss of flow</li>
+                    <li><strong>High Priority:</strong> High vibration, seal leak</li>
+                    <li><strong>Medium:</strong> Efficiency degradation, filter dirty</li>
+                    <li><strong>Low:</strong> Maintenance due, runtime exceeded</li>
+                    <li><strong>Information:</strong> Status changes, mode switches</li>
+                </ul>
+
+                <h3>4. Predictive Analytics</h3>
+                <div class="success-box">
+                    <h4>Advanced Monitoring Features:</h4>
+                    <ul>
+                        <li><strong>Efficiency Tracking:</strong> Identify degradation trends</li>
+                        <li><strong>Vibration Trending:</strong> Predict bearing failures</li>
+                        <li><strong>Seal Monitoring:</strong> Detect early seal wear</li>
+                        <li><strong>Energy Analytics:</strong> Optimization opportunities</li>
+                        <li><strong>Maintenance Planning:</strong> Condition-based scheduling</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Smart Pump Systems</h4>
+                    <ul>
+                        <li><strong>Integrated Intelligence:</strong> Built-in VFD and controls</li>
+                        <li><strong>Cloud Connectivity:</strong> Remote monitoring and diagnostics</li>
+                        <li><strong>Self-Optimization:</strong> Automatic efficiency tuning</li>
+                        <li><strong>Predictive Maintenance:</strong> AI-based failure prediction</li>
+                        <li><strong>Digital Twin:</strong> Virtual modeling for optimization</li>
+                    </ul>
+                </div>
+
+                <h3>2. Energy Efficiency Advances</h3>
+                <ul>
+                    <li><strong>Permanent Magnet Motors:</strong> Higher efficiency than induction</li>
+                    <li><strong>Magnetic Bearings:</strong> No contact, no wear</li>
+                    <li><strong>Advanced Hydraulics:</strong> Computational fluid dynamics optimization</li>
+                    <li><strong>Smart Materials:</strong> Self-healing coatings</li>
+                    <li><strong>Waste Heat Recovery:</strong> Capture pump heat for other uses</li>
+                </ul>
+
+                <h3>3. System Design Evolution</h3>
+                <div class="info-box">
+                    <h4>Trends in Design:</h4>
+                    <ul>
+                        <li><strong>All-Variable Speed:</strong> VFDs on every pump</li>
+                        <li><strong>Distributed Pumping:</strong> Smaller pumps closer to loads</li>
+                        <li><strong>Thermal Storage:</strong> Shift pumping to off-peak times</li>
+                        <li><strong>Free Cooling:</strong> Maximize economizer hours</li>
+                        <li><strong>Heat Recovery:</strong> Data center heating applications</li>
+                    </ul>
+                </div>
+
+                <h3>4. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Design systems for actual loads, not nameplate</li>
+                        <li>Implement variable speed control on all pumps</li>
+                        <li>Monitor efficiency continuously</li>
+                        <li>Maintain proper water treatment</li>
+                        <li>Train operators on optimization strategies</li>
+                        <li>Plan for future flexibility and expansion</li>
+                    </ul>
+                </div>
+
+                <h3>5. Sustainability Focus</h3>
+                <ul>
+                    <li><strong>Energy Reduction:</strong> Target 50% reduction from baseline</li>
+                    <li><strong>Water Conservation:</strong> Minimize makeup water</li>
+                    <li><strong>Lifecycle Assessment:</strong> Consider total environmental impact</li>
+                    <li><strong>Circular Economy:</strong> Design for refurbishment and reuse</li>
+                    <li><strong>Carbon Footprint:</strong> Track and reduce emissions</li>
+                </ul>
+            </div>
+
+            <!-- Slide 11: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Pumps provide energy to circulate cooling fluids</li>
+                        <li>Centrifugal pumps dominate data center applications</li>
+                        <li>System curves interact with pump curves at operating point</li>
+                        <li>Variable speed control provides significant energy savings</li>
+                        <li>Proper maintenance ensures reliability and efficiency</li>
+                        <li>Integration enables optimization and predictive maintenance</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Efficiency:</strong> Small improvements yield large savings over time</li>
+                    <li><strong>Reliability:</strong> Redundancy and maintenance prevent failures</li>
+                    <li><strong>Control:</strong> Variable speed unlocks efficiency potential</li>
+                    <li><strong>Integration:</strong> Monitoring enables continuous optimization</li>
+                    <li><strong>Training:</strong> Knowledgeable operators maximize performance</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review your facility's pumping system design</li>
+                        <li>Understand control strategies and setpoints</li>
+                        <li>Learn to read pump curves and system data</li>
+                        <li>Participate in maintenance activities</li>
+                        <li>Monitor energy consumption trends</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 12: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE Handbook - HVAC Systems and Equipment (2020)</li>
+                        <li>• Hydraulic Institute Standards Collection</li>
+                        <li>• ASHRAE Standard 90.1 - Energy Standard for Buildings</li>
+                        <li>• ASHRAE Standard 90.4 - Energy Standard for Data Centers</li>
+                        <li>• Pump System Optimization - DOE/GO-102005-2079</li>
+                        <li>• Bell & Gossett System Syzer Manual</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• Hydraulic Institute (HI) - Pump Standards and Guidelines</li>
+                        <li>• ASHRAE - American Society of Heating, Refrigerating and Air-Conditioning Engineers</li>
+                        <li>• DOE - Department of Energy Better Buildings Program</li>
+                        <li>• NEMA - National Electrical Manufacturers Association</li>
+                        <li>• Uptime Institute - Data Center Design Standards</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Variable Speed Pumping - A Guide to Successful Applications" - Hydraulic Institute</li>
+                        <li>• "Pump Life Cycle Costs" - DOE Industrial Technologies Program</li>
+                        <li>• "Centrifugal Pumps: Design and Application" - Val S. Lobanoff</li>
+                        <li>• "HVAC Pump Handbook" - James B. Rishel</li>
+                        <li>• Manufacturer resources: Grundfos, Armstrong, Taco, Bell & Gossett</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from pump manufacturers, industry standards, engineering handbooks, and data center best practices. All performance values, design criteria, and maintenance recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Pumping Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the relationship between pump speed and power consumption according to the affinity laws?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Power is proportional to speed</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Power is proportional to speed squared</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Power is proportional to speed cubed</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Power is inversely proportional to speed</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What is the recommended operating range relative to a pump's Best Efficiency Point (BEP)?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> 50-70% of BEP</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> 80-110% of BEP</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> 120-150% of BEP</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Exactly at BEP only</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. In a primary-secondary pumping system, what is the purpose of the decoupler?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> To increase system pressure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> To provide hydraulic separation between loops</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> To filter the water</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> To add chemicals to the system</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What type of reducer should be used on the suction side of a pump?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Concentric reducer</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Eccentric reducer with flat on bottom</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Eccentric reducer with flat on top</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> No reducer needed</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the typical energy savings from adding VFDs to pumps?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 5-10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 10-20%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 30-50%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 70-80%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is NPSH?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Natural Pump System Head</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Net Positive Suction Head</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Nominal Pressure System Height</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Normal Pump Speed High</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the recommended minimum straight pipe run on the suction side of a pump?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> 2 pipe diameters</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> 5 pipe diameters</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> 10 pipe diameters</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> No requirement</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What causes cavitation in pumps?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Too much flow</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Insufficient NPSH available</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> High discharge pressure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Cold water temperature</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is the typical efficiency range for premium centrifugal pumps?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 40-50%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 50-60%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 75-85%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> 90-95%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. Which control method typically provides the most energy savings?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Throttling valves</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Bypass control</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Variable frequency drives</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> On/off control</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'c',  // Power is proportional to speed cubed
+            q2: 'b',  // 80-110% of BEP
+            q3: 'b',  // To provide hydraulic separation between loops
+            q4: 'c',  // Eccentric reducer with flat on top
+            q5: 'c',  // 30-50%
+            q6: 'b',  // Net Positive Suction Head
+            q7: 'b',  // 5 pipe diameters
+            q8: 'b',  // Insufficient NPSH available
+            q9: 'c',  // 75-85%
+            q10: 'c'  // Variable frequency drives
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Pumping Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

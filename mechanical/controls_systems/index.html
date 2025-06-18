@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controls Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #6a1b9a;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #6a1b9a;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #ab47bc;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #6a1b9a;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #ab47bc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #6a1b9a, #ab47bc);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #f3e5f5;
+            border-left: 5px solid #6a1b9a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #6a1b9a;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Controls Systems Training Module</h1>
+            <p>Data Center 101 - Mastering Building Automation and Control</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Controls Systems Training</h2>
+                <p>Welcome to this comprehensive training module on Controls Systems for data centers. This course will provide you with essential knowledge about building automation systems, control strategies, and integration techniques for optimizing data center operations.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand building automation system architecture and components</li>
+                        <li>Learn control theory and PID control fundamentals</li>
+                        <li>Recognize different sensor types and their applications</li>
+                        <li>Understand control strategies for HVAC optimization</li>
+                        <li>Learn system integration and communication protocols</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of HVAC systems and electrical concepts</p>
+            </div>
+
+            <!-- Slide 2: What is a Building Control System? -->
+            <div class="slide">
+                <h2>What is a Building Control System?</h2>
+                
+                <p><strong>A Building Control System (BCS)</strong> or Building Automation System (BAS) is a computer-based control system that monitors and manages a building's mechanical and electrical equipment, including HVAC, lighting, power systems, fire systems, and security systems.</p>
+
+                <h3>Key Functions in Data Centers:</h3>
+                <ul>
+                    <li><strong>Environmental Control:</strong> Maintain precise temperature and humidity</li>
+                    <li><strong>Energy Management:</strong> Optimize energy consumption and efficiency</li>
+                    <li><strong>System Integration:</strong> Coordinate multiple building systems</li>
+                    <li><strong>Monitoring & Alarming:</strong> Real-time system status and alerts</li>
+                    <li><strong>Data Analytics:</strong> Performance trending and optimization</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- BAS Architecture -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#6a1b9a">Building Automation System Architecture</text>
+                        
+                        <!-- Management Level -->
+                        <rect x="250" y="60" width="300" height="50" fill="#ab47bc" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="400" y="90" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Management Level</text>
+                        <text x="400" y="105" text-anchor="middle" fill="white" font-size="11">Workstations, Servers, Web Interface</text>
+                        
+                        <!-- Automation Level -->
+                        <rect x="150" y="150" width="200" height="50" fill="#ce93d8" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="250" y="175" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Building Controllers</text>
+                        <text x="250" y="190" text-anchor="middle" fill="#333" font-size="11">DDC, PLCs</text>
+                        
+                        <rect x="450" y="150" width="200" height="50" fill="#ce93d8" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="550" y="175" text-anchor="middle" fill="#333" font-size="13" font-weight="bold">Network Controllers</text>
+                        <text x="550" y="190" text-anchor="middle" fill="#333" font-size="11">BACnet, Modbus</text>
+                        
+                        <!-- Field Level -->
+                        <rect x="50" y="250" width="120" height="50" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="110" y="275" text-anchor="middle" fill="#333" font-size="12">Sensors</text>
+                        <text x="110" y="290" text-anchor="middle" fill="#333" font-size="10">Temp, RH, Press</text>
+                        
+                        <rect x="200" y="250" width="120" height="50" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="260" y="275" text-anchor="middle" fill="#333" font-size="12">Actuators</text>
+                        <text x="260" y="290" text-anchor="middle" fill="#333" font-size="10">Valves, Dampers</text>
+                        
+                        <rect x="350" y="250" width="120" height="50" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="410" y="275" text-anchor="middle" fill="#333" font-size="12">Equipment</text>
+                        <text x="410" y="290" text-anchor="middle" fill="#333" font-size="10">AHUs, Chillers</text>
+                        
+                        <rect x="500" y="250" width="120" height="50" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="560" y="275" text-anchor="middle" fill="#333" font-size="12">Meters</text>
+                        <text x="560" y="290" text-anchor="middle" fill="#333" font-size="10">Power, Flow</text>
+                        
+                        <rect x="650" y="250" width="120" height="50" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="710" y="275" text-anchor="middle" fill="#333" font-size="12">Other Systems</text>
+                        <text x="710" y="290" text-anchor="middle" fill="#333" font-size="10">Fire, Security</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 400 110 L 250 150" stroke="#333" stroke-width="2"/>
+                        <path d="M 400 110 L 550 150" stroke="#333" stroke-width="2"/>
+                        
+                        <path d="M 250 200 L 110 250" stroke="#333" stroke-width="2"/>
+                        <path d="M 250 200 L 260 250" stroke="#333" stroke-width="2"/>
+                        <path d="M 250 200 L 410 250" stroke="#333" stroke-width="2"/>
+                        
+                        <path d="M 550 200 L 560 250" stroke="#333" stroke-width="2"/>
+                        <path d="M 550 200 L 710 250" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Communication -->
+                        <text x="400" y="350" text-anchor="middle" font-size="12" font-style="italic">Communication Protocols: BACnet, Modbus, LON, SNMP</text>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Hierarchical Architecture: From Field Devices to Management Systems</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>System Benefits:</h4>
+                    <ul>
+                        <li><strong>Automation:</strong> Reduced manual intervention</li>
+                        <li><strong>Optimization:</strong> Energy and operational efficiency</li>
+                        <li><strong>Integration:</strong> Unified control of all systems</li>
+                        <li><strong>Visibility:</strong> Real-time monitoring and analytics</li>
+                        <li><strong>Reliability:</strong> Consistent operation and alarming</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Control Theory Basics -->
+            <div class="slide">
+                <h2>Control Theory Basics</h2>
+                
+                <p>Understanding control theory is essential for effective building automation system operation and optimization.</p>
+
+                <h3>1. Control Loop Components:</h3>
+                
+                <div class="info-box">
+                    <h4>Basic Control Loop</h4>
+                    <ul>
+                        <li><strong>Setpoint:</strong> Desired value (e.g., 72°F room temperature)</li>
+                        <li><strong>Process Variable:</strong> Current measured value</li>
+                        <li><strong>Error:</strong> Difference between setpoint and process variable</li>
+                        <li><strong>Controller:</strong> Algorithm that determines output</li>
+                        <li><strong>Output:</strong> Control signal to actuator</li>
+                    </ul>
+                </div>
+
+                <h3>2. PID Control:</h3>
+                
+                <div class="success-box">
+                    <h4>PID Components:</h4>
+                    <ul>
+                        <li><strong>Proportional (P):</strong> Output proportional to current error</li>
+                        <li><strong>Integral (I):</strong> Output based on accumulated error over time</li>
+                        <li><strong>Derivative (D):</strong> Output based on rate of error change</li>
+                        <li><strong>Combined Effect:</strong> P + I + D = Optimal control response</li>
+                    </ul>
+                </div>
+
+                <h3>3. Control Actions:</h3>
+                
+                <table>
+                    <tr>
+                        <th>Action</th>
+                        <th>Response</th>
+                        <th>Advantages</th>
+                        <th>Disadvantages</th>
+                    </tr>
+                    <tr>
+                        <td><strong>On/Off</strong></td>
+                        <td>Binary</td>
+                        <td>Simple, low cost</td>
+                        <td>Cycling, wear</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proportional</strong></td>
+                        <td>Linear</td>
+                        <td>Smooth control</td>
+                        <td>Offset error</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PI</strong></td>
+                        <td>No offset</td>
+                        <td>Accurate</td>
+                        <td>Can overshoot</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PID</strong></td>
+                        <td>Optimal</td>
+                        <td>Fast, accurate</td>
+                        <td>Complex tuning</td>
+                    </tr>
+                </table>
+
+                <h3>4. Control Strategies:</h3>
+                <ul>
+                    <li><strong>Feedback Control:</strong> Adjusts based on measured output</li>
+                    <li><strong>Feedforward Control:</strong> Anticipates disturbances</li>
+                    <li><strong>Cascade Control:</strong> Multiple nested control loops</li>
+                    <li><strong>Adaptive Control:</strong> Self-adjusting parameters</li>
+                    <li><strong>Predictive Control:</strong> Model-based optimization</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Common Control Issues:</h4>
+                    <ul>
+                        <li>Hunting: Oscillation around setpoint</li>
+                        <li>Offset: Steady-state error</li>
+                        <li>Overshoot: Exceeding setpoint</li>
+                        <li>Slow Response: Poor tuning</li>
+                        <li>Instability: Improper gain settings</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Sensors and Instrumentation -->
+            <div class="slide">
+                <h2>Sensors and Instrumentation</h2>
+                
+                <h3>1. Temperature Sensors</h3>
+                <div class="info-box">
+                    <h4>Common Types:</h4>
+                    <ul>
+                        <li><strong>RTD (Pt100/Pt1000):</strong> High accuracy (±0.1°C), linear, stable</li>
+                        <li><strong>Thermistor:</strong> High sensitivity, non-linear, lower cost</li>
+                        <li><strong>Thermocouple:</strong> Wide range, fast response, less accurate</li>
+                        <li><strong>Semiconductor:</strong> Digital output, moderate accuracy</li>
+                        <li><strong>Infrared:</strong> Non-contact, surface temperature</li>
+                    </ul>
+                </div>
+
+                <h3>2. Humidity Sensors</h3>
+                <ul>
+                    <li><strong>Capacitive:</strong> Most common, ±2-3% RH accuracy</li>
+                    <li><strong>Resistive:</strong> Lower cost, ±3-5% RH accuracy</li>
+                    <li><strong>Chilled Mirror:</strong> High accuracy (±1% RH), expensive</li>
+                    <li><strong>Combined T/RH:</strong> Single device, convenient</li>
+                </ul>
+
+                <h3>3. Pressure Sensors</h3>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Range</th>
+                        <th>Application</th>
+                        <th>Accuracy</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Gauge</strong></td>
+                        <td>0-500 psi</td>
+                        <td>Pump discharge</td>
+                        <td>±0.5-1%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Differential</strong></td>
+                        <td>0-10" WC</td>
+                        <td>Filter status</td>
+                        <td>±1-2%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Static</strong></td>
+                        <td>0-5" WC</td>
+                        <td>Duct pressure</td>
+                        <td>±1%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Absolute</strong></td>
+                        <td>0-30 psia</td>
+                        <td>Barometric</td>
+                        <td>±0.25%</td>
+                    </tr>
+                </table>
+
+                <h3>4. Flow Sensors</h3>
+                <div class="info-box">
+                    <ul>
+                        <li><strong>Ultrasonic:</strong> Non-invasive, no pressure drop</li>
+                        <li><strong>Magnetic:</strong> Conductive fluids only, accurate</li>
+                        <li><strong>Turbine:</strong> Wide range, moving parts</li>
+                        <li><strong>Differential Pressure:</strong> Simple, requires straight run</li>
+                        <li><strong>Vortex:</strong> No moving parts, vibration sensitive</li>
+                    </ul>
+                </div>
+
+                <h3>5. Sensor Installation Best Practices</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Location:</strong> Representative measurement point</li>
+                        <li><strong>Mounting:</strong> Proper orientation and insertion depth</li>
+                        <li><strong>Shielding:</strong> Protection from interference</li>
+                        <li><strong>Wiring:</strong> Proper cable type and routing</li>
+                        <li><strong>Calibration:</strong> Regular verification and adjustment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Actuators and Control Devices -->
+            <div class="slide">
+                <h2>Actuators and Control Devices</h2>
+                
+                <p>Actuators convert control signals into physical action to regulate system operation.</p>
+
+                <h3>1. Valve Actuators</h3>
+                
+                <div class="info-box">
+                    <h4>Electric Actuators:</h4>
+                    <ul>
+                        <li><strong>Modulating:</strong> 0-10V or 4-20mA control signal</li>
+                        <li><strong>Two-Position:</strong> Open/closed operation</li>
+                        <li><strong>Spring Return:</strong> Fail-safe position on power loss</li>
+                        <li><strong>Non-Spring Return:</strong> Stays in position</li>
+                        <li><strong>Feedback:</strong> Position indication to BAS</li>
+                    </ul>
+                </div>
+
+                <h3>2. Damper Actuators</h3>
+                <ul>
+                    <li><strong>Rotary:</strong> Direct coupled to damper shaft</li>
+                    <li><strong>Linear:</strong> Push/pull operation</li>
+                    <li><strong>Torque:</strong> Sized for damper area and pressure</li>
+                    <li><strong>Control:</strong> Proportional or floating point</li>
+                    <li><strong>Linkage:</strong> Proper setup for full stroke</li>
+                </ul>
+
+                <h3>3. Variable Frequency Drives (VFDs)</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#6a1b9a">VFD Control Integration</text>
+                        
+                        <!-- BAS -->
+                        <rect x="50" y="80" width="120" height="60" fill="#ab47bc" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="110" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">BAS</text>
+                        <text x="110" y="125" text-anchor="middle" fill="white" font-size="11">Controller</text>
+                        
+                        <!-- VFD -->
+                        <rect x="300" y="80" width="120" height="60" fill="#ce93d8" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="360" y="110" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">VFD</text>
+                        <text x="360" y="125" text-anchor="middle" fill="#333" font-size="11">Variable Drive</text>
+                        
+                        <!-- Motor -->
+                        <circle cx="550" cy="110" r="40" fill="#e1bee7" stroke="#6a1b9a" stroke-width="2"/>
+                        <text x="550" y="115" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">Motor</text>
+                        
+                        <!-- Pump/Fan -->
+                        <rect x="650" y="85" width="100" height="50" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2" rx="5"/>
+                        <text x="700" y="115" text-anchor="middle" fill="#333" font-size="12">Pump/Fan</text>
+                        
+                        <!-- Signals -->
+                        <path d="M 170 110 L 300 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="235" y="100" text-anchor="middle" font-size="11">Speed Command</text>
+                        <text x="235" y="130" text-anchor="middle" font-size="11">0-10V / 4-20mA</text>
+                        
+                        <path d="M 300 120 L 170 120" stroke="#333" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                        <text x="235" y="145" text-anchor="middle" font-size="11">Feedback</text>
+                        
+                        <path d="M 420 110 L 510 110" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <text x="465" y="100" text-anchor="middle" font-size="11">Variable</text>
+                        <text x="465" y="130" text-anchor="middle" font-size="11">Frequency</text>
+                        
+                        <path d="M 590 110 L 650 110" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="620" y="100" text-anchor="middle" font-size="11">Mechanical</text>
+                        
+                        <!-- Benefits -->
+                        <text x="400" y="200" text-anchor="middle" font-size="14" font-weight="bold">VFD Benefits:</text>
+                        <text x="400" y="220" text-anchor="middle" font-size="12">• Energy Savings (30-50%)</text>
+                        <text x="400" y="240" text-anchor="middle" font-size="12">• Soft Start/Stop</text>
+                        <text x="400" y="260" text-anchor="middle" font-size="12">• Precise Speed Control</text>
+                        <text x="400" y="280" text-anchor="middle" font-size="12">• Reduced Mechanical Stress</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>4. Control Valves</h3>
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Characteristic</th>
+                        <th>Application</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Globe</strong></td>
+                        <td>Linear, Equal %</td>
+                        <td>Modulating flow</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ball</strong></td>
+                        <td>Equal %</td>
+                        <td>On/off, some modulating</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Butterfly</strong></td>
+                        <td>Equal %</td>
+                        <td>Large pipes, low ΔP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3-Way</strong></td>
+                        <td>Mixing/Diverting</td>
+                        <td>Temperature control</td>
+                    </tr>
+                </table>
+
+                <div class="warning-box">
+                    <h4>⚠️ Actuator Sizing Considerations:</h4>
+                    <ul>
+                        <li>Valve/Damper torque requirements</li>
+                        <li>Close-off pressure rating</li>
+                        <li>Ambient temperature range</li>
+                        <li>Fail-safe requirements</li>
+                        <li>Control signal compatibility</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Control Strategies -->
+            <div class="slide">
+                <h2>Control Strategies for Data Centers</h2>
+                
+                <p>Effective control strategies are crucial for maintaining optimal conditions while maximizing energy efficiency.</p>
+
+                <h3>1. Temperature Control Strategies</h3>
+                
+                <div class="info-box">
+                    <h4>Supply Air Temperature Control:</h4>
+                    <ul>
+                        <li><strong>Fixed Setpoint:</strong> Constant supply temperature</li>
+                        <li><strong>Reset Control:</strong> Adjust based on load or OAT</li>
+                        <li><strong>Adaptive Control:</strong> Learn from historical data</li>
+                        <li><strong>Predictive Control:</strong> Anticipate load changes</li>
+                        <li><strong>Zone-Based:</strong> Different temps for different areas</li>
+                    </ul>
+                </div>
+
+                <h3>2. Pressure Control Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Static Pressure Optimization:</h4>
+                    <ul>
+                        <li><strong>Fixed Setpoint:</strong> Maintain constant duct pressure</li>
+                        <li><strong>Reset Based on Demand:</strong> Adjust to VAV box positions</li>
+                        <li><strong>Trim and Respond:</strong> Continuously optimize</li>
+                        <li><strong>Zone Pressure:</strong> Multiple pressure sensors</li>
+                        <li><strong>Fan Tracking:</strong> Supply follows return</li>
+                    </ul>
+                </div>
+
+                <h3>3. Economizer Control</h3>
+                <ul>
+                    <li><strong>Dry Bulb:</strong> Based on outdoor temperature only</li>
+                    <li><strong>Enthalpy:</strong> Consider temperature and humidity</li>
+                    <li><strong>Differential Enthalpy:</strong> Compare outdoor to return</li>
+                    <li><strong>Integrated:</strong> Work with mechanical cooling</li>
+                    <li><strong>Predictive:</strong> Use weather forecasts</li>
+                </ul>
+
+                <h3>4. Sequence of Operations Example</h3>
+                <div class="info-box">
+                    <h4>AHU Control Sequence:</h4>
+                    <ol>
+                        <li>System enabled based on schedule or override</li>
+                        <li>Supply fan starts, ramps to minimum speed</li>
+                        <li>Static pressure control modulates fan speed</li>
+                        <li>Temperature control modulates cooling/heating</li>
+                        <li>Economizer control based on conditions</li>
+                        <li>Alarms generated for out-of-range conditions</li>
+                    </ol>
+                </div>
+
+                <h3>5. Energy Optimization Strategies</h3>
+                <table>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Typical Savings</th>
+                        <th>Implementation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Supply Air Reset</strong></td>
+                        <td>10-20%</td>
+                        <td>Raise SAT when possible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chilled Water Reset</strong></td>
+                        <td>5-15%</td>
+                        <td>Raise CHW temp</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Demand Control Ventilation</strong></td>
+                        <td>10-30%</td>
+                        <td>CO2 or occupancy based</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Optimal Start/Stop</strong></td>
+                        <td>5-10%</td>
+                        <td>Predictive scheduling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Shedding</strong></td>
+                        <td>Variable</td>
+                        <td>Demand response</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 7: Communication Protocols -->
+            <div class="slide">
+                <h2>Communication Protocols</h2>
+                
+                <p>Understanding communication protocols is essential for system integration and interoperability.</p>
+
+                <h3>1. BACnet (Building Automation and Control Networks)</h3>
+                
+                <div class="info-box">
+                    <h4>BACnet Features:</h4>
+                    <ul>
+                        <li><strong>Standard:</strong> ASHRAE/ANSI/ISO 16484-5</li>
+                        <li><strong>Transport:</strong> IP, MS/TP, ARCNET, Ethernet</li>
+                        <li><strong>Objects:</strong> Standardized data points</li>
+                        <li><strong>Services:</strong> Read, write, alarm, trend</li>
+                        <li><strong>Interoperability:</strong> Multi-vendor support</li>
+                    </ul>
+                </div>
+
+                <h3>2. Modbus</h3>
+                <ul>
+                    <li><strong>Modbus RTU:</strong> Serial, binary protocol</li>
+                    <li><strong>Modbus TCP:</strong> Ethernet-based</li>
+                    <li><strong>Simple:</strong> Easy to implement</li>
+                    <li><strong>Registers:</strong> Coils, inputs, holding registers</li>
+                    <li><strong>Master/Slave:</strong> Polling architecture</li>
+                </ul>
+
+                <h3>3. Protocol Comparison</h3>
+                
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>BACnet</th>
+                        <th>Modbus</th>
+                        <th>LON</th>
+                        <th>SNMP</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Complexity</strong></td>
+                        <td>High</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speed</strong></td>
+                        <td>Fast</td>
+                        <td>Medium</td>
+                        <td>Fast</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Interop</strong></td>
+                        <td>Excellent</td>
+                        <td>Good</td>
+                        <td>Good</td>
+                        <td>IT Systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Medium</td>
+                        <td>Low</td>
+                        <td>High</td>
+                        <td>Low</td>
+                    </tr>
+                </table>
+
+                <h3>4. Integration Challenges</h3>
+                <div class="warning-box">
+                    <h4>Common Issues:</h4>
+                    <ul>
+                        <li>Protocol translation between systems</li>
+                        <li>Data mapping and scaling</li>
+                        <li>Network security concerns</li>
+                        <li>Bandwidth limitations</li>
+                        <li>Proprietary extensions</li>
+                    </ul>
+                </div>
+
+                <h3>5. Best Practices</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Standardize:</strong> Use open protocols where possible</li>
+                        <li><strong>Document:</strong> Maintain point lists and mappings</li>
+                        <li><strong>Test:</strong> Verify integration before deployment</li>
+                        <li><strong>Secure:</strong> Implement cybersecurity measures</li>
+                        <li><strong>Monitor:</strong> Track communication health</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: User Interface and Graphics -->
+            <div class="slide">
+                <h2>User Interface and Graphics</h2>
+                
+                <p>Effective user interfaces are critical for operators to monitor and control building systems efficiently.</p>
+
+                <h3>1. Graphics Standards</h3>
+                
+                <div class="info-box">
+                    <h4>Design Principles:</h4>
+                    <ul>
+                        <li><strong>Consistency:</strong> Uniform colors, symbols, layouts</li>
+                        <li><strong>Hierarchy:</strong> Overview to detail navigation</li>
+                        <li><strong>Clarity:</strong> Clear labeling and status indication</li>
+                        <li><strong>Responsiveness:</strong> Real-time data updates</li>
+                        <li><strong>Accessibility:</strong> Easy to understand and use</li>
+                    </ul>
+                </div>
+
+                <h3>2. Color Standards</h3>
+                <table>
+                    <tr>
+                        <th>Status</th>
+                        <th>Color</th>
+                        <th>RGB Value</th>
+                        <th>Usage</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Running</strong></td>
+                        <td style="background-color: #00ff00;">Green</td>
+                        <td>#00FF00</td>
+                        <td>Equipment on</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stopped</strong></td>
+                        <td style="background-color: #808080; color: white;">Gray</td>
+                        <td>#808080</td>
+                        <td>Equipment off</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Alarm</strong></td>
+                        <td style="background-color: #ff0000; color: white;">Red</td>
+                        <td>#FF0000</td>
+                        <td>Critical alarm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Warning</strong></td>
+                        <td style="background-color: #ffff00;">Yellow</td>
+                        <td>#FFFF00</td>
+                        <td>Caution</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Manual</strong></td>
+                        <td style="background-color: #ffa500;">Orange</td>
+                        <td>#FFA500</td>
+                        <td>Override</td>
+                    </tr>
+                </table>
+
+                <h3>3. Navigation Structure</h3>
+                <ul>
+                    <li><strong>Home Page:</strong> Site overview, critical alarms</li>
+                    <li><strong>System Pages:</strong> HVAC, electrical, plumbing</li>
+                    <li><strong>Floor Plans:</strong> Equipment locations, zones</li>
+                    <li><strong>Equipment Details:</strong> Individual unit control</li>
+                    <li><strong>Trends:</strong> Historical data and analysis</li>
+                    <li><strong>Alarms:</strong> Active and historical alarms</li>
+                </ul>
+
+                <h3>4. Mobile Interface Considerations</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Responsive Design:</strong> Adapt to screen size</li>
+                        <li><strong>Touch Optimized:</strong> Large buttons and controls</li>
+                        <li><strong>Essential Info:</strong> Critical data priority</li>
+                        <li><strong>Offline Capability:</strong> Local data caching</li>
+                        <li><strong>Security:</strong> Secure authentication</li>
+                    </ul>
+                </div>
+
+                <h3>5. Alarm Management</h3>
+                <ul>
+                    <li><strong>Priority Levels:</strong> Critical, High, Medium, Low</li>
+                    <li><strong>Notification:</strong> Email, SMS, audible</li>
+                    <li><strong>Acknowledgment:</strong> User action required</li>
+                    <li><strong>Escalation:</strong> If not acknowledged</li>
+                    <li><strong>History:</strong> Searchable alarm database</li>
+                </ul>
+            </div>
+
+            <!-- Slide 9: Cybersecurity -->
+            <div class="slide">
+                <h2>Cybersecurity for Control Systems</h2>
+                
+                <p>Building control systems are increasingly connected and vulnerable to cyber threats.</p>
+
+                <h3>1. Security Threats</h3>
+                
+                <div class="danger-box">
+                    <h4>Common Vulnerabilities:</h4>
+                    <ul>
+                        <li><strong>Unauthorized Access:</strong> Weak passwords, default credentials</li>
+                        <li><strong>Malware:</strong> Viruses, ransomware on HMI computers</li>
+                        <li><strong>Network Attacks:</strong> Man-in-the-middle, DOS</li>
+                        <li><strong>Physical Access:</strong> Unsecured control panels</li>
+                        <li><strong>Social Engineering:</strong> Phishing, pretexting</li>
+                    </ul>
+                </div>
+
+                <h3>2. Defense Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Security Best Practices:</h4>
+                    <ul>
+                        <li><strong>Network Segmentation:</strong> Isolate BAS from IT networks</li>
+                        <li><strong>Access Control:</strong> Role-based permissions</li>
+                        <li><strong>Encryption:</strong> Secure communications</li>
+                        <li><strong>Updates:</strong> Regular security patches</li>
+                        <li><strong>Monitoring:</strong> Intrusion detection systems</li>
+                        <li><strong>Backup:</strong> Regular system backups</li>
+                    </ul>
+                </div>
+
+                <h3>3. Security Architecture</h3>
+                
+                <div class="info-box">
+                    <h4>Defense in Depth:</h4>
+                    <ul>
+                        <li><strong>Perimeter:</strong> Firewalls, DMZ</li>
+                        <li><strong>Network:</strong> VLANs, access control lists</li>
+                        <li><strong>Host:</strong> Antivirus, hardening</li>
+                        <li><strong>Application:</strong> Secure coding, authentication</li>
+                        <li><strong>Data:</strong> Encryption, integrity checks</li>
+                    </ul>
+                </div>
+
+                <h3>4. Compliance Requirements</h3>
+                <ul>
+                    <li><strong>NIST Framework:</strong> Identify, Protect, Detect, Respond, Recover</li>
+                    <li><strong>ISA/IEC-62443:</strong> Industrial control system security</li>
+                    <li><strong>Company Policies:</strong> IT security standards</li>
+                    <li><strong>Industry Standards:</strong> Data center specific</li>
+                </ul>
+
+                <h3>5. Incident Response Plan</h3>
+                <table>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Preparation</strong></td>
+                        <td>Training, tools, procedures</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detection</strong></td>
+                        <td>Monitoring, alerts, analysis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Containment</strong></td>
+                        <td>Isolate, prevent spread</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eradication</strong></td>
+                        <td>Remove threat, patch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recovery</strong></td>
+                        <td>Restore normal operations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lessons Learned</strong></td>
+                        <td>Review, improve</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 10: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Artificial Intelligence and Machine Learning</h4>
+                    <ul>
+                        <li><strong>Predictive Maintenance:</strong> Failure prediction before occurrence</li>
+                        <li><strong>Optimization:</strong> Self-tuning control loops</li>
+                        <li><strong>Anomaly Detection:</strong> Identify unusual patterns</li>
+                        <li><strong>Energy Forecasting:</strong> Predict consumption patterns</li>
+                        <li><strong>Adaptive Control:</strong> Learn from operating history</li>
+                    </ul>
+                </div>
+
+                <h3>2. IoT and Edge Computing</h3>
+                <ul>
+                    <li><strong>Wireless Sensors:</strong> Easy deployment, lower cost</li>
+                    <li><strong>Edge Analytics:</strong> Local processing reduces latency</li>
+                    <li><strong>Cloud Integration:</strong> Remote monitoring and control</li>
+                    <li><strong>Digital Twins:</strong> Virtual facility modeling</li>
+                    <li><strong>5G Networks:</strong> High-speed, low-latency communication</li>
+                </ul>
+
+                <h3>3. Advanced Analytics</h3>
+                <div class="info-box">
+                    <h4>Data-Driven Insights:</h4>
+                    <ul>
+                        <li><strong>Fault Detection:</strong> Automated diagnostics</li>
+                        <li><strong>Performance Benchmarking:</strong> Compare to similar facilities</li>
+                        <li><strong>Energy Analytics:</strong> Identify savings opportunities</li>
+                        <li><strong>Predictive Modeling:</strong> What-if scenarios</li>
+                        <li><strong>KPI Dashboards:</strong> Real-time performance metrics</li>
+                    </ul>
+                </div>
+
+                <h3>4. Integration Trends</h3>
+                <ul>
+                    <li><strong>IT/OT Convergence:</strong> Unified infrastructure management</li>
+                    <li><strong>API-First Design:</strong> Easy third-party integration</li>
+                    <li><strong>Microservices:</strong> Modular system architecture</li>
+                    <li><strong>Containerization:</strong> Portable applications</li>
+                    <li><strong>Open Standards:</strong> Vendor-agnostic solutions</li>
+                </ul>
+
+                <h3>5. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Implement open protocols for future flexibility</li>
+                        <li>Design for scalability and expansion</li>
+                        <li>Prioritize cybersecurity from the start</li>
+                        <li>Invest in operator training and documentation</li>
+                        <li>Establish data governance policies</li>
+                        <li>Plan for technology refresh cycles</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 11: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Building automation systems integrate and control facility operations</li>
+                        <li>Control theory principles enable effective system regulation</li>
+                        <li>Sensors and actuators are the interface to physical systems</li>
+                        <li>Communication protocols enable system integration</li>
+                        <li>User interfaces must be intuitive and informative</li>
+                        <li>Cybersecurity is critical for protecting control systems</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Integration:</strong> BAS ties all building systems together</li>
+                    <li><strong>Optimization:</strong> Continuous improvement through data analysis</li>
+                    <li><strong>Reliability:</strong> Proper design ensures consistent operation</li>
+                    <li><strong>Security:</strong> Protect systems from cyber threats</li>
+                    <li><strong>Evolution:</strong> Stay current with technology advances</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Familiarize yourself with your facility's BAS</li>
+                        <li>Learn basic navigation and control functions</li>
+                        <li>Understand alarm response procedures</li>
+                        <li>Practice reading trends and reports</li>
+                        <li>Stay informed about system updates</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 12: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE Guideline 13 - Specifying Building Automation Systems</li>
+                        <li>• ASHRAE Standard 135 - BACnet Protocol</li>
+                        <li>• ISA-101 Human Machine Interfaces Standards</li>
+                        <li>• NIST Cybersecurity Framework v1.1</li>
+                        <li>• IEC 62443 - Industrial Communication Networks</li>
+                        <li>• Control Systems Engineering - Norman S. Nise</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• BACnet International - Protocol Standards and Testing</li>
+                        <li>• Control System Integrators Association (CSIA)</li>
+                        <li>• International Society of Automation (ISA)</li>
+                        <li>• ASHRAE Technical Committee 1.4 - Control Theory</li>
+                        <li>• Department of Energy - Building Technologies Office</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Direct Digital Control for Building HVAC Systems" - Michael J. Coffin</li>
+                        <li>• "Building Automation: Control Devices and Applications" - ESCO Institute</li>
+                        <li>• "BAS Engineering Handbook" - Building Intelligence Group</li>
+                        <li>• "Cybersecurity for Building Automation Systems" - DHS/ICS-CERT</li>
+                        <li>• Manufacturer resources: Johnson Controls, Schneider Electric, Siemens, Honeywell</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from control system manufacturers, industry standards organizations, academic textbooks, and data center operational best practices. All control strategies, sensor specifications, and integration methods reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Controls Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What does the "I" in PID control stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Input</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Integral</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Inverse</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Immediate</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which temperature sensor type typically has the highest accuracy?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Thermocouple</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Thermistor</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> RTD (Pt100)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Infrared</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What is the primary advantage of BACnet protocol?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Lowest cost</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Fastest speed</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Multi-vendor interoperability</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Simplest to implement</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What type of control valve characteristic is best for most HVAC applications?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Quick opening</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Linear</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Equal percentage</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> On/off</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What color typically indicates a running status in BAS graphics?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> Red</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> Green</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> Yellow</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> Gray</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the purpose of integral control in a PID loop?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Provide quick response</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Eliminate steady-state error</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Prevent overshoot</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Reduce noise</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. Which control strategy typically saves the most energy in VAV systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Fixed static pressure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Static pressure reset</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Constant volume</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Manual control</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is a common cybersecurity practice for BAS?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Connect directly to internet</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Use default passwords</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Network segmentation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Disable all firewalls</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What does a differential pressure sensor typically measure in HVAC?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Absolute pressure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Filter status</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Temperature difference</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Humidity levels</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the typical control signal range for analog devices?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 0-5 VDC</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 0-10 VDC or 4-20 mA</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 24 VAC</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 120 VAC</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Integral
+            q2: 'c',  // RTD (Pt100)
+            q3: 'c',  // Multi-vendor interoperability
+            q4: 'c',  // Equal percentage
+            q5: 'b',  // Green
+            q6: 'b',  // Eliminate steady-state error
+            q7: 'b',  // Static pressure reset
+            q8: 'c',  // Network segmentation
+            q9: 'b',  // Filter status
+            q10: 'b'  // 0-10 VDC or 4-20 mA
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Controls Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

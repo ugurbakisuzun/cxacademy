@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC Systems Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1976d2;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1976d2;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #42a5f5;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #42a5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1976d2, #42a5f5);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1976d2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1976d2;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HVAC Systems Training Module</h1>
+            <p>Data Center 101 - Essential Knowledge for Climate Control Systems</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to HVAC Systems Training</h2>
+                <p>Welcome to this comprehensive training module on HVAC (Heating, Ventilation, and Air Conditioning) Systems for data centers. This course will provide you with essential knowledge about HVAC technology, its critical components, and best practices for maintaining optimal environmental conditions for IT equipment.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand HVAC fundamentals and data center requirements</li>
+                        <li>Learn about different HVAC components and configurations</li>
+                        <li>Recognize airflow management strategies and best practices</li>
+                        <li>Understand temperature and humidity control requirements</li>
+                        <li>Learn about energy efficiency and optimization strategies</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of data center operations</p>
+            </div>
+
+            <!-- Slide 2: What is HVAC? -->
+            <div class="slide">
+                <h2>What is HVAC in Data Centers?</h2>
+                
+                <p><strong>HVAC</strong> in data centers refers to the integrated systems that provide precise environmental control, including temperature, humidity, air quality, and distribution to protect and optimize IT equipment performance.</p>
+
+                <h3>Key Functions of Data Center HVAC:</h3>
+                <ul>
+                    <li><strong>Heat Removal:</strong> Extract heat generated by IT equipment</li>
+                    <li><strong>Temperature Control:</strong> Maintain 64-80°F (18-27°C) typically</li>
+                    <li><strong>Humidity Control:</strong> Maintain 40-60% relative humidity</li>
+                    <li><strong>Air Distribution:</strong> Deliver cooling where needed</li>
+                    <li><strong>Air Quality:</strong> Filter contaminants and particles</li>
+                    <li><strong>Pressurization:</strong> Maintain positive pressure to prevent dust infiltration</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1976d2">Data Center HVAC Overview</text>
+                        
+                        <!-- CRAH Unit -->
+                        <rect x="50" y="100" width="150" height="100" fill="#42a5f5" stroke="#1976d2" stroke-width="2" rx="5"/>
+                        <text x="125" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">CRAH Unit</text>
+                        <text x="125" y="150" text-anchor="middle" fill="white" font-size="12">Cool Supply Air</text>
+                        <text x="125" y="170" text-anchor="middle" fill="white" font-size="12">45-55°F</text>
+                        
+                        <!-- Server Racks -->
+                        <rect x="350" y="80" width="100" height="140" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="400" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Server</text>
+                        <text x="400" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Rack</text>
+                        <text x="400" y="190" text-anchor="middle" fill="white" font-size="12">Heat</text>
+                        <text x="400" y="205" text-anchor="middle" fill="white" font-size="12">Generation</text>
+                        
+                        <rect x="500" y="80" width="100" height="140" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="550" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Server</text>
+                        <text x="550" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Rack</text>
+                        
+                        <!-- Raised Floor -->
+                        <rect x="30" y="300" width="740" height="40" fill="#757575" stroke="#616161" stroke-width="2"/>
+                        <text x="400" y="325" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Raised Floor Plenum</text>
+                        
+                        <!-- Perforated Tiles -->
+                        <rect x="320" y="295" width="40" height="10" fill="#FFC107" stroke="#F57C00" stroke-width="1"/>
+                        <rect x="470" y="295" width="40" height="10" fill="#FFC107" stroke="#F57C00" stroke-width="1"/>
+                        <rect x="590" y="295" width="40" height="10" fill="#FFC107" stroke="#F57C00" stroke-width="1"/>
+                        
+                        <!-- Air Flow Arrows -->
+                        <!-- Cool air down -->
+                        <path d="M 125 200 L 125 280" stroke="#3498db" stroke-width="4" marker-end="url(#bluearrow)"/>
+                        <text x="140" y="240" font-size="12" fill="#3498db">Cool Air</text>
+                        
+                        <!-- Cool air up through tiles -->
+                        <path d="M 340 290 L 340 230" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                        <path d="M 490 290 L 490 230" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                        <path d="M 610 290 L 610 230" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                        
+                        <!-- Hot air return -->
+                        <path d="M 400 70 L 400 50 Q 400 30 380 30 L 150 30 Q 125 30 125 50 L 125 100" stroke="#e74c3c" stroke-width="4" marker-end="url(#redarrow)"/>
+                        <path d="M 550 70 L 550 50 Q 550 30 530 30 L 450 30" stroke="#e74c3c" stroke-width="4"/>
+                        <text x="250" y="25" font-size="12" fill="#e74c3c">Hot Air Return</text>
+                        
+                        <!-- Hot/Cold Aisles Labels -->
+                        <text x="340" y="260" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">Cold Aisle</text>
+                        <text x="475" y="60" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">Hot Aisle</text>
+                        
+                        <!-- Temperature indicators -->
+                        <text x="700" y="150" font-size="12" fill="#e74c3c">80-95°F</text>
+                        <text x="250" y="270" font-size="12" fill="#3498db">64-80°F</text>
+                        
+                        <!-- Humidity Sensor -->
+                        <circle cx="650" cy="150" r="20" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2"/>
+                        <text x="650" y="155" text-anchor="middle" fill="white" font-size="10" font-weight="bold">RH%</text>
+                        <text x="650" y="180" text-anchor="middle" font-size="10" fill="#333">40-60% RH</text>
+                        
+                        <!-- Arrowhead markers -->
+                        <defs>
+                            <marker id="bluearrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#3498db"/>
+                            </marker>
+                            <marker id="redarrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#e74c3c"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Typical Data Center HVAC Air Flow Pattern</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>HVAC Design Principles:</h4>
+                    <ul>
+                        <li><strong>Heat Load Calculation:</strong> IT equipment + lighting + people + building</li>
+                        <li><strong>Redundancy:</strong> N+1 or 2N configurations for reliability</li>
+                        <li><strong>Efficiency:</strong> Minimize energy consumption while maintaining conditions</li>
+                        <li><strong>Scalability:</strong> Accommodate future growth and changes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: HVAC Components -->
+            <div class="slide">
+                <h2>HVAC System Components</h2>
+                
+                <p>Data center HVAC systems consist of multiple integrated components working together to maintain optimal conditions.</p>
+
+                <h3>1. Cooling Units</h3>
+                
+                <div class="info-box">
+                    <h4>CRAC (Computer Room Air Conditioner)</h4>
+                    <ul>
+                        <li><strong>Type:</strong> Direct expansion (DX) cooling</li>
+                        <li><strong>Capacity:</strong> 5-100 tons typically</li>
+                        <li><strong>Components:</strong> Compressor, evaporator, condenser</li>
+                        <li><strong>Control:</strong> Return air temperature sensing</li>
+                        <li><strong>Application:</strong> Smaller rooms, supplemental cooling</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>CRAH (Computer Room Air Handler)</h4>
+                    <ul>
+                        <li><strong>Type:</strong> Chilled water cooling</li>
+                        <li><strong>Capacity:</strong> 20-150+ tons</li>
+                        <li><strong>Components:</strong> Cooling coil, fans, filters</li>
+                        <li><strong>Control:</strong> Supply or return air sensing</li>
+                        <li><strong>Application:</strong> Large data centers, central plant</li>
+                    </ul>
+                </div>
+
+                <h3>2. Air Distribution Components</h3>
+
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Function</th>
+                        <th>Key Features</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Raised Floor</strong></td>
+                        <td>Air plenum and cable management</td>
+                        <td>18-48" height, sealed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perforated Tiles</strong></td>
+                        <td>Controlled air delivery</td>
+                        <td>25-56% open area</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grilles/Diffusers</strong></td>
+                        <td>Air distribution control</td>
+                        <td>Adjustable, directional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Containment</strong></td>
+                        <td>Separate hot/cold air</td>
+                        <td>Improves efficiency 10-40%</td>
+                    </tr>
+                </table>
+
+                <h3>3. Control Components</h3>
+                
+                <div class="success-box">
+                    <h4>Environmental Monitoring:</h4>
+                    <ul>
+                        <li><strong>Temperature Sensors:</strong> Supply, return, rack inlet</li>
+                        <li><strong>Humidity Sensors:</strong> Space and unit mounted</li>
+                        <li><strong>Pressure Sensors:</strong> Under-floor static pressure</li>
+                        <li><strong>Airflow Sensors:</strong> CFM measurement</li>
+                        <li><strong>Power Meters:</strong> Energy consumption tracking</li>
+                    </ul>
+                </div>
+
+                <h3>4. Humidification/Dehumidification</h3>
+                <ul>
+                    <li><strong>Ultrasonic:</strong> Energy efficient, precise control</li>
+                    <li><strong>Steam:</strong> Quick response, high capacity</li>
+                    <li><strong>Evaporative:</strong> Adiabatic cooling benefit</li>
+                    <li><strong>Desiccant:</strong> Low temperature dehumidification</li>
+                </ul>
+            </div>
+
+            <!-- Slide 4: Airflow Management -->
+            <div class="slide">
+                <h2>Airflow Management Strategies</h2>
+                
+                <p>Effective airflow management is crucial for data center cooling efficiency and equipment reliability.</p>
+
+                <h3>1. Hot Aisle/Cold Aisle Configuration</h3>
+                
+                <div class="info-box">
+                    <h4>Standard Configuration:</h4>
+                    <ul>
+                        <li><strong>Cold Aisles:</strong> Face equipment intakes, receive cool air</li>
+                        <li><strong>Hot Aisles:</strong> Collect exhaust air from equipment</li>
+                        <li><strong>Benefits:</strong> Prevents mixing, improves efficiency</li>
+                        <li><strong>Temperature Differential:</strong> 15-20°F typical</li>
+                        <li><strong>Implementation:</strong> Low cost, industry standard</li>
+                    </ul>
+                </div>
+
+                <h3>2. Containment Systems</h3>
+                
+                <div class="success-box">
+                    <h4>Hot Aisle Containment (HAC):</h4>
+                    <ul>
+                        <li>Encloses hot aisle with doors and ceiling</li>
+                        <li>Prevents hot air recirculation</li>
+                        <li>Room becomes cold air plenum</li>
+                        <li>Efficiency improvement: 20-40%</li>
+                        <li>Easier retrofit in existing facilities</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Cold Aisle Containment (CAC):</h4>
+                    <ul>
+                        <li>Encloses cold aisle with doors and ceiling</li>
+                        <li>Concentrates cold air at equipment intakes</li>
+                        <li>Allows higher return temperatures</li>
+                        <li>Better for high-density applications</li>
+                        <li>Improved working conditions in cold aisle</li>
+                    </ul>
+                </div>
+
+                <h3>3. Airflow Optimization Techniques</h3>
+                
+                <table>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Purpose</th>
+                        <th>Benefit</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Blanking Panels</strong></td>
+                        <td>Fill empty rack spaces</td>
+                        <td>Prevents recirculation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Brush Grommets</strong></td>
+                        <td>Seal cable penetrations</td>
+                        <td>Reduces bypass air</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Variable Speed Fans</strong></td>
+                        <td>Match airflow to load</td>
+                        <td>Energy savings 20-50%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Computational Fluid Dynamics</strong></td>
+                        <td>Model airflow patterns</td>
+                        <td>Identify hot spots</td>
+                    </tr>
+                </table>
+
+                <h3>4. Raised Floor Best Practices</h3>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Critical Considerations:</h4>
+                    <ul>
+                        <li><strong>Sealing:</strong> All penetrations must be sealed</li>
+                        <li><strong>Tile Placement:</strong> Match cooling delivery to heat load</li>
+                        <li><strong>Pressure:</strong> Maintain 0.02-0.05" H₂O static pressure</li>
+                        <li><strong>Obstructions:</strong> Keep clear of cables and pipes</li>
+                        <li><strong>Leakage:</strong> Can waste 50% of airflow if not sealed</li>
+                    </ul>
+                </div>
+
+                <h3>5. Alternative Cooling Approaches</h3>
+                <ul>
+                    <li><strong>In-Row Cooling:</strong> Close-coupled cooling at rack level</li>
+                    <li><strong>Rear Door Heat Exchangers:</strong> Passive or active cooling</li>
+                    <li><strong>Overhead Distribution:</strong> Ducted supply and return</li>
+                    <li><strong>Direct Chip Cooling:</strong> Liquid cooling to processors</li>
+                </ul>
+            </div>
+
+            <!-- Slide 5: Temperature and Humidity Control -->
+            <div class="slide">
+                <h2>Temperature and Humidity Control</h2>
+                
+                <p>Precise environmental control is essential for IT equipment reliability and energy efficiency.</p>
+
+                <h3>1. Temperature Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>ASHRAE Recommended Ranges (2021):</h4>
+                    <ul>
+                        <li><strong>Recommended:</strong> 64-80°F (18-27°C)</li>
+                        <li><strong>Allowable:</strong> 59-90°F (15-32°C)</li>
+                        <li><strong>Rate of Change:</strong> <9°F/hour (5°C/hour)</li>
+                        <li><strong>Measurement Point:</strong> Server inlet temperature</li>
+                        <li><strong>Class A2:</strong> Most common for data centers</li>
+                    </ul>
+                </div>
+
+                <h3>2. Humidity Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Recommended</th>
+                        <th>Allowable</th>
+                        <th>Risk if Outside Range</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Relative Humidity</strong></td>
+                        <td>40-60% RH</td>
+                        <td>20-80% RH</td>
+                        <td>Static discharge, corrosion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dew Point</strong></td>
+                        <td>41-59°F</td>
+                        <td>-9°F to 59°F</td>
+                        <td>Condensation risk</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rate of Change</strong></td>
+                        <td><5% RH/hr</td>
+                        <td><10% RH/hr</td>
+                        <td>Equipment stress</td>
+                    </tr>
+                </table>
+
+                <h3>3. Control Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Temperature Control Methods:</h4>
+                    <ul>
+                        <li><strong>Return Air Control:</strong> Traditional, less precise</li>
+                        <li><strong>Supply Air Control:</strong> Better load matching</li>
+                        <li><strong>Rack Inlet Control:</strong> Most accurate, ASHRAE recommended</li>
+                        <li><strong>Differential Temperature:</strong> Maintains consistent ΔT</li>
+                        <li><strong>Predictive Control:</strong> AI-based optimization</li>
+                    </ul>
+                </div>
+
+                <h3>4. Set Point Optimization</h3>
+                
+                <div class="warning-box">
+                    <h4>Energy Savings Opportunities:</h4>
+                    <ul>
+                        <li><strong>Raise Set Points:</strong> 1°F increase = 2-5% energy savings</li>
+                        <li><strong>Wider Deadbands:</strong> Reduce cycling and wear</li>
+                        <li><strong>Dynamic Reset:</strong> Adjust based on IT load</li>
+                        <li><strong>Free Cooling Hours:</strong> Increase with higher set points</li>
+                        <li><strong>Chiller Efficiency:</strong> Improves with higher return temps</li>
+                    </ul>
+                </div>
+
+                <h3>5. Monitoring Best Practices</h3>
+                <ul>
+                    <li><strong>Sensor Placement:</strong> Top, middle, bottom of racks</li>
+                    <li><strong>Granularity:</strong> Monitor at rack level minimum</li>
+                    <li><strong>Trending:</strong> Track changes over time</li>
+                    <li><strong>Alarming:</strong> Set appropriate thresholds</li>
+                    <li><strong>Calibration:</strong> Annual sensor verification</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Energy Efficiency -->
+            <div class="slide">
+                <h2>Energy Efficiency and Optimization</h2>
+                
+                <p>HVAC systems typically consume 30-40% of data center energy. Optimization is crucial for operational costs and sustainability.</p>
+
+                <h3>1. Efficiency Metrics</h3>
+                
+                <div class="info-box">
+                    <h4>Key Performance Indicators:</h4>
+                    <ul>
+                        <li><strong>PUE (Power Usage Effectiveness):</strong> Total Power / IT Power (target <1.5)</li>
+                        <li><strong>Cooling Load Factor:</strong> Cooling kW / IT kW (target 0.3-0.5)</li>
+                        <li><strong>Airflow Efficiency:</strong> CFM per kW of cooling</li>
+                        <li><strong>Delta T:</strong> Return temp - Supply temp (target >20°F)</li>
+                        <li><strong>Economizer Hours:</strong> Free cooling utilization</li>
+                    </ul>
+                </div>
+
+                <h3>2. Economizer Systems</h3>
+                
+                <div class="success-box">
+                    <h4>Air-Side Economizer:</h4>
+                    <ul>
+                        <li>Uses outside air when conditions permit</li>
+                        <li>Filters and conditions outside air</li>
+                        <li>Can provide 100% free cooling</li>
+                        <li>Requires careful humidity control</li>
+                        <li>ROI: 2-4 years typically</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Water-Side Economizer:</h4>
+                    <ul>
+                        <li>Uses cooling tower for "free cooling"</li>
+                        <li>No outside air contamination risk</li>
+                        <li>Works when wet bulb <45°F typically</li>
+                        <li>Requires heat exchanger</li>
+                        <li>Partial free cooling possible</li>
+                    </ul>
+                </div>
+
+                <h3>3. Fan Energy Optimization</h3>
+                
+                <table>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Energy Savings</th>
+                        <th>Implementation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Variable Speed Drives</strong></td>
+                        <td>20-50%</td>
+                        <td>Match speed to load</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EC Plug Fans</strong></td>
+                        <td>10-30%</td>
+                        <td>Replace belt-driven fans</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pressure Reset</strong></td>
+                        <td>15-25%</td>
+                        <td>Optimize static pressure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature Reset</strong></td>
+                        <td>10-20%</td>
+                        <td>Raise cooling set points</td>
+                    </tr>
+                </table>
+
+                <h3>4. Advanced Optimization Strategies</h3>
+                
+                <div class="info-box">
+                    <h4>Modern Approaches:</h4>
+                    <ul>
+                        <li><strong>AI/ML Control:</strong> Predictive optimization based on patterns</li>
+                        <li><strong>Dynamic Cooling:</strong> Real-time adjustment to IT loads</li>
+                        <li><strong>Liquid Cooling:</strong> Direct chip cooling for high density</li>
+                        <li><strong>Adiabatic Cooling:</strong> Evaporative assist for efficiency</li>
+                        <li><strong>Heat Recovery:</strong> Reuse waste heat for other purposes</li>
+                    </ul>
+                </div>
+
+                <h3>5. Best Practices Summary</h3>
+                
+                <div class="warning-box">
+                    <h4>⚡ Quick Wins:</h4>
+                    <ul>
+                        <li>Implement blanking panels (immediate 5-10% improvement)</li>
+                        <li>Seal cable openings and floor leaks</li>
+                        <li>Increase temperature set points by 2-3°F</li>
+                        <li>Enable variable speed fan control</li>
+                        <li>Optimize tile placement for actual loads</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Maintenance and Reliability -->
+            <div class="slide">
+                <h2>Maintenance and Reliability</h2>
+                
+                <p>Regular maintenance ensures HVAC system reliability, efficiency, and longevity.</p>
+
+                <h3>1. Preventive Maintenance Schedule</h3>
+                
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Monthly</th>
+                        <th>Quarterly</th>
+                        <th>Annual</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Filters</strong></td>
+                        <td>Check pressure drop</td>
+                        <td>Replace pre-filters</td>
+                        <td>Replace final filters</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cooling Coils</strong></td>
+                        <td>Visual inspection</td>
+                        <td>Check approach temp</td>
+                        <td>Clean coils</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fans/Motors</strong></td>
+                        <td>Check operation</td>
+                        <td>Vibration analysis</td>
+                        <td>Bearing service</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controls</strong></td>
+                        <td>Verify operation</td>
+                        <td>Calibrate sensors</td>
+                        <td>Full functional test</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Humidifiers</strong></td>
+                        <td>Check operation</td>
+                        <td>Clean cylinders</td>
+                        <td>Replace elements</td>
+                    </tr>
+                </table>
+
+                <h3>2. Critical Maintenance Tasks</h3>
+                
+                <div class="info-box">
+                    <h4>Filter Maintenance:</h4>
+                    <ul>
+                        <li><strong>Pressure Drop:</strong> Replace at 1" w.g. or manufacturer spec</li>
+                        <li><strong>Efficiency:</strong> Verify MERV rating maintained</li>
+                        <li><strong>Sealing:</strong> Check gaskets and frame integrity</li>
+                        <li><strong>Documentation:</strong> Track replacement dates and pressure</li>
+                        <li><strong>Disposal:</strong> Follow environmental regulations</li>
+                    </ul>
+                </div>
+
+                <h3>3. Common Issues and Troubleshooting</h3>
+                
+                <div class="warning-box">
+                    <h4>Typical Problems:</h4>
+                    <ul>
+                        <li><strong>High Head Pressure:</strong> Dirty coils, fan failure</li>
+                        <li><strong>Low Suction Pressure:</strong> Low refrigerant, restrictions</li>
+                        <li><strong>Poor Humidity Control:</strong> Sensor drift, valve issues</li>
+                        <li><strong>Hot Spots:</strong> Airflow obstructions, load changes</li>
+                        <li><strong>Short Cycling:</strong> Oversized units, control issues</li>
+                    </ul>
+                </div>
+
+                <h3>4. Reliability Strategies</h3>
+                
+                <div class="success-box">
+                    <h4>Maximizing Uptime:</h4>
+                    <ul>
+                        <li><strong>Redundancy:</strong> N+1 minimum, 2N for critical facilities</li>
+                        <li><strong>Rotation:</strong> Alternate lead units weekly</li>
+                        <li><strong>Predictive Maintenance:</strong> Vibration and thermal trending</li>
+                        <li><strong>Spare Parts:</strong> Fans, filters, control boards on-site</li>
+                        <li><strong>Service Contracts:</strong> 24/7 support for critical systems</li>
+                        <li><strong>Training:</strong> Operator certification and procedures</li>
+                    </ul>
+                </div>
+
+                <h3>5. Performance Monitoring</h3>
+                <ul>
+                    <li><strong>Capacity Tracking:</strong> Monitor cooling output vs. design</li>
+                    <li><strong>Efficiency Trending:</strong> Track kW/ton over time</li>
+                    <li><strong>Runtime Analysis:</strong> Balance operating hours</li>
+                    <li><strong>Alarm History:</strong> Identify recurring issues</li>
+                    <li><strong>Energy Consumption:</strong> Benchmark and optimize</li>
+                </ul>
+            </div>
+
+            <!-- Slide 8: Controls and Integration -->
+            <div class="slide">
+                <h2>Controls and Integration</h2>
+                
+                <p>Modern HVAC controls enable optimization, integration, and intelligent operation.</p>
+
+                <h3>1. Control System Architecture</h3>
+                
+                <div class="info-box">
+                    <h4>Control Levels:</h4>
+                    <ul>
+                        <li><strong>Unit Level:</strong> Local microprocessor controls</li>
+                        <li><strong>System Level:</strong> Coordinate multiple units</li>
+                        <li><strong>Facility Level:</strong> BMS integration</li>
+                        <li><strong>Enterprise Level:</strong> Multi-site management</li>
+                        <li><strong>Cloud Level:</strong> Remote monitoring and analytics</li>
+                    </ul>
+                </div>
+
+                <h3>2. Control Strategies</h3>
+                
+                <table>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Description</th>
+                        <th>Benefits</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Lead/Lag</strong></td>
+                        <td>Rotate primary units</td>
+                        <td>Balance runtime</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cascade</strong></td>
+                        <td>Stage units on/off</td>
+                        <td>Match capacity to load</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Teamwork</strong></td>
+                        <td>Units work together</td>
+                        <td>Prevent fighting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Predictive</strong></td>
+                        <td>Anticipate changes</td>
+                        <td>Proactive response</td>
+                    </tr>
+                </table>
+
+                <h3>3. BMS Integration Points</h3>
+                
+                <div class="success-box">
+                    <h4>Critical Data Points:</h4>
+                    <ul>
+                        <li><strong>Status:</strong> On/off, alarms, mode</li>
+                        <li><strong>Temperatures:</strong> Supply, return, space, outdoor</li>
+                        <li><strong>Humidity:</strong> Space and supply air</li>
+                        <li><strong>Pressures:</strong> Static, refrigerant</li>
+                        <li><strong>Energy:</strong> kW, kWh, efficiency</li>
+                        <li><strong>Setpoints:</strong> Temperature, humidity, pressure</li>
+                    </ul>
+                </div>
+
+                <h3>4. Integration with Other Systems</h3>
+                <ul>
+                    <li><strong>Chiller Plant:</strong> Coordinate cooling capacity</li>
+                    <li><strong>Power Monitoring:</strong> Load-based cooling</li>
+                    <li><strong>Fire Alarm:</strong> Smoke control sequences</li>
+                    <li><strong>Security:</strong> Access and emergency response</li>
+                    <li><strong>DCIM:</strong> Capacity planning and optimization</li>
+                </ul>
+
+                <h3>5. Advanced Control Features</h3>
+                
+                <div class="info-box">
+                    <h4>Modern Capabilities:</h4>
+                    <ul>
+                        <li><strong>AI Optimization:</strong> Machine learning for efficiency</li>
+                        <li><strong>Fault Detection:</strong> Identify issues before failure</li>
+                        <li><strong>Auto-Commissioning:</strong> Self-configuration and tuning</li>
+                        <li><strong>Virtual Sensors:</strong> Calculate unmeasured values</li>
+                        <li><strong>Cloud Analytics:</strong> Remote expertise and optimization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Future Trends -->
+            <div class="slide">
+                <h2>Future Trends and Best Practices</h2>
+                
+                <h3>Emerging Technologies</h3>
+                
+                <div class="success-box">
+                    <h4>1. Liquid Cooling Evolution</h4>
+                    <ul>
+                        <li><strong>Direct-to-Chip:</strong> 1000W+ per chip cooling</li>
+                        <li><strong>Immersion Cooling:</strong> Complete submersion systems</li>
+                        <li><strong>Rear Door Heat Exchangers:</strong> Passive/active hybrid</li>
+                        <li><strong>Cold Plate Technology:</strong> Enhanced heat transfer</li>
+                        <li><strong>Two-Phase Cooling:</strong> Phase change efficiency</li>
+                    </ul>
+                </div>
+
+                <h3>2. Sustainability Focus</h3>
+                <ul>
+                    <li><strong>Net Zero Goals:</strong> Carbon neutral operations</li>
+                    <li><strong>Heat Recovery:</strong> District heating integration</li>
+                    <li><strong>Natural Refrigerants:</strong> Low GWP alternatives</li>
+                    <li><strong>Renewable Integration:</strong> Solar/wind powered cooling</li>
+                    <li><strong>Water Conservation:</strong> Closed-loop and dry cooling</li>
+                </ul>
+
+                <h3>3. AI and Automation</h3>
+                <div class="info-box">
+                    <h4>Intelligent Systems:</h4>
+                    <ul>
+                        <li><strong>Predictive Control:</strong> Weather and load forecasting</li>
+                        <li><strong>Self-Healing:</strong> Automatic fault correction</li>
+                        <li><strong>Digital Twins:</strong> Virtual modeling and optimization</li>
+                        <li><strong>Autonomous Operations:</strong> Minimal human intervention</li>
+                        <li><strong>Edge Computing:</strong> Local intelligence and response</li>
+                    </ul>
+                </div>
+
+                <h3>4. Best Practices Summary</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Recommendations:</h4>
+                    <ul>
+                        <li>Design for flexibility and scalability</li>
+                        <li>Implement comprehensive monitoring</li>
+                        <li>Use containment strategies</li>
+                        <li>Optimize set points based on ASHRAE guidelines</li>
+                        <li>Regular maintenance and filter changes</li>
+                        <li>Continuous commissioning and optimization</li>
+                    </ul>
+                </div>
+
+                <h3>5. Industry Standards</h3>
+                <ul>
+                    <li><strong>ASHRAE TC 9.9:</strong> Thermal guidelines for data centers</li>
+                    <li><strong>ASHRAE 90.4:</strong> Energy standard for data centers</li>
+                    <li><strong>Uptime Institute:</strong> Tier classifications</li>
+                    <li><strong>ISO 50001:</strong> Energy management systems</li>
+                    <li><strong>BICSI-002:</strong> Data center design standard</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>HVAC systems maintain critical environmental conditions</li>
+                        <li>Components include cooling units, distribution, and controls</li>
+                        <li>Airflow management is crucial for efficiency</li>
+                        <li>Temperature and humidity control protect IT equipment</li>
+                        <li>Energy efficiency opportunities can reduce costs 20-50%</li>
+                        <li>Regular maintenance ensures reliability and performance</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Monitor:</strong> You can't manage what you don't measure</li>
+                    <li><strong>Optimize:</strong> Small improvements yield big savings</li>
+                    <li><strong>Maintain:</strong> Prevention is better than emergency repair</li>
+                    <li><strong>Integrate:</strong> Systems work better together</li>
+                    <li><strong>Evolve:</strong> Stay current with technology advances</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Walk through your facility's HVAC systems</li>
+                        <li>Review temperature and humidity trends</li>
+                        <li>Check filter maintenance schedules</li>
+                        <li>Identify efficiency improvement opportunities</li>
+                        <li>Participate in control system training</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE TC 9.9 - Thermal Guidelines for Data Processing Environments (2021)</li>
+                        <li>• ASHRAE Handbook - HVAC Applications (2019) - Chapter 19: Data Centers</li>
+                        <li>• ASHRAE Standard 90.4-2022 - Energy Standard for Data Centers</li>
+                        <li>• Uptime Institute - Data Center Site Infrastructure Tier Standard</li>
+                        <li>• BICSI-002 - Data Center Design and Implementation Best Practices</li>
+                        <li>• The Green Grid - Data Center Cooling Best Practices</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• ASHRAE - American Society of Heating, Refrigerating and Air-Conditioning Engineers</li>
+                        <li>• The Green Grid - Consortium for Resource Efficiency</li>
+                        <li>• Uptime Institute - Data Center Standards and Certification</li>
+                        <li>• BICSI - Building Industry Consulting Service International</li>
+                        <li>• DOE - Department of Energy Data Center Program</li>
+                        <li>• 7x24 Exchange - Critical Facility Professionals</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Data Center Cooling Best Practices" - Emerson Network Power</li>
+                        <li>• "Airflow Management Basics" - APC/Schneider Electric White Paper</li>
+                        <li>• "CRAC/CRAH Efficiency Guidelines" - Vertiv Technical Brief</li>
+                        <li>• "Containment Systems Design Guide" - Panduit Corporation</li>
+                        <li>• Manufacturer resources: Vertiv, Schneider, Stulz, Rittal</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from industry standards, equipment manufacturers, and engineering best practices. All temperature ranges, efficiency values, and maintenance recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of HVAC Systems. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the ASHRAE recommended temperature range for data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> 55-65°F (13-18°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> 64-80°F (18-27°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> 70-75°F (21-24°C)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> 80-90°F (27-32°C)</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What does CRAH stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Computer Room Air Conditioner</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Computer Room Air Handler</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Cooling Room Air Handler</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Central Room Air Handler</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What is the primary difference between CRAC and CRAH units?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> CRAC is larger than CRAH</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> CRAC uses direct expansion, CRAH uses chilled water</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> CRAC is more efficient than CRAH</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> CRAC is for small rooms only</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What is the recommended relative humidity range for data centers?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> 20-30% RH</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> 30-40% RH</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> 40-60% RH</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> 60-80% RH</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What efficiency improvement can hot aisle containment typically provide?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 5-10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 10-15%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 20-40%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 50-70%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the typical static pressure maintained in a raised floor plenum?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> 0.002-0.005" H₂O</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> 0.02-0.05" H₂O</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> 0.2-0.5" H₂O</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> 2-5" H₂O</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the purpose of blanking panels in server racks?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Improve aesthetics</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Prevent hot air recirculation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Reduce noise</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Support equipment weight</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. How much energy savings can result from raising set points by 1°F?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> 0.5-1%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> 2-5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> 10-15%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> 20-25%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What does an air-side economizer use for free cooling?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Chilled water</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Outside air</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Cooling tower water</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Refrigerant</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the recommended filter replacement pressure drop?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> 0.1" w.g.</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> 0.5" w.g.</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> 1.0" w.g.</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> 2.0" w.g.</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // 64-80°F (18-27°C)
+            q2: 'b',  // Computer Room Air Handler
+            q3: 'b',  // CRAC uses direct expansion, CRAH uses chilled water
+            q4: 'c',  // 40-60% RH
+            q5: 'c',  // 20-40%
+            q6: 'b',  // 0.02-0.05" H₂O
+            q7: 'b',  // Prevent hot air recirculation
+            q8: 'b',  // 2-5%
+            q9: 'b',  // Outside air
+            q10: 'c'  // 1.0" w.g.
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of HVAC Systems.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

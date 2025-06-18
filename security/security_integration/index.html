@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Integration Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1565C0 0%, #2196F3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1565C0;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1565C0;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #2196F3;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1565C0;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #2196F3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1565C0, #2196F3);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1565C0;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1565C0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1565C0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Security Integration Training Module</h1>
+            <p>Data Center 101 - Integrated Physical and Electronic Security</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Security Integration Training</h2>
+                <p>Welcome to this comprehensive training module on Security Integration for data centers. This course will provide you with essential knowledge about integrating various security systems to create a cohesive, effective security infrastructure that protects your critical data center assets.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the principles of integrated security systems</li>
+                        <li>Learn about key integration platforms and protocols</li>
+                        <li>Recognize the components of a unified security infrastructure</li>
+                        <li>Understand integration with building management systems</li>
+                        <li>Learn about security operations center (SOC) integration</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of security systems</p>
+            </div>
+
+            <!-- Slide 2: What is Security Integration? -->
+            <div class="slide">
+                <h2>What is Security Integration?</h2>
+                
+                <p><strong>Security Integration</strong> is the process of connecting multiple security subsystems—access control, surveillance, intrusion detection, and more—into a unified platform that provides comprehensive protection and streamlined operations.</p>
+
+                <h3>Key Benefits of Integration:</h3>
+                <ul>
+                    <li><strong>Unified Operations:</strong> Single interface for all security systems</li>
+                    <li><strong>Enhanced Situational Awareness:</strong> Correlated data from multiple sources</li>
+                    <li><strong>Automated Response:</strong> Coordinated actions across systems</li>
+                    <li><strong>Improved Efficiency:</strong> Reduced operator workload and errors</li>
+                    <li><strong>Better Forensics:</strong> Synchronized data for investigations</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Title -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565C0">Integrated Security System Architecture</text>
+                        
+                        <!-- Central Integration Platform -->
+                        <rect x="300" y="200" width="200" height="100" fill="#1565C0" stroke="#0d47a1" stroke-width="2" rx="10"/>
+                        <text x="400" y="240" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Integration</text>
+                        <text x="400" y="260" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Platform</text>
+                        <text x="400" y="280" text-anchor="middle" fill="white" font-size="12">(PSIM/VMS)</text>
+                        
+                        <!-- Access Control -->
+                        <rect x="50" y="80" width="150" height="80" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="125" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Access Control</text>
+                        <text x="125" y="130" text-anchor="middle" fill="white" font-size="12">• Card Readers</text>
+                        <text x="125" y="145" text-anchor="middle" fill="white" font-size="12">• Door Controllers</text>
+                        
+                        <!-- Video Surveillance -->
+                        <rect x="250" y="80" width="150" height="80" fill="#FF9800" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="325" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Video</text>
+                        <text x="325" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Surveillance</text>
+                        <text x="325" y="145" text-anchor="middle" fill="white" font-size="12">• Cameras • NVR</text>
+                        
+                        <!-- Intrusion Detection -->
+                        <rect x="450" y="80" width="150" height="80" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+                        <text x="525" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Intrusion</text>
+                        <text x="525" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Detection</text>
+                        <text x="525" y="145" text-anchor="middle" fill="white" font-size="12">• Sensors • Alarms</text>
+                        
+                        <!-- Fire/Life Safety -->
+                        <rect x="650" y="80" width="130" height="80" fill="#f44336" stroke="#d32f2f" stroke-width="2" rx="5"/>
+                        <text x="715" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Fire/Life</text>
+                        <text x="715" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Safety</text>
+                        <text x="715" y="145" text-anchor="middle" fill="white" font-size="12">• Detection</text>
+                        
+                        <!-- Connections to Integration Platform -->
+                        <path d="M 125 160 L 350 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 325 160 L 375 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 525 160 L 450 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 715 160 L 475 200" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Output Systems -->
+                        <rect x="100" y="350" width="140" height="70" fill="#607D8B" stroke="#455A64" stroke-width="2" rx="5"/>
+                        <text x="170" y="380" text-anchor="middle" fill="white" font-size="14" font-weight="bold">SOC/Control</text>
+                        <text x="170" y="400" text-anchor="middle" fill="white" font-size="12">Room</text>
+                        
+                        <rect x="290" y="350" width="140" height="70" fill="#607D8B" stroke="#455A64" stroke-width="2" rx="5"/>
+                        <text x="360" y="380" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Mobile</text>
+                        <text x="360" y="400" text-anchor="middle" fill="white" font-size="12">Devices</text>
+                        
+                        <rect x="480" y="350" width="140" height="70" fill="#607D8B" stroke="#455A64" stroke-width="2" rx="5"/>
+                        <text x="550" y="380" text-anchor="middle" fill="white" font-size="14" font-weight="bold">BMS</text>
+                        <text x="550" y="400" text-anchor="middle" fill="white" font-size="12">Integration</text>
+                        
+                        <!-- Output Connections -->
+                        <path d="M 350 300 L 170 350" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 300 L 360 350" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 450 300 L 550 350" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">Integrated Security Architecture: Multiple systems unified through central platform</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Integration Levels:</h4>
+                    <ul>
+                        <li><strong>Level 1 - Basic:</strong> Systems share common database</li>
+                        <li><strong>Level 2 - Enhanced:</strong> Event correlation between systems</li>
+                        <li><strong>Level 3 - Advanced:</strong> Automated response and workflows</li>
+                        <li><strong>Level 4 - Intelligent:</strong> AI-driven analytics and predictions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Integration Platforms -->
+            <div class="slide">
+                <h2>Integration Platforms and Technologies</h2>
+                
+                <p>Security integration requires specialized platforms that can communicate with diverse systems and present unified information to operators.</p>
+
+                <h3>1. Physical Security Information Management (PSIM)</h3>
+                
+                <div class="info-box">
+                    <h4>PSIM Capabilities:</h4>
+                    <ul>
+                        <li><strong>System Aggregation:</strong> Connect disparate security systems</li>
+                        <li><strong>Event Correlation:</strong> Analyze events across multiple systems</li>
+                        <li><strong>Workflow Automation:</strong> Standardized response procedures</li>
+                        <li><strong>Situational Management:</strong> Real-time incident handling</li>
+                        <li><strong>Reporting:</strong> Comprehensive analytics and compliance</li>
+                    </ul>
+                </div>
+
+                <h3>2. Video Management Systems (VMS) with Integration</h3>
+                <ul>
+                    <li><strong>Core Function:</strong> Video recording and management</li>
+                    <li><strong>Integration Features:</strong> Access control, analytics, alarms</li>
+                    <li><strong>Popular Platforms:</strong> Genetec, Milestone, Avigilon</li>
+                    <li><strong>API Support:</strong> Third-party system integration</li>
+                    <li><strong>Scalability:</strong> Enterprise-wide deployment</li>
+                </ul>
+
+                <h3>3. Integration Protocols and Standards</h3>
+
+                <table>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Type</th>
+                        <th>Application</th>
+                        <th>Benefits</th>
+                    </tr>
+                    <tr>
+                        <td><strong>ONVIF</strong></td>
+                        <td>Video/IP</td>
+                        <td>Camera integration</td>
+                        <td>Vendor agnostic</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PSIA</strong></td>
+                        <td>Physical Security</td>
+                        <td>Multi-system</td>
+                        <td>Standardized</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BACnet</strong></td>
+                        <td>Building Systems</td>
+                        <td>BMS integration</td>
+                        <td>Widely adopted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>REST API</strong></td>
+                        <td>Web Services</td>
+                        <td>Custom integration</td>
+                        <td>Flexible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MQTT</strong></td>
+                        <td>IoT</td>
+                        <td>Sensor networks</td>
+                        <td>Lightweight</td>
+                    </tr>
+                </table>
+
+                <h3>4. Database Integration</h3>
+                
+                <div class="success-box">
+                    <h4>Unified Database Benefits:</h4>
+                    <ul>
+                        <li>Single source of truth for all security data</li>
+                        <li>Eliminates duplicate data entry</li>
+                        <li>Consistent user credentials across systems</li>
+                        <li>Simplified backup and disaster recovery</li>
+                        <li>Enhanced reporting capabilities</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Integration Challenges:</h4>
+                    <ul>
+                        <li>Legacy system compatibility</li>
+                        <li>Proprietary protocols and APIs</li>
+                        <li>Network bandwidth requirements</li>
+                        <li>Cybersecurity vulnerabilities</li>
+                        <li>Vendor lock-in concerns</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Access Control and Video Integration -->
+            <div class="slide">
+                <h2>Access Control and Video Integration</h2>
+                
+                <p>The integration of access control and video surveillance is fundamental to modern security systems, providing visual verification and forensic capabilities.</p>
+
+                <h3>1. Integration Features</h3>
+                
+                <div class="info-box">
+                    <h4>Core Integration Capabilities:</h4>
+                    <ul>
+                        <li><strong>Event-Triggered Recording:</strong> Video clips on access events</li>
+                        <li><strong>Visual Verification:</strong> Live video on access requests</li>
+                        <li><strong>Video Analytics:</strong> Tailgating, loitering detection</li>
+                        <li><strong>Forensic Search:</strong> Find video by access events</li>
+                        <li><strong>Alarm Verification:</strong> Visual confirmation of alarms</li>
+                    </ul>
+                </div>
+
+                <h3>2. Integration Scenarios</h3>
+                
+                <table>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Access Event</th>
+                        <th>Video Response</th>
+                        <th>Benefit</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Door Forced</strong></td>
+                        <td>Alarm triggered</td>
+                        <td>Camera preset, record</td>
+                        <td>Immediate visual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Invalid Card</strong></td>
+                        <td>Access denied</td>
+                        <td>Capture face, alert</td>
+                        <td>Identify threat</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tailgating</strong></td>
+                        <td>Single card, 2 people</td>
+                        <td>Analytics alert</td>
+                        <td>Prevent breach</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anti-passback</strong></td>
+                        <td>Card used twice</td>
+                        <td>Track movement</td>
+                        <td>Verify location</td>
+                    </tr>
+                </table>
+
+                <h3>3. Configuration Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Optimal Setup:</h4>
+                    <ul>
+                        <li><strong>Camera Placement:</strong> Cover all access points</li>
+                        <li><strong>Pre/Post Recording:</strong> 10-30 seconds buffer</li>
+                        <li><strong>Resolution:</strong> Minimum 1080p for identification</li>
+                        <li><strong>Frame Rate:</strong> 15-30 fps for smooth motion</li>
+                        <li><strong>Storage:</strong> Event-based retention policies</li>
+                    </ul>
+                </div>
+
+                <h3>4. Advanced Analytics Integration</h3>
+                <ul>
+                    <li><strong>Facial Recognition:</strong> Match against access database</li>
+                    <li><strong>People Counting:</strong> Occupancy management</li>
+                    <li><strong>Object Detection:</strong> Unauthorized items</li>
+                    <li><strong>Behavior Analysis:</strong> Suspicious activities</li>
+                    <li><strong>License Plate Recognition:</strong> Vehicle access control</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565C0">Access Control + Video Integration Flow</text>
+                        
+                        <!-- Card Reader -->
+                        <rect x="50" y="100" width="120" height="80" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="110" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Card Reader</text>
+                        <text x="110" y="150" text-anchor="middle" fill="white" font-size="12">Access</text>
+                        <text x="110" y="165" text-anchor="middle" fill="white" font-size="12">Request</text>
+                        
+                        <!-- Access Controller -->
+                        <rect x="250" y="100" width="120" height="80" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="310" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Access</text>
+                        <text x="310" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Controller</text>
+                        <text x="310" y="165" text-anchor="middle" fill="white" font-size="12">Decision</text>
+                        
+                        <!-- Integration Server -->
+                        <rect x="450" y="100" width="120" height="80" fill="#FF9800" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="510" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Integration</text>
+                        <text x="510" y="145" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Server</text>
+                        <text x="510" y="165" text-anchor="middle" fill="white" font-size="12">Event Trigger</text>
+                        
+                        <!-- Camera/VMS -->
+                        <rect x="650" y="100" width="120" height="80" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="5"/>
+                        <text x="710" y="130" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Camera/VMS</text>
+                        <text x="710" y="150" text-anchor="middle" fill="white" font-size="12">Video</text>
+                        <text x="710" y="165" text-anchor="middle" fill="white" font-size="12">Capture</text>
+                        
+                        <!-- Flow arrows -->
+                        <path d="M 170 140 L 250 140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 370 140 L 450 140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 570 140 L 650 140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Response -->
+                        <rect x="350" y="250" width="150" height="60" fill="#607D8B" stroke="#455A64" stroke-width="2" rx="5"/>
+                        <text x="425" y="275" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Operator</text>
+                        <text x="425" y="295" text-anchor="middle" fill="white" font-size="12">Console</text>
+                        
+                        <path d="M 310 180 L 425 250" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 710 180 L 425 250" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <text x="240" y="220" font-size="12" fill="#4CAF50">Access Grant/Deny</text>
+                        <text x="520" y="220" font-size="12" fill="#9C27B0">Video + Metadata</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 5: Intrusion and Perimeter Integration -->
+            <div class="slide">
+                <h2>Intrusion Detection and Perimeter Security Integration</h2>
+                
+                <p>Integrating intrusion detection with other security systems creates multiple layers of protection and enables rapid response to security breaches.</p>
+
+                <h3>1. Intrusion System Components</h3>
+                
+                <div class="info-box">
+                    <h4>Detection Technologies:</h4>
+                    <ul>
+                        <li><strong>Motion Sensors:</strong> PIR, microwave, dual-technology</li>
+                        <li><strong>Perimeter Detection:</strong> Fence sensors, buried cable</li>
+                        <li><strong>Glass Break:</strong> Acoustic and shock sensors</li>
+                        <li><strong>Door/Window Contacts:</strong> Magnetic switches</li>
+                        <li><strong>Video Analytics:</strong> Virtual tripwires, motion zones</li>
+                    </ul>
+                </div>
+
+                <h3>2. Integration Benefits</h3>
+                
+                <table>
+                    <tr>
+                        <th>Integration Type</th>
+                        <th>Function</th>
+                        <th>Response</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Video Verification</strong></td>
+                        <td>Visual alarm confirmation</td>
+                        <td>Reduce false alarms</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Control</strong></td>
+                        <td>Auto-arm/disarm zones</td>
+                        <td>Operational efficiency</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lighting Control</strong></td>
+                        <td>Illuminate on detection</td>
+                        <td>Deter and capture</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audio Systems</strong></td>
+                        <td>Two-way communication</td>
+                        <td>Remote intervention</td>
+                    </tr>
+                </table>
+
+                <h3>3. Zone Management Integration</h3>
+                
+                <div class="success-box">
+                    <h4>Intelligent Zone Control:</h4>
+                    <ul>
+                        <li><strong>Schedule-Based:</strong> Automatic arm/disarm by time</li>
+                        <li><strong>Occupancy-Based:</strong> Arm when area is vacant</li>
+                        <li><strong>Access-Based:</strong> First-in disarms, last-out arms</li>
+                        <li><strong>Exception Handling:</strong> Override for maintenance</li>
+                        <li><strong>Multi-Zone Logic:</strong> Progressive security layers</li>
+                    </ul>
+                </div>
+
+                <h3>4. Alarm Management Integration</h3>
+                
+                <div class="warning-box">
+                    <h4>Alarm Processing Workflow:</h4>
+                    <ul>
+                        <li><strong>Detection:</strong> Sensor triggers alarm</li>
+                        <li><strong>Verification:</strong> Camera preset activation</li>
+                        <li><strong>Assessment:</strong> Operator reviews video</li>
+                        <li><strong>Response:</strong> Dispatch or dismiss</li>
+                        <li><strong>Documentation:</strong> Incident logging</li>
+                    </ul>
+                </div>
+
+                <h3>5. Perimeter Security Layers</h3>
+                
+                <ul>
+                    <li><strong>Layer 1:</strong> Fence line detection (100+ meters)</li>
+                    <li><strong>Layer 2:</strong> Outdoor motion detection (50 meters)</li>
+                    <li><strong>Layer 3:</strong> Building perimeter sensors</li>
+                    <li><strong>Layer 4:</strong> Interior space protection</li>
+                    <li><strong>Layer 5:</strong> Asset-specific protection</li>
+                </ul>
+            </div>
+
+            <!-- Slide 6: Emergency System Integration -->
+            <div class="slide">
+                <h2>Emergency and Life Safety Integration</h2>
+                
+                <p>Security systems must integrate seamlessly with emergency and life safety systems to ensure occupant safety while maintaining security.</p>
+
+                <h3>1. Fire Alarm Integration</h3>
+                
+                <div class="danger-box">
+                    <h4>Critical Fire/Security Integration:</h4>
+                    <ul>
+                        <li><strong>Door Release:</strong> Automatic unlock on fire alarm</li>
+                        <li><strong>Elevator Control:</strong> Recall and firefighter operation</li>
+                        <li><strong>HVAC Shutdown:</strong> Prevent smoke spread</li>
+                        <li><strong>Emergency Lighting:</strong> Path of egress illumination</li>
+                        <li><strong>Mass Notification:</strong> Evacuation instructions</li>
+                    </ul>
+                </div>
+
+                <h3>2. Emergency Response Coordination</h3>
+                
+                <table>
+                    <tr>
+                        <th>Emergency Type</th>
+                        <th>Security Response</th>
+                        <th>Integration Action</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Fire Alarm</strong></td>
+                        <td>Unlock egress doors</td>
+                        <td>Maintain perimeter security</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medical Emergency</strong></td>
+                        <td>Guide responders</td>
+                        <td>Unlock specific paths</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security Threat</strong></td>
+                        <td>Lockdown mode</td>
+                        <td>Override normal access</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power Failure</strong></td>
+                        <td>Fail-safe/secure</td>
+                        <td>Maintain critical functions</td>
+                    </tr>
+                </table>
+
+                <h3>3. Mass Notification Integration</h3>
+                
+                <div class="info-box">
+                    <h4>Communication Channels:</h4>
+                    <ul>
+                        <li><strong>Voice Evacuation:</strong> Building-wide PA system</li>
+                        <li><strong>Visual Alerts:</strong> Strobes and display messages</li>
+                        <li><strong>Mobile Alerts:</strong> SMS and app notifications</li>
+                        <li><strong>Desktop Alerts:</strong> Computer pop-ups</li>
+                        <li><strong>Email/Phone:</strong> Automated calling trees</li>
+                    </ul>
+                </div>
+
+                <h3>4. Emergency Power Integration</h3>
+                
+                <ul>
+                    <li><strong>UPS Systems:</strong> Critical security equipment backup</li>
+                    <li><strong>Generator Power:</strong> Extended operation capability</li>
+                    <li><strong>Battery Backup:</strong> Door controllers and locks</li>
+                    <li><strong>Power Monitoring:</strong> Status and transfer alerts</li>
+                    <li><strong>Load Shedding:</strong> Prioritize critical systems</li>
+                </ul>
+
+                <h3>5. Compliance Considerations</h3>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Code Requirements:</h4>
+                    <ul>
+                        <li>NFPA 72: Fire alarm and signaling code</li>
+                        <li>NFPA 101: Life safety code</li>
+                        <li>IBC: International Building Code</li>
+                        <li>ADA: Accessibility requirements</li>
+                        <li>Local fire marshal requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: BMS and IT Integration -->
+            <div class="slide">
+                <h2>Building Management and IT System Integration</h2>
+                
+                <p>Modern data centers require tight integration between security systems and both building management systems (BMS) and IT infrastructure.</p>
+
+                <h3>1. BMS Integration Points</h3>
+                
+                <div class="info-box">
+                    <h4>Security/BMS Integration:</h4>
+                    <ul>
+                        <li><strong>HVAC Control:</strong> Temperature monitoring in secure areas</li>
+                        <li><strong>Lighting:</strong> Motion-activated and scheduled control</li>
+                        <li><strong>Power Monitoring:</strong> Critical system power status</li>
+                        <li><strong>Environmental:</strong> Water leak and humidity detection</li>
+                        <li><strong>Energy Management:</strong> Optimize based on occupancy</li>
+                    </ul>
+                </div>
+
+                <h3>2. IT Infrastructure Integration</h3>
+                
+                <table>
+                    <tr>
+                        <th>IT System</th>
+                        <th>Security Integration</th>
+                        <th>Benefit</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Active Directory</strong></td>
+                        <td>User authentication</td>
+                        <td>Single sign-on</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DCIM</strong></td>
+                        <td>Rack access control</td>
+                        <td>Asset protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Network Access</strong></td>
+                        <td>802.1X integration</td>
+                        <td>Unified access</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIEM</strong></td>
+                        <td>Security events</td>
+                        <td>Correlation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ticketing</strong></td>
+                        <td>Incident management</td>
+                        <td>Workflow</td>
+                    </tr>
+                </table>
+
+                <h3>3. Environmental Monitoring Integration</h3>
+                
+                <div class="success-box">
+                    <h4>Integrated Monitoring Benefits:</h4>
+                    <ul>
+                        <li>Correlate temperature with equipment access</li>
+                        <li>Detect water leaks near critical equipment</li>
+                        <li>Monitor power anomalies in secure areas</li>
+                        <li>Track environmental conditions for compliance</li>
+                        <li>Automate response to environmental threats</li>
+                    </ul>
+                </div>
+
+                <h3>4. Data Exchange Methods</h3>
+                
+                <ul>
+                    <li><strong>BACnet:</strong> Building automation protocol</li>
+                    <li><strong>Modbus:</strong> Industrial device communication</li>
+                    <li><strong>SNMP:</strong> IT equipment monitoring</li>
+                    <li><strong>RESTful APIs:</strong> Modern web services</li>
+                    <li><strong>OPC:</strong> Process control integration</li>
+                </ul>
+
+                <h3>5. Converged Security Operations</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565C0">Converged Operations Center</text>
+                        
+                        <!-- Physical Security -->
+                        <rect x="50" y="80" width="150" height="100" fill="#4CAF50" stroke="#388E3C" stroke-width="2" rx="5"/>
+                        <text x="125" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Physical</text>
+                        <text x="125" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Security</text>
+                        <text x="125" y="145" text-anchor="middle" fill="white" font-size="11">• Access • Video</text>
+                        <text x="125" y="160" text-anchor="middle" fill="white" font-size="11">• Intrusion • Fire</text>
+                        
+                        <!-- IT Security -->
+                        <rect x="250" y="80" width="150" height="100" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="325" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">IT/Cyber</text>
+                        <text x="325" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Security</text>
+                        <text x="325" y="145" text-anchor="middle" fill="white" font-size="11">• SIEM • IDS</text>
+                        <text x="325" y="160" text-anchor="middle" fill="white" font-size="11">• Network • Apps</text>
+                        
+                        <!-- Facilities -->
+                        <rect x="450" y="80" width="150" height="100" fill="#FF9800" stroke="#F57C00" stroke-width="2" rx="5"/>
+                        <text x="525" y="110" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Facilities</text>
+                        <text x="525" y="125" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Management</text>
+                        <text x="525" y="145" text-anchor="middle" fill="white" font-size="11">• BMS • Power</text>
+                        <text x="525" y="160" text-anchor="middle" fill="white" font-size="11">• HVAC • Env</text>
+                        
+                        <!-- Converged Platform -->
+                        <rect x="200" y="250" width="250" height="80" fill="#9C27B0" stroke="#7B1FA2" stroke-width="2" rx="10"/>
+                        <text x="325" y="280" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Converged Platform</text>
+                        <text x="325" y="300" text-anchor="middle" fill="white" font-size="12">Unified Operations</text>
+                        <text x="325" y="315" text-anchor="middle" fill="white" font-size="12">Single Pane of Glass</text>
+                        
+                        <!-- Connections -->
+                        <path d="M 125 180 L 250 250" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 325 180 L 325 250" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 525 180 L 400 250" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 8: Security Operations Center -->
+            <div class="slide">
+                <h2>Security Operations Center (SOC) Integration</h2>
+                
+                <p>The SOC serves as the nerve center for integrated security operations, requiring sophisticated integration capabilities.</p>
+
+                <h3>1. SOC Design Principles</h3>
+                
+                <div class="info-box">
+                    <h4>Integrated SOC Requirements:</h4>
+                    <ul>
+                        <li><strong>Unified Display:</strong> Video walls with integrated views</li>
+                        <li><strong>Workstation Design:</strong> Multi-monitor operator positions</li>
+                        <li><strong>Ergonomics:</strong> 24/7 operation considerations</li>
+                        <li><strong>Redundancy:</strong> Backup SOC capabilities</li>
+                        <li><strong>Collaboration:</strong> Multi-agency coordination</li>
+                    </ul>
+                </div>
+
+                <h3>2. Operational Integration</h3>
+                
+                <table>
+                    <tr>
+                        <th>Function</th>
+                        <th>Systems Integrated</th>
+                        <th>Operator Action</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Incident Response</strong></td>
+                        <td>All security systems</td>
+                        <td>Coordinated response</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visitor Management</strong></td>
+                        <td>Access, video, database</td>
+                        <td>Process and monitor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Patrol Management</strong></td>
+                        <td>GPS, access, video</td>
+                        <td>Track and dispatch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Investigation</strong></td>
+                        <td>Video, access, analytics</td>
+                        <td>Search and review</td>
+                    </tr>
+                </table>
+
+                <h3>3. Decision Support Systems</h3>
+                
+                <div class="success-box">
+                    <h4>Automated Decision Support:</h4>
+                    <ul>
+                        <li><strong>Situation Assessment:</strong> AI-driven threat analysis</li>
+                        <li><strong>Response Procedures:</strong> Step-by-step guidance</li>
+                        <li><strong>Resource Allocation:</strong> Optimal deployment</li>
+                        <li><strong>Escalation Protocols:</strong> Automatic notifications</li>
+                        <li><strong>Documentation:</strong> Automated reporting</li>
+                    </ul>
+                </div>
+
+                <h3>4. Performance Metrics</h3>
+                
+                <ul>
+                    <li><strong>Response Time:</strong> Detection to resolution</li>
+                    <li><strong>False Alarm Rate:</strong> System accuracy</li>
+                    <li><strong>Operator Efficiency:</strong> Events handled per shift</li>
+                    <li><strong>System Uptime:</strong> Availability metrics</li>
+                    <li><strong>Training Effectiveness:</strong> Operator competency</li>
+                </ul>
+
+                <h3>5. Remote SOC Capabilities</h3>
+                
+                <div class="warning-box">
+                    <h4>Remote Monitoring Considerations:</h4>
+                    <ul>
+                        <li>Secure VPN connections</li>
+                        <li>Bandwidth requirements for video</li>
+                        <li>Mobile device integration</li>
+                        <li>Cloud-based platforms</li>
+                        <li>Cybersecurity hardening</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Best Practices and Future Trends -->
+            <div class="slide">
+                <h2>Best Practices and Future Trends</h2>
+                
+                <h3>Integration Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Implementation Guidelines:</h4>
+                    <ul>
+                        <li>Start with a comprehensive security assessment</li>
+                        <li>Develop detailed integration requirements</li>
+                        <li>Choose open standards and protocols</li>
+                        <li>Implement in phases with testing</li>
+                        <li>Provide thorough operator training</li>
+                        <li>Maintain detailed documentation</li>
+                    </ul>
+                </div>
+
+                <h3>Common Integration Mistakes</h3>
+                
+                <div class="danger-box">
+                    <h4>❌ Pitfalls to Avoid:</h4>
+                    <ul>
+                        <li>Underestimating bandwidth requirements</li>
+                        <li>Ignoring cybersecurity implications</li>
+                        <li>Over-complicating operator interfaces</li>
+                        <li>Insufficient redundancy planning</li>
+                        <li>Neglecting maintenance requirements</li>
+                    </ul>
+                </div>
+
+                <h3>Emerging Technologies</h3>
+                
+                <div class="info-box">
+                    <h4>Future Integration Trends:</h4>
+                    <ul>
+                        <li><strong>AI/Machine Learning:</strong> Predictive security analytics</li>
+                        <li><strong>IoT Integration:</strong> Sensor networks and edge computing</li>
+                        <li><strong>Cloud Platforms:</strong> Distributed security management</li>
+                        <li><strong>Biometric Fusion:</strong> Multi-modal authentication</li>
+                        <li><strong>Quantum Security:</strong> Next-gen encryption</li>
+                    </ul>
+                </div>
+
+                <h3>Integration Maturity Model</h3>
+                
+                <table>
+                    <tr>
+                        <th>Level</th>
+                        <th>Characteristics</th>
+                        <th>Capabilities</th>
+                    </tr>
+                    <tr>
+                        <td><strong>1 - Basic</strong></td>
+                        <td>Standalone systems</td>
+                        <td>Manual correlation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2 - Connected</strong></td>
+                        <td>Basic integration</td>
+                        <td>Event sharing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3 - Integrated</strong></td>
+                        <td>Unified platform</td>
+                        <td>Automated response</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4 - Optimized</strong></td>
+                        <td>Advanced analytics</td>
+                        <td>Predictive capabilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5 - Adaptive</strong></td>
+                        <td>AI-driven</td>
+                        <td>Self-optimizing</td>
+                    </tr>
+                </table>
+
+                <h3>ROI Considerations</h3>
+                
+                <ul>
+                    <li><strong>Operational Efficiency:</strong> Reduced staffing needs</li>
+                    <li><strong>Incident Prevention:</strong> Proactive threat mitigation</li>
+                    <li><strong>Compliance:</strong> Automated reporting and auditing</li>
+                    <li><strong>Investigation Time:</strong> Rapid forensic capabilities</li>
+                    <li><strong>Training Costs:</strong> Simplified operations</li>
+                </ul>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Security integration unifies multiple systems for enhanced protection</li>
+                        <li>PSIM and VMS platforms enable comprehensive integration</li>
+                        <li>Access control and video integration is fundamental</li>
+                        <li>Emergency system integration ensures life safety</li>
+                        <li>BMS and IT integration creates converged operations</li>
+                        <li>SOC design requires careful planning and integration</li>
+                    </ul>
+                </div>
+
+                <h3>Integration Success Factors</h3>
+                <ul>
+                    <li><strong>Planning:</strong> Detailed requirements and phased approach</li>
+                    <li><strong>Standards:</strong> Open protocols and future-proofing</li>
+                    <li><strong>Training:</strong> Operator competency is crucial</li>
+                    <li><strong>Testing:</strong> Thorough validation of all scenarios</li>
+                    <li><strong>Maintenance:</strong> Ongoing optimization and updates</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Assess your current security system integration level</li>
+                        <li>Identify integration opportunities and priorities</li>
+                        <li>Develop an integration roadmap</li>
+                        <li>Engage with integration specialists</li>
+                        <li>Plan operator training programs</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading security organizations and manufacturers.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASIS International - Physical Security Professional (PSP) Reference</li>
+                        <li>• Security Industry Association (SIA) - Standards and Guidelines</li>
+                        <li>• ONVIF Specification Documents - Profile S, G, T, M</li>
+                        <li>• TIA-942 - Data Center Standards</li>
+                        <li>• ISO/IEC 27001 - Information Security Management</li>
+                        <li>• NIST Cybersecurity Framework</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• ASIS International - Security Management Professionals</li>
+                        <li>• Security Industry Association (SIA)</li>
+                        <li>• Electronic Security Association (ESA)</li>
+                        <li>• Building Industry Consulting Service International (BICSI)</li>
+                        <li>• International Association of Professional Security Consultants (IAPSC)</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Integrated Security Systems Design" by Thomas Norman</li>
+                        <li>• "Effective Physical Security" by Lawrence Fennelly</li>
+                        <li>• Genetec, Milestone, Avigilon - Integration Guides</li>
+                        <li>• Lenel, Software House, Honeywell - Technical Documentation</li>
+                        <li>• Data Center Security Best Practices - Various White Papers</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from security system manufacturers, industry standards organizations, and professional security associations. All integration examples and best practices reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Security Integration. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What does PSIM stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Physical Security Integration Management</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Physical Security Information Management</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Professional Security Integration Module</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Protocol Security Interface Management</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which protocol is specifically designed for IP camera integration?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> BACnet</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Modbus</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> ONVIF</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> SNMP</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What is the primary benefit of integrating access control with video surveillance?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Reduced equipment costs</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Visual verification of access events</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Simplified wiring</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Lower bandwidth usage</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. In fire alarm integration, what happens to access-controlled egress doors?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> They remain locked for security</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> They automatically unlock for evacuation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> They require manual override</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> They switch to card-only access</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What is the recommended pre/post recording time for access events?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> 1-5 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> 10-30 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> 1-2 minutes</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> 5-10 minutes</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. Which integration level includes AI-driven analytics and predictions?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Level 1 - Basic</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Level 2 - Enhanced</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Level 3 - Advanced</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Level 4 - Intelligent</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What is the primary purpose of zone-based intrusion detection integration?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Reduce false alarms through correlation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Increase detection sensitivity</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Reduce equipment requirements</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Simplify installation</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. Which protocol is commonly used for building automation integration?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> ONVIF</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> BACnet</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> H.264</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> OAuth</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What is a key benefit of converged security operations?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Reduced equipment costs</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Separate management teams</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Unified threat response across physical and cyber</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Simplified compliance only</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the highest level in the Integration Maturity Model?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Integrated</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Optimized</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Adaptive</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> Connected</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Physical Security Information Management
+            q2: 'c',  // ONVIF
+            q3: 'b',  // Visual verification of access events
+            q4: 'b',  // They automatically unlock for evacuation
+            q5: 'b',  // 10-30 seconds
+            q6: 'd',  // Level 4 - Intelligent
+            q7: 'a',  // Reduce false alarms through correlation
+            q8: 'b',  // BACnet
+            q9: 'c',  // Unified threat response across physical and cyber
+            q10: 'c'  // Adaptive
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Security Integration.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
