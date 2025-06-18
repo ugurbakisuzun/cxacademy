@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanical Training System - Data Centre 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease 0.4s both;
+            margin-top: 40px;
+        }
+
+        .intro-section h2 {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: white;
+        }
+
+        .module-card h3 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .module-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #888;
+        }
+
+        .module-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .module-button {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .module-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #2a5298;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mechanical Systems Training Centre</h1>
+        <p>Comprehensive training modules for data centre mechanical infrastructure professionals</p>
+    </div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Mechanical Systems Training</h2>
+            <p>Master the critical mechanical systems that cool and protect modern data centres. Our comprehensive training modules cover everything from chiller systems to advanced liquid cooling technologies, ensuring you have the knowledge and skills to maintain mission-critical infrastructure.</p>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">❄️</div>
+                <h3>Chiller Systems Training</h3>
+                <p>Learn about chiller technologies, their critical role in data centre cooling, and best practices for operation and maintenance.</p>
+                <div class="module-details">
+                    <span>Duration: 45-60 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/chiller_systems/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🌡️</div>
+                <h3>HVAC Systems Training</h3>
+                <p>Understand heating, ventilation, and air conditioning systems, airflow management, and environmental control in data centres.</p>
+                <div class="module-details">
+                    <span>Duration: 45-60 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/hvac_systems/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">💧</div>
+                <h3>Pumping Systems Training</h3>
+                <p>Master pump operations, system design, performance optimization, and maintenance procedures for critical cooling water distribution.</p>
+                <div class="module-details">
+                    <span>Duration: 40-50 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/pumping_systems/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🎛️</div>
+                <h3>Controls Systems Training</h3>
+                <p>Comprehensive training on BMS, control strategies, system integration, and automation for mechanical infrastructure.</p>
+                <div class="module-details">
+                    <span>Duration: 50-60 mins</span>
+                    <span>Level: Intermediate</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/controls_systems/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🔧</div>
+                <h3>Mechanical Testing Procedures</h3>
+                <p>Learn proper testing methodologies, commissioning protocols, and documentation requirements for mechanical systems.</p>
+                <div class="module-details">
+                    <span>Duration: 60-75 mins</span>
+                    <span>Level: Intermediate</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/mechanical_testing_procedures/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🌊</div>
+                <h3>Liquid Cooling Systems Training</h3>
+                <p>Explore advanced liquid cooling technologies, direct-to-chip cooling, immersion cooling, and next-generation cooling solutions.</p>
+                <div class="module-details">
+                    <span>Duration: 45-60 mins</span>
+                    <span>Level: Advanced</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/mechanical/liquid_cooling_systems/" class="module-button">Start Module</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Data Centre Training Academy. All rights reserved.</p>
+    </div>
+</body>
+</html>
