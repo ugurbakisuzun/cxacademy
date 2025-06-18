@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Testing Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #673ab7 0%, #9c27b0 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #673ab7;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #673ab7;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #9c27b0;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #673ab7;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #9c27b0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #673ab7, #9c27b0);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #673ab7;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #673ab7;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #f3e5f5;
+            border-left: 5px solid #673ab7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #673ab7;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Integration Testing Training Module</h1>
+            <p>Data Center 101 - Ensuring Systems Work Together Seamlessly</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Integration Testing Training</h2>
+                <p>Welcome to this comprehensive training module on Integration Testing for data center commissioning. This course will provide you with essential knowledge about testing methodologies, procedures, and best practices for ensuring all facility systems work together effectively.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand integration testing fundamentals and importance</li>
+                        <li>Learn different types and levels of integration testing</li>
+                        <li>Master test planning and documentation requirements</li>
+                        <li>Understand system-to-system testing procedures</li>
+                        <li>Learn communication and performance testing methods</li>
+                        <li>Develop troubleshooting skills for integration issues</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of data center systems</p>
+            </div>
+
+            <!-- Slide 2: What is Integration Testing? -->
+            <div class="slide">
+                <h2>What is Integration Testing?</h2>
+                
+                <p><strong>Integration Testing</strong> is the phase of commissioning where individual systems that have been tested in isolation are combined and tested as a group to verify they work together correctly.</p>
+
+                <h3>Why Integration Testing Matters:</h3>
+                <ul>
+                    <li><strong>System Interdependencies:</strong> Modern data centers rely on complex interactions</li>
+                    <li><strong>Risk Mitigation:</strong> Identifies issues before they cause failures</li>
+                    <li><strong>Performance Optimization:</strong> Ensures efficiency across systems</li>
+                    <li><strong>Compliance:</strong> Meets regulatory and safety requirements</li>
+                    <li><strong>Reliability:</strong> Verifies redundancy and failover mechanisms</li>
+                </ul>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#673ab7">Integration Testing Scope</text>
+                        
+                        <!-- Individual Systems -->
+                        <circle cx="150" cy="100" r="40" fill="#e0e0e0" stroke="#999" stroke-width="2"/>
+                        <text x="150" y="105" text-anchor="middle" font-size="12">HVAC</text>
+                        
+                        <circle cx="300" cy="100" r="40" fill="#e0e0e0" stroke="#999" stroke-width="2"/>
+                        <text x="300" y="105" text-anchor="middle" font-size="12">Power</text>
+                        
+                        <circle cx="450" cy="100" r="40" fill="#e0e0e0" stroke="#999" stroke-width="2"/>
+                        <text x="450" y="105" text-anchor="middle" font-size="12">Fire</text>
+                        
+                        <circle cx="600" cy="100" r="40" fill="#e0e0e0" stroke="#999" stroke-width="2"/>
+                        <text x="600" y="105" text-anchor="middle" font-size="12">BMS</text>
+                        
+                        <text x="375" y="170" text-anchor="middle" font-size="14" fill="#666">Individual System Testing</text>
+                        
+                        <!-- Arrow -->
+                        <path d="M 400 190 L 400 250" stroke="#673ab7" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Integrated Systems -->
+                        <rect x="200" y="280" width="400" height="150" fill="#f3e5f5" stroke="#673ab7" stroke-width="3" rx="10"/>
+                        <text x="400" y="310" text-anchor="middle" font-size="16" font-weight="bold" fill="#673ab7">Integrated System</text>
+                        
+                        <circle cx="300" cy="360" r="30" fill="#9c27b0" stroke="#673ab7" stroke-width="2"/>
+                        <text x="300" y="365" text-anchor="middle" fill="white" font-size="11">HVAC</text>
+                        
+                        <circle cx="400" cy="360" r="30" fill="#9c27b0" stroke="#673ab7" stroke-width="2"/>
+                        <text x="400" y="365" text-anchor="middle" fill="white" font-size="11">Power</text>
+                        
+                        <circle cx="500" cy="360" r="30" fill="#9c27b0" stroke="#673ab7" stroke-width="2"/>
+                        <text x="500" y="365" text-anchor="middle" fill="white" font-size="11">Fire</text>
+                        
+                        <circle cx="400" cy="385" r="35" fill="#673ab7" stroke="#4a148c" stroke-width="2"/>
+                        <text x="400" y="390" text-anchor="middle" fill="white" font-size="12" font-weight="bold">BMS</text>
+                        
+                        <!-- Connections -->
+                        <line x1="330" y1="360" x2="370" y2="360" stroke="#673ab7" stroke-width="2"/>
+                        <line x1="430" y1="360" x2="470" y2="360" stroke="#673ab7" stroke-width="2"/>
+                        <line x1="365" y1="385" x2="300" y2="360" stroke="#673ab7" stroke-width="2"/>
+                        <line x1="400" y1="350" x2="400" y2="360" stroke="#673ab7" stroke-width="2"/>
+                        <line x1="435" y1="385" x2="500" y2="360" stroke="#673ab7" stroke-width="2"/>
+                        
+                        <text x="400" y="460" text-anchor="middle" font-size="14" fill="#666">Integration Testing</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#673ab7"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="margin-top: 15px; font-style: italic;">From Individual Systems to Integrated Operation</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Integration Testing vs Other Testing Types:</h4>
+                    <ul>
+                        <li><strong>Unit Testing:</strong> Tests individual components in isolation</li>
+                        <li><strong>Integration Testing:</strong> Tests interactions between systems</li>
+                        <li><strong>System Testing:</strong> Tests complete integrated system</li>
+                        <li><strong>Acceptance Testing:</strong> Validates against requirements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Types of Integration Testing -->
+            <div class="slide">
+                <h2>Types of Integration Testing</h2>
+                
+                <h3>1. Big Bang Integration</h3>
+                <div class="info-box">
+                    <h4>Characteristics:</h4>
+                    <ul>
+                        <li>All systems integrated simultaneously</li>
+                        <li>Testing begins after all systems ready</li>
+                        <li><strong>Pros:</strong> Fast if everything works</li>
+                        <li><strong>Cons:</strong> Difficult to isolate problems</li>
+                        <li><strong>Use Case:</strong> Small systems with few interfaces</li>
+                    </ul>
+                </div>
+
+                <h3>2. Incremental Integration</h3>
+                <div class="success-box">
+                    <h4>Top-Down Approach:</h4>
+                    <ul>
+                        <li>Start with high-level systems (BMS, supervisory)</li>
+                        <li>Progressively add lower-level systems</li>
+                        <li>Use stubs for missing components</li>
+                        <li><strong>Advantage:</strong> Early validation of control logic</li>
+                        <li><strong>Example:</strong> BMS → HVAC → Chillers → Pumps</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Bottom-Up Approach:</h4>
+                    <ul>
+                        <li>Start with field devices and subsystems</li>
+                        <li>Build up to supervisory systems</li>
+                        <li>Use drivers to simulate higher levels</li>
+                        <li><strong>Advantage:</strong> Early validation of hardware</li>
+                        <li><strong>Example:</strong> Sensors → Controllers → BMS</li>
+                    </ul>
+                </div>
+
+                <h3>3. Hybrid/Sandwich Integration</h3>
+                <ul>
+                    <li>Combines top-down and bottom-up</li>
+                    <li>Most common in data centers</li>
+                    <li>Parallel testing of different layers</li>
+                    <li>Meets in the middle</li>
+                    <li>Balances advantages of both approaches</li>
+                </ul>
+
+                <h3>4. Risk-Based Integration</h3>
+                <table>
+                    <tr>
+                        <th>Priority</th>
+                        <th>Systems</th>
+                        <th>Rationale</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical</strong></td>
+                        <td>Power, Cooling, Fire</td>
+                        <td>Failure impacts entire facility</td>
+                    </tr>
+                    <tr>
+                        <td><strong>High</strong></td>
+                        <td>BMS, Security</td>
+                        <td>Control and monitoring essential</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medium</strong></td>
+                        <td>Lighting, Access</td>
+                        <td>Important but not critical</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low</strong></td>
+                        <td>Amenity systems</td>
+                        <td>Comfort and convenience</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Slide 4: Test Planning and Documentation -->
+            <div class="slide">
+                <h2>Test Planning and Documentation</h2>
+                
+                <h3>1. Integration Test Plan Components</h3>
+                
+                <div class="info-box">
+                    <h4>Essential Elements:</h4>
+                    <ul>
+                        <li><strong>Scope:</strong> Systems and interfaces to be tested</li>
+                        <li><strong>Objectives:</strong> What success looks like</li>
+                        <li><strong>Schedule:</strong> Timeline and dependencies</li>
+                        <li><strong>Resources:</strong> Personnel, tools, equipment</li>
+                        <li><strong>Risk Assessment:</strong> Potential issues and mitigation</li>
+                        <li><strong>Pass/Fail Criteria:</strong> Measurable acceptance standards</li>
+                    </ul>
+                </div>
+
+                <h3>2. Test Case Development</h3>
+                
+                <div class="code-block">
+Test Case ID: INT-HVAC-BMS-001
+Test Name: HVAC Shutdown on Fire Alarm
+Prerequisites: 
+  - Fire alarm system operational
+  - HVAC system in normal operation
+  - BMS monitoring active
+
+Test Steps:
+  1. Verify HVAC operating normally
+  2. Activate fire alarm test mode
+  3. Trigger smoke detector in Zone A
+  4. Observe HVAC response
+
+Expected Results:
+  - HVAC shuts down within 10 seconds
+  - BMS displays alarm and HVAC status
+  - Dampers close to prevent smoke spread
+  - Event logged with timestamp
+
+Actual Results: [To be completed during test]
+Pass/Fail: [To be determined]
+                </div>
+
+                <h3>3. Documentation Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>Document Type</th>
+                        <th>Purpose</th>
+                        <th>When Created</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Plan</strong></td>
+                        <td>Overall strategy and approach</td>
+                        <td>Before testing begins</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Procedures</strong></td>
+                        <td>Detailed step-by-step instructions</td>
+                        <td>During planning phase</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Scripts</strong></td>
+                        <td>Specific test sequences</td>
+                        <td>Before each test phase</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Results</strong></td>
+                        <td>Actual outcomes and observations</td>
+                        <td>During testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Defect Reports</strong></td>
+                        <td>Issues found and resolution</td>
+                        <td>As issues discovered</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Summary</strong></td>
+                        <td>Overall results and recommendations</td>
+                        <td>After testing complete</td>
+                    </tr>
+                </table>
+
+                <h3>4. Traceability Matrix</h3>
+                
+                <div class="warning-box">
+                    <h4>Requirements Traceability:</h4>
+                    <ul>
+                        <li>Link each test to specific requirements</li>
+                        <li>Ensure complete coverage of all interfaces</li>
+                        <li>Track which requirements have been validated</li>
+                        <li>Identify gaps in testing coverage</li>
+                        <li>Support compliance documentation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: System-to-System Testing -->
+            <div class="slide">
+                <h2>System-to-System Testing</h2>
+                
+                <p>Testing the interactions between major facility systems is crucial for data center reliability.</p>
+
+                <h3>1. Power and Cooling Integration</h3>
+                
+                <div class="success-box">
+                    <h4>Critical Test Scenarios:</h4>
+                    <ul>
+                        <li><strong>Utility Failure:</strong> Cooling maintains operation on generator</li>
+                        <li><strong>Load Transfer:</strong> No cooling interruption during switching</li>
+                        <li><strong>Power Factor:</strong> Cooling equipment doesn't degrade PF</li>
+                        <li><strong>Harmonics:</strong> VFDs don't interfere with power quality</li>
+                        <li><strong>Sequencing:</strong> Proper startup order after power restoration</li>
+                    </ul>
+                </div>
+
+                <h3>2. Fire and HVAC Integration</h3>
+                
+                <table>
+                    <tr>
+                        <th>Fire Event</th>
+                        <th>HVAC Response</th>
+                        <th>Verification Method</th>
+                    </tr>
+                    <tr>
+                        <td>Smoke detection</td>
+                        <td>Zone shutdown, dampers close</td>
+                        <td>Observe damper position, fan status</td>
+                    </tr>
+                    <tr>
+                        <td>Suppression activation</td>
+                        <td>Full shutdown, prevent spread</td>
+                        <td>Check all units stop within 30s</td>
+                    </tr>
+                    <tr>
+                        <td>Manual pull station</td>
+                        <td>Building evacuation mode</td>
+                        <td>Verify smoke control operation</td>
+                    </tr>
+                    <tr>
+                        <td>System reset</td>
+                        <td>Manual restart required</td>
+                        <td>Confirm no auto-restart</td>
+                    </tr>
+                </table>
+
+                <h3>3. BMS Integration Points</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#673ab7">BMS Integration Testing Focus Areas</text>
+                        
+                        <!-- BMS Center -->
+                        <rect x="300" y="150" width="200" height="80" fill="#673ab7" stroke="#4a148c" stroke-width="3" rx="10"/>
+                        <text x="400" y="185" text-anchor="middle" fill="white" font-size="16" font-weight="bold">BMS</text>
+                        <text x="400" y="205" text-anchor="middle" fill="white" font-size="12">Control & Monitor</text>
+                        
+                        <!-- Test Points -->
+                        <rect x="50" y="50" width="150" height="50" fill="#9c27b0" stroke="#673ab7" stroke-width="2" rx="5"/>
+                        <text x="125" y="80" text-anchor="middle" fill="white" font-size="12">Data Accuracy</text>
+                        
+                        <rect x="50" y="280" width="150" height="50" fill="#9c27b0" stroke="#673ab7" stroke-width="2" rx="5"/>
+                        <text x="125" y="310" text-anchor="middle" fill="white" font-size="12">Control Response</text>
+                        
+                        <rect x="600" y="50" width="150" height="50" fill="#9c27b0" stroke="#673ab7" stroke-width="2" rx="5"/>
+                        <text x="675" y="80" text-anchor="middle" fill="white" font-size="12">Alarm Integration</text>
+                        
+                        <rect x="600" y="280" width="150" height="50" fill="#9c27b0" stroke="#673ab7" stroke-width="2" rx="5"/>
+                        <text x="675" y="310" text-anchor="middle" fill="white" font-size="12">Trending/History</text>
+                        
+                        <!-- Connections with labels -->
+                        <path d="M 200 75 L 300 175" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="250" y="125" text-anchor="middle" font-size="11" fill="#666">Real-time values</text>
+                        
+                        <path d="M 200 305 L 300 205" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="250" y="255" text-anchor="middle" font-size="11" fill="#666">Commands</text>
+                        
+                        <path d="M 600 75 L 500 175" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="550" y="125" text-anchor="middle" font-size="11" fill="#666">Events</text>
+                        
+                        <path d="M 600 305 L 500 205" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="550" y="255" text-anchor="middle" font-size="11" fill="#666">Data logging</text>
+                    </svg>
+                </div>
+
+                <h3>4. Security Integration</h3>
+                
+                <div class="info-box">
+                    <h4>Access Control Integration Tests:</h4>
+                    <ul>
+                        <li><strong>Fire Alarm Override:</strong> All doors unlock for egress</li>
+                        <li><strong>Power Failure:</strong> Fail-safe or fail-secure per design</li>
+                        <li><strong>BMS Monitoring:</strong> Door status visible to operators</li>
+                        <li><strong>Intrusion + CCTV:</strong> Camera call-up on alarm</li>
+                        <li><strong>Visitor Management:</strong> Contractor access to equipment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Communication Testing -->
+            <div class="slide">
+                <h2>Communication Testing</h2>
+                
+                <p>Verifying reliable communication between systems is essential for integrated operation.</p>
+
+                <h3>1. Protocol Testing</h3>
+                
+                <table>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Test Focus</th>
+                        <th>Common Issues</th>
+                    </tr>
+                    <tr>
+                        <td><strong>BACnet</strong></td>
+                        <td>Object discovery, services, speeds</td>
+                        <td>Network numbers, device IDs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modbus</strong></td>
+                        <td>Register mapping, data types</td>
+                        <td>Byte order, scaling factors</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SNMP</strong></td>
+                        <td>MIB compatibility, trap handling</td>
+                        <td>Community strings, versions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OPC</strong></td>
+                        <td>Tag browsing, data quality</td>
+                        <td>DCOM settings, firewalls</td>
+                    </tr>
+                </table>
+
+                <h3>2. Network Testing</h3>
+                
+                <div class="warning-box">
+                    <h4>Network Performance Metrics:</h4>
+                    <ul>
+                        <li><strong>Latency:</strong> Round-trip time <100ms typical</li>
+                        <li><strong>Throughput:</strong> Adequate for data volume</li>
+                        <li><strong>Packet Loss:</strong> <0.1% for control networks</li>
+                        <li><strong>Jitter:</strong> Variation in latency <50ms</li>
+                        <li><strong>Availability:</strong> 99.9% minimum uptime</li>
+                    </ul>
+                </div>
+
+                <h3>3. Data Integrity Testing</h3>
+                
+                <div class="info-box">
+                    <h4>Verification Methods:</h4>
+                    <ul>
+                        <li><strong>Value Comparison:</strong> Source vs. destination accuracy</li>
+                        <li><strong>Timestamp Validation:</strong> Synchronization across systems</li>
+                        <li><strong>Scaling Verification:</strong> Engineering units consistency</li>
+                        <li><strong>Status Mapping:</strong> Binary states interpreted correctly</li>
+                        <li><strong>Alarm Priority:</strong> Consistent across platforms</li>
+                    </ul>
+                </div>
+
+                <h3>4. Redundancy Testing</h3>
+                
+                <div class="code-block">
+Redundancy Test Procedure:
+1. Verify primary communication path active
+   - Check data flow and update rates
+   - Document baseline performance
+
+2. Simulate primary path failure
+   - Disconnect primary network
+   - Observe failover timing
+
+3. Verify secondary path operation
+   - Confirm all data points transfer
+   - Check performance on backup
+
+4. Test failback to primary
+   - Restore primary connection
+   - Verify automatic or manual switch
+
+5. Document results
+   - Failover time: _____ seconds
+   - Data loss: _____ points
+   - Recovery time: _____ seconds
+                </div>
+
+                <h3>5. Cybersecurity Validation</h3>
+                
+                <div class="danger-box">
+                    <h4>Security Testing Requirements:</h4>
+                    <ul>
+                        <li><strong>Authentication:</strong> Verify user access controls</li>
+                        <li><strong>Encryption:</strong> Test secure communication channels</li>
+                        <li><strong>Segregation:</strong> Validate network isolation</li>
+                        <li><strong>Logging:</strong> Confirm audit trail functionality</li>
+                        <li><strong>Updates:</strong> Test patch deployment procedures</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Performance Testing -->
+            <div class="slide">
+                <h2>Performance Testing</h2>
+                
+                <h3>1. Load Testing</h3>
+                
+                <div class="info-box">
+                    <h4>Load Test Scenarios:</h4>
+                    <ul>
+                        <li><strong>Normal Load:</strong> Typical operating conditions</li>
+                        <li><strong>Peak Load:</strong> Maximum design conditions</li>
+                        <li><strong>Stress Test:</strong> Beyond design limits</li>
+                        <li><strong>Endurance Test:</strong> Extended operation</li>
+                        <li><strong>Spike Test:</strong> Sudden load changes</li>
+                    </ul>
+                </div>
+
+                <h3>2. Response Time Testing</h3>
+                
+                <table>
+                    <tr>
+                        <th>System Interaction</th>
+                        <th>Acceptable Response</th>
+                        <th>Critical Response</th>
+                    </tr>
+                    <tr>
+                        <td>BMS Command → Equipment</td>
+                        <td><10 seconds</td>
+                        <td><5 seconds</td>
+                    </tr>
+                    <tr>
+                        <td>Alarm → Notification</td>
+                        <td><30 seconds</td>
+                        <td><10 seconds</td>
+                    </tr>
+                    <tr>
+                        <td>Sensor → Display Update</td>
+                        <td><5 seconds</td>
+                        <td><2 seconds</td>
+                    </tr>
+                    <tr>
+                        <td>Power Transfer</td>
+                        <td><4 seconds</td>
+                        <td><100ms (UPS)</td>
+                    </tr>
+                    <tr>
+                        <td>Fire → HVAC Shutdown</td>
+                        <td>N/A</td>
+                        <td><30 seconds</td>
+                    </tr>
+                </table>
+
+                <h3>3. Failover Performance</h3>
+                
+                <div class="success-box">
+                    <h4>Failover Test Matrix:</h4>
+                    <ul>
+                        <li><strong>Component Failure:</strong> Single equipment fault</li>
+                        <li><strong>Path Failure:</strong> Network or power path loss</li>
+                        <li><strong>System Failure:</strong> Complete subsystem outage</li>
+                        <li><strong>Cascading Failure:</strong> Multiple related failures</li>
+                        <li><strong>Recovery:</strong> Return to normal operation</li>
+                    </ul>
+                </div>
+
+                <h3>4. Scalability Testing</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#673ab7">Scalability Test Progression</text>
+                        
+                        <!-- Phase 1 -->
+                        <rect x="50" y="80" width="150" height="80" fill="#e1bee7" stroke="#9c27b0" stroke-width="2" rx="5"/>
+                        <text x="125" y="105" text-anchor="middle" font-size="14" font-weight="bold">Phase 1</text>
+                        <text x="125" y="125" text-anchor="middle" font-size="12">25% Load</text>
+                        <text x="125" y="145" text-anchor="middle" font-size="11">Core Systems</text>
+                        
+                        <!-- Phase 2 -->
+                        <rect x="250" y="80" width="150" height="80" fill="#ce93d8" stroke="#9c27b0" stroke-width="2" rx="5"/>
+                        <text x="325" y="105" text-anchor="middle" font-size="14" font-weight="bold">Phase 2</text>
+                        <text x="325" y="125" text-anchor="middle" font-size="12">50% Load</text>
+                        <text x="325" y="145" text-anchor="middle" font-size="11">Add Systems</text>
+                        
+                        <!-- Phase 3 -->
+                        <rect x="450" y="80" width="150" height="80" fill="#ab47bc" stroke="#9c27b0" stroke-width="2" rx="5"/>
+                        <text x="525" y="105" text-anchor="middle" font-size="14" font-weight="bold">Phase 3</text>
+                        <text x="525" y="125" text-anchor="middle" font-size="12" fill="white">75% Load</text>
+                        <text x="525" y="145" text-anchor="middle" font-size="11" fill="white">Near Capacity</text>
+                        
+                        <!-- Phase 4 -->
+                        <rect x="650" y="80" width="150" height="100" fill="#7b1fa2" stroke="#4a148c" stroke-width="2" rx="5"/>
+                        <text x="725" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Phase 4</text>
+                        <text x="725" y="125" text-anchor="middle" font-size="12" fill="white">100%+ Load</text>
+                        <text x="725" y="145" text-anchor="middle" font-size="11" fill="white">Overload Test</text>
+                        <text x="725" y="165" text-anchor="middle" font-size="11" fill="white">Future Growth</text>
+                        
+                        <!-- Performance Line -->
+                        <path d="M 125 250 L 325 260 L 525 280 L 725 320" stroke="#673ab7" stroke-width="3" fill="none"/>
+                        <circle cx="125" cy="250" r="5" fill="#673ab7"/>
+                        <circle cx="325" cy="260" r="5" fill="#673ab7"/>
+                        <circle cx="525" cy="280" r="5" fill="#673ab7"/>
+                        <circle cx="725" cy="320" r="5" fill="#673ab7"/>
+                        
+                        <text x="400" y="370" text-anchor="middle" font-size="12" fill="#666">System Performance Degradation</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 200 120 L 250 120" stroke="#673ab7" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 120 L 450 120" stroke="#673ab7" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 600 120 L 650 120" stroke="#673ab7" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    </svg>
+                </div>
+
+                <h3>5. Performance Baselines</h3>
+                
+                <div class="warning-box">
+                    <h4>Baseline Documentation:</h4>
+                    <ul>
+                        <li>Record all performance metrics at commissioning</li>
+                        <li>Establish normal operating ranges</li>
+                        <li>Document seasonal variations expected</li>
+                        <li>Create trending templates for ongoing monitoring</li>
+                        <li>Define alert thresholds based on test results</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Troubleshooting Integration Issues -->
+            <div class="slide">
+                <h2>Troubleshooting Integration Issues</h2>
+                
+                <h3>1. Common Integration Problems</h3>
+                
+                <table>
+                    <tr>
+                        <th>Issue Type</th>
+                        <th>Symptoms</th>
+                        <th>Common Causes</th>
+                        <th>Resolution Approach</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Communication Loss</strong></td>
+                        <td>Timeouts, missing data</td>
+                        <td>Network, addressing, cables</td>
+                        <td>Systematic isolation testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Mismatch</strong></td>
+                        <td>Wrong values, units</td>
+                        <td>Scaling, mapping errors</td>
+                        <td>Trace from source to destination</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Control Conflicts</strong></td>
+                        <td>Competing commands</td>
+                        <td>Multiple masters, logic errors</td>
+                        <td>Review control hierarchy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Timing Issues</strong></td>
+                        <td>Delays, wrong sequence</td>
+                        <td>Network latency, processing</td>
+                        <td>Analyze timing diagrams</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intermittent Faults</strong></td>
+                        <td>Random failures</td>
+                        <td>Environmental, loose connections</td>
+                        <td>Long-term monitoring</td>
+                    </tr>
+                </table>
+
+                <h3>2. Diagnostic Tools</h3>
+                
+                <div class="info-box">
+                    <h4>Essential Testing Tools:</h4>
+                    <ul>
+                        <li><strong>Protocol Analyzers:</strong> Wireshark, BACnet Explorer</li>
+                        <li><strong>Network Tools:</strong> Ping, traceroute, bandwidth tests</li>
+                        <li><strong>Simulation Software:</strong> System emulators, load generators</li>
+                        <li><strong>Monitoring Tools:</strong> SCADA trends, BMS logs</li>
+                        <li><strong>Documentation:</strong> As-built drawings, network diagrams</li>
+                    </ul>
+                </div>
+
+                <h3>3. Systematic Troubleshooting Process</h3>
+                
+                <div class="success-box">
+                    <h4>Step-by-Step Approach:</h4>
+                    <ol>
+                        <li><strong>Define the Problem:</strong> Specific symptoms and impacts</li>
+                        <li><strong>Gather Information:</strong> Logs, alarms, witness accounts</li>
+                        <li><strong>Develop Theories:</strong> Possible causes ranked by probability</li>
+                        <li><strong>Test Theories:</strong> Systematic elimination of possibilities</li>
+                        <li><strong>Implement Solution:</strong> Fix and verify resolution</li>
+                        <li><strong>Document:</strong> Root cause and prevention measures</li>
+                    </ol>
+                </div>
+
+                <h3>4. Integration Issue Examples</h3>
+                
+                <div class="code-block">
+Example: BMS shows different temperature than local display
+
+Troubleshooting Steps:
+1. Verify sensor reading at source
+   - Local display: 72.5°F
+   - Raw sensor value: 2.850 VDC
+
+2. Check controller input
+   - Configured range: 0-5 VDC = 32-122°F
+   - Calculated value: 72.5°F ✓
+
+3. Verify BMS communication
+   - BACnet object: Present Value = 22.5
+   - Units: Celsius (not Fahrenheit!)
+
+Root Cause: Unit mismatch in BMS configuration
+Solution: Change BMS display units to Fahrenheit
+                </div>
+
+                <h3>5. Prevention Strategies</h3>
+                
+                <div class="warning-box">
+                    <h4>Best Practices to Avoid Issues:</h4>
+                    <ul>
+                        <li>Detailed design reviews before implementation</li>
+                        <li>Mock-up testing of critical interfaces</li>
+                        <li>Standardized naming conventions</li>
+                        <li>Comprehensive point-to-point checkout</li>
+                        <li>Regular communication between trades</li>
+                        <li>Thorough documentation at each stage</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Best Practices and Standards -->
+            <div class="slide">
+                <h2>Best Practices and Standards</h2>
+                
+                <h3>1. Industry Standards</h3>
+                
+                <div class="reference-box">
+                    <h4>Relevant Standards for Integration Testing:</h4>
+                    <ul>
+                        <li>• IEEE 829 - Test Documentation</li>
+                        <li>• ISO/IEC 29119 - Software Testing</li>
+                        <li>• ASHRAE Guideline 1.1 - HVAC&R Commissioning</li>
+                        <li>• NFPA 4 - Integrated Fire Protection Testing</li>
+                        <li>• BICSI 009 - Data Center Operations</li>
+                        <li>• Uptime Institute Tier Standards</li>
+                    </ul>
+                </div>
+
+                <h3>2. Testing Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Key Success Factors:</h4>
+                    <ul>
+                        <li><strong>Early Planning:</strong> Start integration planning in design phase</li>
+                        <li><strong>Clear Communication:</strong> Regular coordination meetings</li>
+                        <li><strong>Detailed Documentation:</strong> Record everything</li>
+                        <li><strong>Incremental Testing:</strong> Build confidence progressively</li>
+                        <li><strong>Realistic Scenarios:</strong> Test actual use cases</li>
+                        <li><strong>Team Collaboration:</strong> All trades working together</li>
+                    </ul>
+                </div>
+
+                <h3>3. Safety During Testing</h3>
+                
+                <div class="danger-box">
+                    <h4>⚠️ Safety Considerations:</h4>
+                    <ul>
+                        <li>Lock-out/tag-out procedures for equipment</li>
+                        <li>Proper PPE for all testing environments</li>
+                        <li>Emergency response procedures active</li>
+                        <li>Coordination with facility operations</li>
+                        <li>Backup systems ready if testing impacts production</li>
+                    </ul>
+                </div>
+
+                <h3>4. Quality Assurance</h3>
+                
+                <table>
+                    <tr>
+                        <th>QA Activity</th>
+                        <th>Purpose</th>
+                        <th>Frequency</th>
+                    </tr>
+                    <tr>
+                        <td>Test Plan Review</td>
+                        <td>Ensure comprehensive coverage</td>
+                        <td>Before testing begins</td>
+                    </tr>
+                    <tr>
+                        <td>Witness Testing</td>
+                        <td>Independent verification</td>
+                        <td>Critical test points</td>
+                    </tr>
+                    <tr>
+                        <td>Results Audit</td>
+                        <td>Verify accuracy and completeness</td>
+                        <td>After each phase</td>
+                    </tr>
+                    <tr>
+                        <td>Defect Tracking</td>
+                        <td>Ensure resolution of all issues</td>
+                        <td>Continuous</td>
+                    </tr>
+                    <tr>
+                        <td>Sign-off Process</td>
+                        <td>Formal acceptance</td>
+                        <td>Phase completion</td>
+                    </tr>
+                </table>
+
+                <h3>5. Continuous Improvement</h3>
+                
+                <div class="info-box">
+                    <h4>Learning from Each Project:</h4>
+                    <ul>
+                        <li>Conduct post-test reviews</li>
+                        <li>Update test procedures based on findings</li>
+                        <li>Share lessons learned across teams</li>
+                        <li>Build library of test cases</li>
+                        <li>Improve estimation for future projects</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Integration testing verifies systems work together properly</li>
+                        <li>Multiple approaches exist - choose based on project needs</li>
+                        <li>Thorough planning and documentation are essential</li>
+                        <li>System-to-system testing catches critical issues</li>
+                        <li>Communication testing ensures reliable data exchange</li>
+                        <li>Performance testing validates real-world operation</li>
+                        <li>Systematic troubleshooting resolves integration issues</li>
+                        <li>Following best practices ensures successful outcomes</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Start Early:</strong> Integration planning begins in design</li>
+                    <li><strong>Test Incrementally:</strong> Build confidence step by step</li>
+                    <li><strong>Document Everything:</strong> Critical for troubleshooting</li>
+                    <li><strong>Collaborate:</strong> Integration requires teamwork</li>
+                    <li><strong>Think End-to-End:</strong> Consider full operational scenarios</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Next Steps:</h4>
+                    <ul>
+                        <li>Review integration points in your facility</li>
+                        <li>Develop test cases for critical interfaces</li>
+                        <li>Create integration test schedule</li>
+                        <li>Identify required tools and resources</li>
+                        <li>Build your testing team</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• ASHRAE Guideline 0-2019 - The Commissioning Process</li>
+                        <li>• ASHRAE Guideline 1.1-2007 - HVAC&R Technical Requirements</li>
+                        <li>• IEEE 829-2008 - Standard for Software Test Documentation</li>
+                        <li>• ISO/IEC/IEEE 29119 - Software and Systems Testing</li>
+                        <li>• NECA 90 - Commissioning Electrical Systems</li>
+                        <li>• BICSI 009-2019 - Data Center Operations and Maintenance</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• Building Commissioning Association (BCxA)</li>
+                        <li>• ASHRAE Technical Committee 7.9 (Building Commissioning)</li>
+                        <li>• Data Center Dynamics - Testing & Commissioning Resources</li>
+                        <li>• Uptime Institute - Tier Certification Standards</li>
+                        <li>• NFPA - Integrated Testing Guidelines</li>
+                        <li>• IEEE - System Integration Standards</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "A Practical Guide to Construction Commissioning" - ASHRAE</li>
+                        <li>• "Data Center Commissioning Guide" - Lawrence Berkeley National Laboratory</li>
+                        <li>• "Systems Integration Best Practices" - BICSI</li>
+                        <li>• "Testing Computer Systems" - Cem Kaner et al.</li>
+                        <li>• Manufacturer integration guides from major BMS vendors</li>
+                        <li>• Project-specific commissioning plans and test procedures</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from commissioning authorities, testing standards organizations, and industry best practices. All methodologies and recommendations reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Integration Testing. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the primary purpose of integration testing?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> To test individual components</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> To verify systems work together correctly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> To check construction quality</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> To train operators</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which integration approach tests high-level systems first?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> Bottom-up</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> Top-down</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> Big bang</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> Risk-based</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What should happen to HVAC systems when a fire alarm activates?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Continue normal operation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Increase ventilation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Shut down to prevent smoke spread</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> Switch to emergency power</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What is an acceptable packet loss rate for control networks?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> <10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> <5%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> <1%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> <0.1%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. Which document links tests to specific requirements?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> Test plan</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> Test procedure</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> Traceability matrix</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> Defect report</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the typical maximum response time for BMS commands to equipment?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> <1 second</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> <10 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> <30 seconds</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> <60 seconds</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. Which test verifies systems can handle future growth?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Load testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Stress testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Scalability testing</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Failover testing</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is the first step in systematic troubleshooting?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Implement solution</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Test theories</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Define the problem</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Document results</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. Which protocol issue commonly causes data mismatches?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Network speed</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Scaling factors</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Cable length</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Device count</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. When should integration planning begin?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> During construction</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> During commissioning</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> During design phase</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> After installation</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // To verify systems work together correctly
+            q2: 'b',  // Top-down
+            q3: 'c',  // Shut down to prevent smoke spread
+            q4: 'd',  // <0.1%
+            q5: 'c',  // Traceability matrix
+            q6: 'b',  // <10 seconds
+            q7: 'c',  // Scalability testing
+            q8: 'c',  // Define the problem
+            q9: 'b',  // Scaling factors
+            q10: 'c'  // During design phase
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Integration Testing.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

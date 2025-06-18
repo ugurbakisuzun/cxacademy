@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Management Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e88e5 0%, #039be5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1e88e5;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1e88e5;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #039be5;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1e88e5;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #039be5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e88e5, #039be5);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1e88e5;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1e88e5;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1e88e5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1e88e5;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        .formula-box {
+            background: #f5f5f5;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Energy Management Training Module</h1>
+            <p>Data Center 101 - Optimizing Power Consumption and Efficiency</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Energy Management Training</h2>
+                <p>Welcome to this comprehensive training module on Energy Management for data centers. This course will provide you with essential knowledge about energy monitoring, efficiency metrics, optimization strategies, and sustainability practices that are crucial for modern data center operations.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand data center energy consumption patterns</li>
+                        <li>Learn key efficiency metrics (PUE, DCiE, etc.)</li>
+                        <li>Master energy monitoring and measurement techniques</li>
+                        <li>Explore optimization strategies and best practices</li>
+                        <li>Understand demand management and cost reduction</li>
+                        <li>Learn about sustainability and renewable energy integration</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of data center operations</p>
+            </div>
+
+            <!-- Slide 2: Understanding Energy Consumption -->
+            <div class="slide">
+                <h2>Understanding Data Center Energy Consumption</h2>
+                
+                <p><strong>Data centers</strong> are among the most energy-intensive building types, consuming 10-50 times the energy per floor space of typical commercial buildings.</p>
+
+                <h3>Energy Consumption Breakdown:</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e88e5">Typical Data Center Energy Distribution</text>
+                        
+                        <!-- Pie Chart -->
+                        <g transform="translate(200, 200)">
+                            <!-- IT Equipment - 45% -->
+                            <path d="M 0,0 L 150,0 A 150,150 0 0,1 -48.3,-142.1 Z" fill="#e74c3c" stroke="white" stroke-width="2"/>
+                            <text x="50" y="-50" font-size="14" font-weight="bold" fill="white">IT Equipment</text>
+                            <text x="50" y="-30" font-size="16" font-weight="bold" fill="white">45%</text>
+                            
+                            <!-- Cooling - 35% -->
+                            <path d="M 0,0 L -48.3,-142.1 A 150,150 0 0,1 -142.1,48.3 Z" fill="#3498db" stroke="white" stroke-width="2"/>
+                            <text x="-80" y="-40" font-size="14" font-weight="bold" fill="white">Cooling</text>
+                            <text x="-80" y="-20" font-size="16" font-weight="bold" fill="white">35%</text>
+                            
+                            <!-- Power Systems - 15% -->
+                            <path d="M 0,0 L -142.1,48.3 A 150,150 0 0,1 -48.3,142.1 Z" fill="#f39c12" stroke="white" stroke-width="2"/>
+                            <text x="-100" y="80" font-size="14" font-weight="bold" fill="white">Power</text>
+                            <text x="-100" y="100" font-size="16" font-weight="bold" fill="white">15%</text>
+                            
+                            <!-- Other - 5% -->
+                            <path d="M 0,0 L -48.3,142.1 A 150,150 0 0,1 150,0 Z" fill="#95a5a6" stroke="white" stroke-width="2"/>
+                            <text x="50" y="80" font-size="14" font-weight="bold" fill="white">Other</text>
+                            <text x="50" y="100" font-size="16" font-weight="bold" fill="white">5%</text>
+                        </g>
+                        
+                        <!-- Legend -->
+                        <g transform="translate(500, 100)">
+                            <rect x="0" y="0" width="20" height="20" fill="#e74c3c"/>
+                            <text x="30" y="15" font-size="14">IT Equipment (Servers, Storage, Network)</text>
+                            
+                            <rect x="0" y="40" width="20" height="20" fill="#3498db"/>
+                            <text x="30" y="55" font-size="14">Cooling (Chillers, CRAH, Pumps)</text>
+                            
+                            <rect x="0" y="80" width="20" height="20" fill="#f39c12"/>
+                            <text x="30" y="95" font-size="14">Power Systems (UPS, PDU losses)</text>
+                            
+                            <rect x="0" y="120" width="20" height="20" fill="#95a5a6"/>
+                            <text x="30" y="135" font-size="14">Other (Lighting, Fire Systems)</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <h3>Key Energy Consumers:</h3>
+                
+                <div class="info-box">
+                    <h4>IT Equipment (45-50%)</h4>
+                    <ul>
+                        <li>Servers and compute resources</li>
+                        <li>Storage arrays and systems</li>
+                        <li>Network equipment</li>
+                        <li>Power conversion losses in servers</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>Cooling Infrastructure (30-40%)</h4>
+                    <ul>
+                        <li>Chillers and cooling towers</li>
+                        <li>CRAH/CRAC units</li>
+                        <li>Pumps and distribution</li>
+                        <li>Fans and air movement</li>
+                    </ul>
+                </div>
+
+                <h3>Energy Flow Path:</h3>
+                <p>Utility → Switchgear → UPS → PDU → IT Equipment → Heat → Cooling → Heat Rejection</p>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Energy Loss Points:</h4>
+                    <ul>
+                        <li>UPS efficiency losses (5-10%)</li>
+                        <li>Power distribution losses (2-5%)</li>
+                        <li>Power supply inefficiencies (10-20%)</li>
+                        <li>Cooling system inefficiencies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Key Efficiency Metrics -->
+            <div class="slide">
+                <h2>Key Energy Efficiency Metrics</h2>
+                
+                <h3>1. Power Usage Effectiveness (PUE)</h3>
+                
+                <div class="formula-box">
+                    PUE = Total Facility Power / IT Equipment Power
+                </div>
+                
+                <div class="info-box">
+                    <h4>PUE Interpretation:</h4>
+                    <ul>
+                        <li><strong>PUE = 1.0:</strong> Perfect efficiency (impossible in practice)</li>
+                        <li><strong>PUE < 1.2:</strong> World-class efficiency</li>
+                        <li><strong>PUE 1.2-1.5:</strong> Very efficient</li>
+                        <li><strong>PUE 1.5-2.0:</strong> Efficient</li>
+                        <li><strong>PUE > 2.0:</strong> Inefficient, improvement needed</li>
+                    </ul>
+                </div>
+
+                <h3>2. Data Center Infrastructure Efficiency (DCiE)</h3>
+                
+                <div class="formula-box">
+                    DCiE = IT Equipment Power / Total Facility Power × 100%
+                    <br>
+                    DCiE = 1 / PUE × 100%
+                </div>
+
+                <h3>3. Other Important Metrics</h3>
+                
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Formula</th>
+                        <th>Purpose</th>
+                        <th>Target</th>
+                    </tr>
+                    <tr>
+                        <td><strong>WUE</strong></td>
+                        <td>Water Usage / IT Power</td>
+                        <td>Water efficiency</td>
+                        <td><0.5 L/kWh</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CUE</strong></td>
+                        <td>Carbon Emissions / IT Power</td>
+                        <td>Carbon efficiency</td>
+                        <td>Varies by region</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IT-PEU</strong></td>
+                        <td>IT Power / Useful Work</td>
+                        <td>IT efficiency</td>
+                        <td>Application specific</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Server Utilization</strong></td>
+                        <td>Used Capacity / Total Capacity</td>
+                        <td>IT utilization</td>
+                        <td>>70%</td>
+                    </tr>
+                </table>
+
+                <h3>4. Partial PUE Metrics</h3>
+                
+                <div class="success-box">
+                    <h4>Component-Level Analysis:</h4>
+                    <ul>
+                        <li><strong>pPUE Cooling:</strong> Cooling Power / IT Power</li>
+                        <li><strong>pPUE Power:</strong> Power System Losses / IT Power</li>
+                        <li><strong>pPUE Lighting:</strong> Lighting Power / IT Power</li>
+                        <li><strong>pPUE Other:</strong> Other Systems / IT Power</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Measurement Considerations:</h4>
+                    <ul>
+                        <li>Measure at the same points consistently</li>
+                        <li>Include all facility power (security, lighting, etc.)</li>
+                        <li>Account for mixed-use facilities properly</li>
+                        <li>Consider seasonal variations</li>
+                        <li>Use calibrated, accurate meters</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Energy Monitoring Systems -->
+            <div class="slide">
+                <h2>Energy Monitoring and Measurement</h2>
+                
+                <h3>1. Monitoring Infrastructure</h3>
+                
+                <div class="info-box">
+                    <h4>Essential Monitoring Points:</h4>
+                    <ul>
+                        <li><strong>Utility Entrance:</strong> Main power feed meters</li>
+                        <li><strong>UPS Input/Output:</strong> Efficiency tracking</li>
+                        <li><strong>PDU Level:</strong> IT load distribution</li>
+                        <li><strong>Cooling Systems:</strong> Chiller, pump, fan power</li>
+                        <li><strong>Critical Branches:</strong> Subsystem consumption</li>
+                    </ul>
+                </div>
+
+                <h3>2. Metering Technologies</h3>
+                
+                <table>
+                    <tr>
+                        <th>Meter Type</th>
+                        <th>Application</th>
+                        <th>Accuracy</th>
+                        <th>Features</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Revenue-Grade</strong></td>
+                        <td>Main feeds</td>
+                        <td>±0.5%</td>
+                        <td>Billing accuracy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power Quality</strong></td>
+                        <td>Critical loads</td>
+                        <td>±1%</td>
+                        <td>Harmonics, PF</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Branch Circuit</strong></td>
+                        <td>Distribution</td>
+                        <td>±2%</td>
+                        <td>Multi-circuit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Smart PDU</strong></td>
+                        <td>Rack level</td>
+                        <td>±1%</td>
+                        <td>Outlet level</td>
+                    </tr>
+                </table>
+
+                <h3>3. Data Collection Systems</h3>
+                
+                <div class="success-box">
+                    <h4>DCIM Integration:</h4>
+                    <ul>
+                        <li><strong>Real-time Monitoring:</strong> Live power and energy data</li>
+                        <li><strong>Historical Trending:</strong> Long-term analysis</li>
+                        <li><strong>Alarming:</strong> Threshold-based alerts</li>
+                        <li><strong>Reporting:</strong> Automated KPI reports</li>
+                        <li><strong>Integration:</strong> BMS, EPMS connectivity</li>
+                    </ul>
+                </div>
+
+                <h3>4. Measurement Best Practices</h3>
+                
+                <div class="info-box">
+                    <h4>Accurate Measurement Guidelines:</h4>
+                    <ul>
+                        <li>Install meters at all major distribution points</li>
+                        <li>Synchronize all meter timestamps</li>
+                        <li>Validate meter readings regularly</li>
+                        <li>Account for power factor in calculations</li>
+                        <li>Include all loads in total facility power</li>
+                        <li>Document measurement points clearly</li>
+                    </ul>
+                </div>
+
+                <h3>5. Energy Dashboard Example</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e88e5">Real-Time Energy Dashboard</text>
+                        
+                        <!-- PUE Gauge -->
+                        <g transform="translate(150, 150)">
+                            <circle cx="0" cy="0" r="80" fill="none" stroke="#e0e0e0" stroke-width="15"/>
+                            <path d="M -80,0 A 80,80 0 0,1 40,-69.3" fill="none" stroke="#4CAF50" stroke-width="15" stroke-linecap="round"/>
+                            <text x="0" y="-10" text-anchor="middle" font-size="24" font-weight="bold">1.35</text>
+                            <text x="0" y="10" text-anchor="middle" font-size="14">Current PUE</text>
+                        </g>
+                        
+                        <!-- Power Bars -->
+                        <g transform="translate(350, 80)">
+                            <text x="0" y="0" font-size="14" font-weight="bold">Power Distribution (MW)</text>
+                            
+                            <rect x="0" y="20" width="300" height="30" fill="#e0e0e0"/>
+                            <rect x="0" y="20" width="180" height="30" fill="#e74c3c"/>
+                            <text x="5" y="40" fill="white" font-size="12">IT Load: 3.6 MW</text>
+                            
+                            <rect x="0" y="60" width="300" height="30" fill="#e0e0e0"/>
+                            <rect x="0" y="60" width="90" height="30" fill="#3498db"/>
+                            <text x="5" y="80" fill="white" font-size="12">Cooling: 1.8 MW</text>
+                            
+                            <rect x="0" y="100" width="300" height="30" fill="#e0e0e0"/>
+                            <rect x="0" y="100" width="45" height="30" fill="#f39c12"/>
+                            <text x="5" y="120" fill="white" font-size="12">Power: 0.9 MW</text>
+                            
+                            <text x="0" y="160" font-size="14" font-weight="bold">Total: 6.3 MW</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 5: Optimization Strategies -->
+            <div class="slide">
+                <h2>Energy Optimization Strategies</h2>
+                
+                <h3>1. IT Equipment Optimization</h3>
+                
+                <div class="success-box">
+                    <h4>Server Efficiency Improvements:</h4>
+                    <ul>
+                        <li><strong>Virtualization:</strong> Increase server utilization to 60-80%</li>
+                        <li><strong>Server Refresh:</strong> New servers 40% more efficient</li>
+                        <li><strong>Right-Sizing:</strong> Match capacity to actual needs</li>
+                        <li><strong>Power Management:</strong> Enable CPU power states</li>
+                        <li><strong>Decommissioning:</strong> Remove zombie servers</li>
+                    </ul>
+                </div>
+
+                <h3>2. Cooling System Optimization</h3>
+                
+                <table>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Potential Savings</th>
+                        <th>Implementation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Temperature Setpoint</strong></td>
+                        <td>4% per °F increase</td>
+                        <td>Raise to ASHRAE limits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Airflow Management</strong></td>
+                        <td>10-30%</td>
+                        <td>Blanking, containment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Free Cooling</strong></td>
+                        <td>40-70%</td>
+                        <td>When ambient allows</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Variable Speed</strong></td>
+                        <td>20-50%</td>
+                        <td>VFDs on fans/pumps</td>
+                    </tr>
+                </table>
+
+                <h3>3. Power System Optimization</h3>
+                
+                <div class="info-box">
+                    <h4>UPS Efficiency Improvements:</h4>
+                    <ul>
+                        <li><strong>Eco-Mode:</strong> Bypass mode when power quality allows</li>
+                        <li><strong>Right-Sizing:</strong> Operate at optimal load point</li>
+                        <li><strong>Modular Systems:</strong> Scale with demand</li>
+                        <li><strong>New Technology:</strong> 96%+ efficiency systems</li>
+                    </ul>
+                </div>
+
+                <h3>4. Airflow Management</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e88e5">Hot/Cold Aisle Containment</text>
+                        
+                        <!-- Rack rows -->
+                        <g transform="translate(100, 80)">
+                            <!-- Row 1 -->
+                            <rect x="0" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="80" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="160" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <text x="110" y="-10" text-anchor="middle" font-size="12">Server Row</text>
+                            
+                            <!-- Cold aisle -->
+                            <rect x="0" y="120" width="220" height="60" fill="#3498db" opacity="0.3"/>
+                            <text x="110" y="155" text-anchor="middle" font-size="14" fill="#2980b9" font-weight="bold">COLD AISLE</text>
+                            
+                            <!-- Row 2 -->
+                            <rect x="0" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="80" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="160" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <text x="110" y="320" text-anchor="middle" font-size="12">Server Row</text>
+                            
+                            <!-- Arrows -->
+                            <path d="M 30 110 L 30 120" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                            <path d="M 110 110 L 110 120" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                            <path d="M 190 110 L 190 120" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                            
+                            <path d="M 30 200 L 30 190" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                            <path d="M 110 200 L 110 190" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                            <path d="M 190 200 L 190 190" stroke="#3498db" stroke-width="3" marker-end="url(#bluearrow)"/>
+                        </g>
+                        
+                        <!-- Hot aisle with containment -->
+                        <g transform="translate(400, 80)">
+                            <!-- Containment -->
+                            <rect x="-10" y="-10" width="240" height="320" fill="none" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,5"/>
+                            <text x="110" y="-20" text-anchor="middle" font-size="14" fill="#e74c3c" font-weight="bold">HOT AISLE CONTAINMENT</text>
+                            
+                            <!-- Row 1 -->
+                            <rect x="0" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="80" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="160" y="0" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            
+                            <!-- Hot aisle -->
+                            <rect x="0" y="120" width="220" height="60" fill="#e74c3c" opacity="0.3"/>
+                            <text x="110" y="155" text-anchor="middle" font-size="14" fill="#c0392b" font-weight="bold">HOT AISLE</text>
+                            
+                            <!-- Row 2 -->
+                            <rect x="0" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="80" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="160" y="200" width="60" height="100" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+                            
+                            <!-- Arrows -->
+                            <path d="M 30 100 L 30 120" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                            <path d="M 110 100 L 110 120" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                            <path d="M 190 100 L 190 120" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                            
+                            <path d="M 30 180 L 30 200" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                            <path d="M 110 180 L 110 200" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                            <path d="M 190 180 L 190 200" stroke="#e74c3c" stroke-width="3" marker-end="url(#redarrow)"/>
+                        </g>
+                        
+                        <!-- Arrows -->
+                        <defs>
+                            <marker id="bluearrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#3498db"/>
+                            </marker>
+                            <marker id="redarrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#e74c3c"/>
+                            </marker>
+                        </defs>
+                        
+                        <text x="400" y="380" text-anchor="middle" font-size="12" font-style="italic">Containment prevents mixing of hot and cold air, improving efficiency by 10-30%</text>
+                    </svg>
+                </div>
+
+                <h3>5. Implementation Priority</h3>
+                
+                <div class="warning-box">
+                    <h4>Quick Wins (Immediate):</h4>
+                    <ul>
+                        <li>Blanking panels installation</li>
+                        <li>Temperature setpoint optimization</li>
+                        <li>Decommission unused equipment</li>
+                        <li>Enable server power management</li>
+                        <li>Fix air leaks and bypass paths</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Demand Management -->
+            <div class="slide">
+                <h2>Demand Management and Cost Optimization</h2>
+                
+                <h3>1. Understanding Utility Charges</h3>
+                
+                <div class="info-box">
+                    <h4>Typical Utility Bill Components:</h4>
+                    <ul>
+                        <li><strong>Energy Charges:</strong> $/kWh consumed</li>
+                        <li><strong>Demand Charges:</strong> $/kW peak demand</li>
+                        <li><strong>Power Factor Penalties:</strong> For low PF</li>
+                        <li><strong>Time-of-Use Rates:</strong> Variable by time</li>
+                        <li><strong>Taxes and Fees:</strong> Various surcharges</li>
+                    </ul>
+                </div>
+
+                <h3>2. Demand Management Strategies</h3>
+                
+                <table>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Description</th>
+                        <th>Potential Savings</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Peak Shaving</strong></td>
+                        <td>Reduce peak demand spikes</td>
+                        <td>10-30% demand charges</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Shifting</strong></td>
+                        <td>Move loads to off-peak</td>
+                        <td>15-40% energy costs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load Capping</strong></td>
+                        <td>Limit maximum demand</td>
+                        <td>Predictable costs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power Factor Correction</strong></td>
+                        <td>Improve to >0.95</td>
+                        <td>Avoid penalties</td>
+                    </tr>
+                </table>
+
+                <h3>3. Demand Response Programs</h3>
+                
+                <div class="success-box">
+                    <h4>Participation Benefits:</h4>
+                    <ul>
+                        <li><strong>Financial Incentives:</strong> Payments for load reduction</li>
+                        <li><strong>Rate Discounts:</strong> Lower energy rates</li>
+                        <li><strong>Grid Support:</strong> Help stabilize the grid</li>
+                        <li><strong>Sustainability:</strong> Reduce carbon footprint</li>
+                    </ul>
+                </div>
+
+                <h3>4. Energy Storage Integration</h3>
+                
+                <div class="info-box">
+                    <h4>Battery Energy Storage Applications:</h4>
+                    <ul>
+                        <li><strong>Peak Shaving:</strong> Discharge during peaks</li>
+                        <li><strong>UPS Function:</strong> Replace traditional UPS</li>
+                        <li><strong>Renewable Integration:</strong> Store solar/wind</li>
+                        <li><strong>Grid Services:</strong> Frequency regulation</li>
+                        <li><strong>Arbitrage:</strong> Buy low, sell high</li>
+                    </ul>
+                </div>
+
+                <h3>5. Cost Optimization Example</h3>
+                
+                <div class="formula-box">
+                    Annual Energy Cost = (Energy Use × Energy Rate) + (Peak Demand × Demand Rate × 12)
+                    <br><br>
+                    Example: 5MW facility, $0.08/kWh, $15/kW demand
+                    <br>
+                    Annual Cost = (5,000kW × 8,760hrs × 0.08) + (5,000 × 15 × 12)
+                    <br>
+                    = $3,504,000 + $900,000 = $4,404,000/year
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Cost Reduction Opportunities:</h4>
+                    <ul>
+                        <li>10% efficiency improvement = $440,000/year savings</li>
+                        <li>20% demand reduction = $180,000/year savings</li>
+                        <li>Time-of-use optimization = 15-25% energy cost reduction</li>
+                        <li>Power factor improvement = Avoid 2-5% penalties</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Renewable Energy Integration -->
+            <div class="slide">
+                <h2>Renewable Energy and Sustainability</h2>
+                
+                <h3>1. Renewable Energy Options</h3>
+                
+                <div class="info-box">
+                    <h4>On-Site Generation:</h4>
+                    <ul>
+                        <li><strong>Solar PV:</strong> Rooftop or ground mount</li>
+                        <li><strong>Fuel Cells:</strong> Natural gas or hydrogen</li>
+                        <li><strong>Wind Power:</strong> Where feasible</li>
+                        <li><strong>Geothermal:</strong> Heating/cooling support</li>
+                        <li><strong>Combined Heat & Power:</strong> High efficiency</li>
+                    </ul>
+                </div>
+
+                <h3>2. Power Purchase Agreements (PPAs)</h3>
+                
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Benefits</th>
+                    </tr>
+                    <tr>
+                        <td><strong>On-Site PPA</strong></td>
+                        <td>Solar/wind on property</td>
+                        <td>No capital, fixed rates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Virtual PPA</strong></td>
+                        <td>Off-site renewable</td>
+                        <td>Scale, location flexible</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Green Tariffs</strong></td>
+                        <td>Utility programs</td>
+                        <td>Simple, no investment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RECs</strong></td>
+                        <td>Renewable certificates</td>
+                        <td>Flexible, scalable</td>
+                    </tr>
+                </table>
+
+                <h3>3. Sustainability Metrics</h3>
+                
+                <div class="success-box">
+                    <h4>Key Sustainability KPIs:</h4>
+                    <ul>
+                        <li><strong>Carbon Usage Effectiveness (CUE):</strong> kg CO2/kWh IT</li>
+                        <li><strong>Water Usage Effectiveness (WUE):</strong> L/kWh IT</li>
+                        <li><strong>Renewable Energy %:</strong> Clean power ratio</li>
+                        <li><strong>Carbon Footprint:</strong> Total emissions</li>
+                        <li><strong>Green Building Certification:</strong> LEED, Energy Star</li>
+                    </ul>
+                </div>
+
+                <h3>4. Circular Economy Practices</h3>
+                
+                <div class="info-box">
+                    <h4>Waste Heat Recovery:</h4>
+                    <ul>
+                        <li>District heating integration</li>
+                        <li>Agricultural applications (greenhouses)</li>
+                        <li>Office space heating</li>
+                        <li>Absorption cooling systems</li>
+                        <li>Industrial process heat</li>
+                    </ul>
+                </div>
+
+                <h3>5. Carbon Neutral Strategies</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e88e5">Path to Carbon Neutrality</text>
+                        
+                        <!-- Timeline -->
+                        <line x1="100" y1="150" x2="700" y2="150" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Milestones -->
+                        <g transform="translate(150, 150)">
+                            <circle cx="0" cy="0" r="8" fill="#1e88e5"/>
+                            <text x="0" y="-20" text-anchor="middle" font-size="12" font-weight="bold">2024</text>
+                            <text x="0" y="40" text-anchor="middle" font-size="11">Baseline</text>
+                            <text x="0" y="55" text-anchor="middle" font-size="11">Measurement</text>
+                        </g>
+                        
+                        <g transform="translate(300, 150)">
+                            <circle cx="0" cy="0" r="8" fill="#4CAF50"/>
+                            <text x="0" y="-20" text-anchor="middle" font-size="12" font-weight="bold">2025</text>
+                            <text x="0" y="40" text-anchor="middle" font-size="11">30% Renewable</text>
+                            <text x="0" y="55" text-anchor="middle" font-size="11">PUE < 1.4</text>
+                        </g>
+                        
+                        <g transform="translate(450, 150)">
+                            <circle cx="0" cy="0" r="8" fill="#FFC107"/>
+                            <text x="0" y="-20" text-anchor="middle" font-size="12" font-weight="bold">2027</text>
+                            <text x="0" y="40" text-anchor="middle" font-size="11">60% Renewable</text>
+                            <text x="0" y="55" text-anchor="middle" font-size="11">PUE < 1.3</text>
+                        </g>
+                        
+                        <g transform="translate(600, 150)">
+                            <circle cx="0" cy="0" r="8" fill="#f39c12"/>
+                            <text x="0" y="-20" text-anchor="middle" font-size="12" font-weight="bold">2030</text>
+                            <text x="0" y="40" text-anchor="middle" font-size="11">Carbon Neutral</text>
+                            <text x="0" y="55" text-anchor="middle" font-size="11">PUE < 1.2</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Slide 8: Best Practices -->
+            <div class="slide">
+                <h2>Energy Management Best Practices</h2>
+                
+                <h3>1. Organizational Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>✅ Management Framework:</h4>
+                    <ul>
+                        <li>Establish energy management team</li>
+                        <li>Set clear efficiency targets and KPIs</li>
+                        <li>Regular energy audits (annual)</li>
+                        <li>Executive sponsorship and support</li>
+                        <li>Budget for efficiency improvements</li>
+                        <li>Continuous improvement culture</li>
+                    </ul>
+                </div>
+
+                <h3>2. Technical Best Practices</h3>
+                
+                <table>
+                    <tr>
+                        <th>Area</th>
+                        <th>Best Practice</th>
+                        <th>Impact</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Cooling</strong></td>
+                        <td>ASHRAE TC9.9 temperatures</td>
+                        <td>20-40% savings</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Airflow</strong></td>
+                        <td>Full containment</td>
+                        <td>10-30% cooling reduction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>IT Load</strong></td>
+                        <td>>70% server utilization</td>
+                        <td>30-50% server reduction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power</strong></td>
+                        <td>96%+ efficient UPS</td>
+                        <td>5-10% loss reduction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lighting</strong></td>
+                        <td>LED with controls</td>
+                        <td>75% lighting energy</td>
+                    </tr>
+                </table>
+
+                <h3>3. Operational Best Practices</h3>
+                
+                <div class="info-box">
+                    <h4>Daily Operations:</h4>
+                    <ul>
+                        <li>Monitor PUE and trends daily</li>
+                        <li>Investigate anomalies immediately</li>
+                        <li>Maintain optimal setpoints</li>
+                        <li>Track and fix air leaks</li>
+                        <li>Decommission unused equipment</li>
+                        <li>Optimize based on IT load</li>
+                    </ul>
+                </div>
+
+                <h3>4. Innovation and Emerging Technologies</h3>
+                
+                <div class="warning-box">
+                    <h4>Future Technologies:</h4>
+                    <ul>
+                        <li><strong>AI/ML Optimization:</strong> Predictive control</li>
+                        <li><strong>Liquid Cooling:</strong> Direct chip cooling</li>
+                        <li><strong>DC Power:</strong> Eliminate conversions</li>
+                        <li><strong>Hydrogen Fuel Cells:</strong> Clean backup power</li>
+                        <li><strong>Advanced Materials:</strong> Phase change cooling</li>
+                    </ul>
+                </div>
+
+                <h3>5. Industry Standards and Guidelines</h3>
+                
+                <div class="success-box">
+                    <h4>Key Standards:</h4>
+                    <ul>
+                        <li><strong>ISO 50001:</strong> Energy management systems</li>
+                        <li><strong>ASHRAE 90.4:</strong> Data center energy standard</li>
+                        <li><strong>EU Code of Conduct:</strong> Best practices</li>
+                        <li><strong>Green Grid Metrics:</strong> PUE, WUE, CUE</li>
+                        <li><strong>ENERGY STAR:</strong> Data center certification</li>
+                        <li><strong>LEED:</strong> Green building certification</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Summary -->
+            <div class="slide">
+                <h2>Module Summary</h2>
+                
+                <h3>Key Takeaways</h3>
+                
+                <div class="success-box">
+                    <h4>✅ What You've Learned:</h4>
+                    <ul>
+                        <li>Data centers consume significant energy - optimization is crucial</li>
+                        <li>PUE is the primary metric - target <1.5 for efficiency</li>
+                        <li>Comprehensive monitoring enables effective management</li>
+                        <li>Multiple optimization strategies can reduce consumption 30-50%</li>
+                        <li>Demand management reduces costs without reducing consumption</li>
+                        <li>Renewable integration supports sustainability goals</li>
+                    </ul>
+                </div>
+
+                <h3>Remember:</h3>
+                <ul>
+                    <li><strong>Measure:</strong> You can't manage what you don't measure</li>
+                    <li><strong>Optimize:</strong> Small improvements yield large savings</li>
+                    <li><strong>Integrate:</strong> Holistic approach maximizes efficiency</li>
+                    <li><strong>Innovate:</strong> Stay current with new technologies</li>
+                    <li><strong>Sustain:</strong> Think long-term environmental impact</li>
+                </ul>
+
+                <div class="info-box">
+                    <h4>Action Items:</h4>
+                    <ul>
+                        <li>Calculate your facility's current PUE</li>
+                        <li>Identify top 3 energy waste sources</li>
+                        <li>Develop efficiency improvement plan</li>
+                        <li>Set energy reduction targets</li>
+                        <li>Engage stakeholders in sustainability</li>
+                    </ul>
+                </div>
+
+                <h3>Ready for the Quiz?</h3>
+                <p>Test your knowledge with our comprehensive quiz on the next page. You need 80% or higher to pass!</p>
+            </div>
+
+            <!-- Slide 10: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using industry-standard resources and best practices from leading organizations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• The Green Grid - "PUE: A Comprehensive Examination of the Metric" (2012)</li>
+                        <li>• ASHRAE TC 9.9 - "Data Center Power Equipment Thermal Guidelines" (2021)</li>
+                        <li>• U.S. Department of Energy - "Data Center Energy Efficiency Best Practices" (2020)</li>
+                        <li>• Lawrence Berkeley National Laboratory - "United States Data Center Energy Usage Report" (2016)</li>
+                        <li>• Uptime Institute - "Global Data Center Survey" (Annual Reports 2020-2024)</li>
+                        <li>• ISO 50001:2018 - "Energy Management Systems Requirements"</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Industry Organizations:</h4>
+                    <ul>
+                        <li>• The Green Grid - Data center efficiency metrics and best practices</li>
+                        <li>• ASHRAE - American Society of Heating, Refrigerating and Air-Conditioning Engineers</li>
+                        <li>• Data Center Dynamics - Industry research and analysis</li>
+                        <li>• Open Compute Project - Efficient data center design</li>
+                        <li>• Climate Neutral Data Centre Pact - European sustainability initiative</li>
+                        <li>• RE100 - Renewable energy commitment organization</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Energy Efficiency in Data Centers" - European Commission Best Practices</li>
+                        <li>• "Data Center Efficiency Assessment" - ENERGY STAR Portfolio Manager</li>
+                        <li>• "Renewable Energy Strategies for Data Centers" - IRENA Report 2021</li>
+                        <li>• "DCIM Best Practices Guide" - 451 Research</li>
+                        <li>• Vendor white papers: Schneider Electric, Vertiv, ABB on energy management</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module synthesizes publicly available information from utility companies, government agencies, industry associations, and technology vendors. All metrics, benchmarks, and best practices reflect current industry standards as of 2024.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Energy Management. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What is the formula for calculating PUE?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> IT Power / Total Facility Power</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Total Facility Power / IT Power</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Cooling Power / IT Power</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Total Power - IT Power</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. What PUE value indicates world-class efficiency?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> < 2.0</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> < 1.5</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> < 1.2</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> < 1.0</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. What percentage of energy savings can result from raising cooling setpoint by 1°F?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> 1%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> 4%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> 10%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> 15%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. Which component typically consumes the most energy in a data center?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Cooling systems</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> IT equipment</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> UPS systems</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Lighting</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. What does DCiE stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> Data Center Infrastructure Efficiency</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> Direct Current Infrastructure Effectiveness</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> Data Center Internal Energy</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> Dynamic Cooling Infrastructure Efficiency</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What is the target server utilization rate for efficiency?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> 30-40%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> 50-60%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> 60-80%</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> 90-100%</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What type of metering provides the highest accuracy?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Branch circuit monitoring</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Revenue-grade meters</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Smart PDUs</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Current transformers</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. Which cooling optimization typically provides the highest energy savings?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Hot/cold aisle containment</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Blanking panels</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Free cooling</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Variable speed fans</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What does CUE measure?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Cooling usage effectiveness</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Carbon usage effectiveness</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Capacity utilization efficiency</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Cost usage effectiveness</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is the primary benefit of demand response programs?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> Increased reliability</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> Financial incentives</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> Better cooling</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> Higher capacity</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 12</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Total Facility Power / IT Power
+            q2: 'c',  // < 1.2
+            q3: 'b',  // 4%
+            q4: 'b',  // IT equipment
+            q5: 'a',  // Data Center Infrastructure Efficiency
+            q6: 'c',  // 60-80%
+            q7: 'b',  // Revenue-grade meters
+            q8: 'c',  // Free cooling
+            q9: 'b',  // Carbon usage effectiveness
+            q10: 'b'  // Financial incentives
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Energy Management.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
