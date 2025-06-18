@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMS Training System - Data Centre 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1565c0 0%, #2196f3 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease 0.4s both;
+            margin-top: 40px;
+        }
+
+        .intro-section h2 {
+            color: #1565c0;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .intro-section p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .module-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1565c0, #2196f3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            color: white;
+        }
+
+        .module-card h3 {
+            color: #1565c0;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .module-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            color: #888;
+        }
+
+        .module-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .module-button {
+            background: linear-gradient(135deg, #1565c0, #2196f3);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .module-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(21, 101, 192, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #2196f3;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>BMS Training Centre</h1>
+        <p>Comprehensive Building Management Systems training modules for data centre automation professionals</p>
+    </div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to BMS Training Academy</h2>
+            <p>Master Building Management Systems with our comprehensive training programs. Our modules cover system architecture, integration testing, energy management, and HMI operation essential for designing, implementing, and optimizing intelligent building control systems in modern data centres.</p>
+        </div>
+
+        <div class="modules-grid">
+            <div class="module-card">
+                <div class="module-icon">🏗️</div>
+                <h3>Building Management Systems Training</h3>
+                <p>Master BMS fundamentals including system architecture, communication protocols, device integration, and control strategies for comprehensive facility management.</p>
+                <div class="module-details">
+                    <span>Duration: 70-85 mins</span>
+                    <span>Level: Foundation</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/bms/building_management_system/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🔗</div>
+                <h3>Integration Testing Training</h3>
+                <p>Learn comprehensive BMS integration testing methodologies, system verification procedures, and troubleshooting techniques for seamless facility operations.</p>
+                <div class="module-details">
+                    <span>Duration: 60-75 mins</span>
+                    <span>Level: Intermediate</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/bms/integration_testing/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">⚡</div>
+                <h3>Energy Management Training</h3>
+                <p>Develop expertise in energy monitoring, optimization strategies, demand response, and sustainability practices through advanced BMS capabilities.</p>
+                <div class="module-details">
+                    <span>Duration: 65-80 mins</span>
+                    <span>Level: Advanced</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/bms/energy_management/" class="module-button">Start Module</a>
+            </div>
+
+            <div class="module-card">
+                <div class="module-icon">🖥️</div>
+                <h3>HMI Operation Training</h3>
+                <p>Build proficiency in Human-Machine Interface design, navigation, alarm management, and operational best practices for effective BMS control.</p>
+                <div class="module-details">
+                    <span>Duration: 55-70 mins</span>
+                    <span>Level: Intermediate</span>
+                </div>
+                <div class="module-status">Available Now</div>
+                <a href="https://ugurbakisuzun.github.io/cxacademy/bms/hmi_operation/" class="module-button">Start Module</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Data Centre Training Academy. All rights reserved.</p>
+    </div>
+</body>
+</html>
