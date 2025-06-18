@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Compliance Training Module - Data Center 101</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #1565c0;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1565c0;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #42a5f5;
+            font-size: 1.5em;
+            margin: 20px 0 15px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .slide ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .nav-button {
+            background: #1565c0;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: #42a5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1565c0, #42a5f5);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .quiz-question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: #1565c0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .quiz-option label {
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .quiz-option label:hover {
+            background: #e9ecef;
+        }
+
+        .submit-quiz {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .score-display h3 {
+            color: #1565c0;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .score-display .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #28a745;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #1565c0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #1565c0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .reference-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .reference-box h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+
+        .reference-box ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .reference-box li {
+            padding: 5px 0;
+            color: #444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-wrapper {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .slide h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Code Compliance Training Module</h1>
+            <p>Data Center 101 - Fire Safety Codes and Regulatory Requirements</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Slide 1: Welcome -->
+            <div class="slide active">
+                <h2>Welcome to Code Compliance Training</h2>
+                <p>Welcome to this comprehensive training module on Fire Safety Code Compliance for data centers. This course will provide you with essential knowledge about the codes, standards, and regulatory requirements that govern fire protection and life safety in data center facilities.</p>
+                
+                <div class="info-box">
+                    <h3>🎯 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the hierarchy of codes and standards</li>
+                        <li>Learn key NFPA codes for data center fire safety</li>
+                        <li>Recognize building code requirements (IBC/IFC)</li>
+                        <li>Understand local amendments and AHJ requirements</li>
+                        <li>Learn documentation and inspection requirements</li>
+                        <li>Understand ongoing compliance obligations</li>
+                        <li>Test your knowledge with a comprehensive quiz</li>
+                    </ul>
+                </div>
+
+                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of fire safety systems</p>
+            </div>
+
+            <!-- Slide 2: Code Hierarchy and Authority -->
+            <div class="slide">
+                <h2>Code Hierarchy and Authority</h2>
+                
+                <p>Understanding the hierarchy of codes and standards is essential for ensuring proper compliance in data center fire protection.</p>
+
+                <h3>Regulatory Hierarchy</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Code Hierarchy Pyramid -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Code and Standard Hierarchy</text>
+                        
+                        <!-- Federal Level -->
+                        <polygon points="400,60 250,120 550,120" fill="#1976D2" stroke="#0D47A1" stroke-width="2"/>
+                        <text x="400" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Federal</text>
+                        <text x="400" y="110" text-anchor="middle" fill="white" font-size="12">OSHA, EPA</text>
+                        
+                        <!-- State Level -->
+                        <polygon points="250,120 150,200 650,200 550,120" fill="#1E88E5" stroke="#1565C0" stroke-width="2"/>
+                        <text x="400" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">State Codes</text>
+                        <text x="400" y="170" text-anchor="middle" fill="white" font-size="12">State Fire Marshal</text>
+                        
+                        <!-- Local Level -->
+                        <polygon points="150,200 50,280 750,280 650,200" fill="#2196F3" stroke="#1976D2" stroke-width="2"/>
+                        <text x="400" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Local Codes</text>
+                        <text x="400" y="250" text-anchor="middle" fill="white" font-size="12">City/County Amendments</text>
+                        
+                        <!-- Standards -->
+                        <rect x="50" y="280" width="700" height="80" fill="#64B5F6" stroke="#42A5F5" stroke-width="2"/>
+                        <text x="400" y="310" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Industry Standards</text>
+                        <text x="400" y="330" text-anchor="middle" fill="white" font-size="12">NFPA, ICC, FM Global, UL</text>
+                        <text x="400" y="345" text-anchor="middle" fill="white" font-size="12">Referenced by Codes</text>
+                        
+                        <!-- Arrow showing enforcement -->
+                        <path d="M 100 380 L 100 50" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
+                        <text x="120" y="220" font-size="12" fill="#333" transform="rotate(-90 120 220)">Enforcement Authority</text>
+                        
+                        <!-- Arrowhead marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>Authority Having Jurisdiction (AHJ)</h3>
+                
+                <div class="info-box">
+                    <h4>Key AHJ Entities:</h4>
+                    <ul>
+                        <li><strong>Fire Marshal:</strong> Primary fire code enforcement</li>
+                        <li><strong>Building Official:</strong> Building code compliance</li>
+                        <li><strong>Electrical Inspector:</strong> Electrical code enforcement</li>
+                        <li><strong>Insurance Carrier:</strong> Additional requirements</li>
+                        <li><strong>Federal Agencies:</strong> Special facilities (DOD, DOE)</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>⚠️ Important Concepts:</h4>
+                    <ul>
+                        <li>Most restrictive requirement applies</li>
+                        <li>Local amendments can modify model codes</li>
+                        <li>AHJ interpretation is final</li>
+                        <li>Variances require formal approval</li>
+                        <li>Code updates occur on cycles (3-5 years)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: NFPA Standards Overview -->
+            <div class="slide">
+                <h2>NFPA Standards for Data Centers</h2>
+                
+                <p>The National Fire Protection Association (NFPA) develops consensus standards that form the basis for most fire codes in the United States.</p>
+
+                <h3>Key NFPA Standards</h3>
+                
+                <table>
+                    <tr>
+                        <th>Standard</th>
+                        <th>Title</th>
+                        <th>Key Requirements</th>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 1</strong></td>
+                        <td>Fire Code</td>
+                        <td>General fire safety, maintenance, operations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 13</strong></td>
+                        <td>Sprinkler Systems</td>
+                        <td>Design, installation, water supplies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 72</strong></td>
+                        <td>Fire Alarm Code</td>
+                        <td>Detection, notification, integration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 75</strong></td>
+                        <td>IT Equipment Protection</td>
+                        <td>Data center specific requirements</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 101</strong></td>
+                        <td>Life Safety Code</td>
+                        <td>Egress, emergency lighting, exits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFPA 2001</strong></td>
+                        <td>Clean Agent Systems</td>
+                        <td>Gaseous suppression design</td>
+                    </tr>
+                </table>
+
+                <h3>NFPA 75 - Data Center Specific</h3>
+                
+                <div class="info-box">
+                    <h4>Critical Requirements:</h4>
+                    <ul>
+                        <li><strong>Room Construction:</strong> 1-hour fire rating minimum</li>
+                        <li><strong>Detection:</strong> Early warning smoke detection</li>
+                        <li><strong>Suppression:</strong> Automatic suppression required</li>
+                        <li><strong>EPO:</strong> Emergency power off coordination</li>
+                        <li><strong>Cable Management:</strong> Limited combustibles</li>
+                        <li><strong>Documentation:</strong> Risk assessment required</li>
+                    </ul>
+                </div>
+
+                <h3>NFPA 72 Requirements</h3>
+                
+                <div class="success-box">
+                    <h4>Fire Alarm System Requirements:</h4>
+                    <ul>
+                        <li>Smoke detection at return air openings</li>
+                        <li>Heat detection in electrical spaces</li>
+                        <li>Manual pull stations at exits</li>
+                        <li>Audible/visible notification devices</li>
+                        <li>Fire alarm control panel with battery backup</li>
+                        <li>Monitoring by approved central station</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Building Codes (IBC/IFC) -->
+            <div class="slide">
+                <h2>International Building and Fire Codes</h2>
+                
+                <p>The International Code Council (ICC) publishes model codes adopted by most US jurisdictions with local amendments.</p>
+
+                <h3>International Building Code (IBC)</h3>
+                
+                <div class="info-box">
+                    <h4>IBC Chapter 3 - Occupancy Classification:</h4>
+                    <ul>
+                        <li><strong>Group B:</strong> Business occupancy (typical data centers)</li>
+                        <li><strong>Group F-1:</strong> Moderate hazard factory (large facilities)</li>
+                        <li><strong>Mixed Use:</strong> Multiple occupancies in same building</li>
+                        <li><strong>Accessory:</strong> Support spaces <10% of area</li>
+                    </ul>
+                </div>
+
+                <h3>Construction Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>Element</th>
+                        <th>Type II-B</th>
+                        <th>Type II-A</th>
+                        <th>Type I-A</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Structural Frame</strong></td>
+                        <td>0 hours</td>
+                        <td>1 hour</td>
+                        <td>3 hours</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exterior Walls</strong></td>
+                        <td>0 hours</td>
+                        <td>1 hour</td>
+                        <td>3 hours</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Floor Construction</strong></td>
+                        <td>0 hours</td>
+                        <td>1 hour</td>
+                        <td>2 hours</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Roof Construction</strong></td>
+                        <td>0 hours</td>
+                        <td>1 hour</td>
+                        <td>1.5 hours</td>
+                    </tr>
+                </table>
+
+                <h3>International Fire Code (IFC)</h3>
+                
+                <div class="warning-box">
+                    <h4>IFC Operational Requirements:</h4>
+                    <ul>
+                        <li>Fire safety and evacuation plans</li>
+                        <li>Hot work permits and procedures</li>
+                        <li>Hazardous materials management</li>
+                        <li>Fire department access and water supply</li>
+                        <li>Inspection, testing, and maintenance</li>
+                        <li>Emergency planning and drills</li>
+                    </ul>
+                </div>
+
+                <h3>Special Requirements</h3>
+                
+                <div class="success-box">
+                    <h4>High-Rise Provisions (>75 feet):</h4>
+                    <ul>
+                        <li>Fire command center required</li>
+                        <li>Smoke control systems</li>
+                        <li>Stairway pressurization</li>
+                        <li>Emergency voice/alarm system</li>
+                        <li>Fire department communication system</li>
+                        <li>Automatic sprinklers throughout</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5: Local Amendments and Variations -->
+            <div class="slide">
+                <h2>Local Amendments and Variations</h2>
+                
+                <p>Local jurisdictions often modify model codes to address specific regional concerns, climate conditions, or local practices.</p>
+
+                <h3>Common Local Amendments</h3>
+                
+                <div class="info-box">
+                    <h4>Typical Local Modifications:</h4>
+                    <ul>
+                        <li><strong>Seismic Requirements:</strong> Earthquake bracing and anchorage</li>
+                        <li><strong>Wind Requirements:</strong> Hurricane or tornado provisions</li>
+                        <li><strong>Water Supply:</strong> Local fire flow requirements</li>
+                        <li><strong>Alarm Monitoring:</strong> Direct fire department connection</li>
+                        <li><strong>Permitting:</strong> Additional inspections or approvals</li>
+                        <li><strong>Contractor Licensing:</strong> Local certification requirements</li>
+                    </ul>
+                </div>
+
+                <h3>Regional Examples</h3>
+                
+                <table>
+                    <tr>
+                        <th>Region</th>
+                        <th>Common Amendments</th>
+                        <th>Specific Requirements</th>
+                    </tr>
+                    <tr>
+                        <td><strong>California</strong></td>
+                        <td>Title 24, seismic</td>
+                        <td>Energy efficiency, bracing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Florida</strong></td>
+                        <td>Wind, flood</td>
+                        <td>Hurricane protection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chicago</strong></td>
+                        <td>High-rise</td>
+                        <td>Enhanced fire pumps</td>
+                    </tr>
+                    <tr>
+                        <td><strong>New York City</strong></td>
+                        <td>Local Law 26</td>
+                        <td>Unique sprinkler rules</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Texas</strong></td>
+                        <td>State amendments</td>
+                        <td>Modified egress widths</td>
+                    </tr>
+                </table>
+
+                <h3>Identifying Local Requirements</h3>
+                
+                <div class="warning-box">
+                    <h4>Research Methods:</h4>
+                    <ul>
+                        <li>Contact local fire marshal early in design</li>
+                        <li>Review jurisdiction's adopted codes and amendments</li>
+                        <li>Check for local technical bulletins or interpretations</li>
+                        <li>Attend pre-construction meetings</li>
+                        <li>Consult with local fire protection contractors</li>
+                        <li>Review similar project approvals</li>
+                    </ul>
+                </div>
+
+                <h3>Variance Process</h3>
+                
+                <div class="success-box">
+                    <h4>When Compliance is Challenging:</h4>
+                    <ul>
+                        <li><strong>Equivalency:</strong> Propose alternative methods</li>
+                        <li><strong>Performance-Based:</strong> Engineering analysis</li>
+                        <li><strong>Hardship:</strong> Technical infeasibility</li>
+                        <li><strong>Documentation:</strong> Detailed justification required</li>
+                        <li><strong>Review Process:</strong> Board of appeals hearing</li>
+                        <li><strong>Conditions:</strong> Additional requirements may apply</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6: Documentation Requirements -->
+            <div class="slide">
+                <h2>Documentation Requirements</h2>
+                
+                <p>Proper documentation is essential for code compliance, from design through ongoing operations.</p>
+
+                <h3>Design Phase Documentation</h3>
+                
+                <div class="info-box">
+                    <h4>Required Submittal Documents:</h4>
+                    <ul>
+                        <li><strong>Site Plan:</strong> Access roads, water supply, building location</li>
+                        <li><strong>Floor Plans:</strong> Occupancy, egress paths, fire ratings</li>
+                        <li><strong>Fire Alarm Drawings:</strong> Device locations, zones, sequences</li>
+                        <li><strong>Sprinkler Drawings:</strong> Hydraulic calculations, coverage</li>
+                        <li><strong>Specifications:</strong> Equipment listings, installation standards</li>
+                        <li><strong>Details:</strong> Penetrations, fire-stopping, rated assemblies</li>
+                    </ul>
+                </div>
+
+                <h3>Construction Documentation</h3>
+                
+                <table>
+                    <tr>
+                        <th>Document Type</th>
+                        <th>Purpose</th>
+                        <th>Retention Period</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Permits</strong></td>
+                        <td>Legal authorization</td>
+                        <td>Life of building</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inspection Reports</strong></td>
+                        <td>Compliance verification</td>
+                        <td>3-5 years minimum</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Reports</strong></td>
+                        <td>System acceptance</td>
+                        <td>Life of system</td>
+                    </tr>
+                    <tr>
+                        <td><strong>As-Built Drawings</strong></td>
+                        <td>Actual installation</td>
+                        <td>Life of building</td>
+                    </tr>
+                    <tr>
+                        <td><strong>O&M Manuals</strong></td>
+                        <td>Maintenance guidance</td>
+                        <td>Life of equipment</td>
+                    </tr>
+                </table>
+
+                <h3>Operational Documentation</h3>
+                
+                <div class="warning-box">
+                    <h4>Ongoing Records:</h4>
+                    <ul>
+                        <li><strong>ITM Records:</strong> Inspection, testing, maintenance logs</li>
+                        <li><strong>Impairment Records:</strong> System outages and restorations</li>
+                        <li><strong>Training Records:</strong> Staff certifications and drills</li>
+                        <li><strong>Incident Reports:</strong> Alarms, activations, false alarms</li>
+                        <li><strong>Change Management:</strong> Modifications and updates</li>
+                    </ul>
+                </div>
+
+                <h3>Record Keeping Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Documentation Management:</h4>
+                    <ul>
+                        <li>Maintain both physical and digital copies</li>
+                        <li>Organize by system and date</li>
+                        <li>Ensure accessibility during inspections</li>
+                        <li>Regular review and updates</li>
+                        <li>Secure storage with backup</li>
+                        <li>Clear retention policy</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Inspection and Testing Requirements -->
+            <div class="slide">
+                <h2>Inspection and Testing Requirements</h2>
+                
+                <p>Regular inspection and testing ensures ongoing code compliance and system reliability.</p>
+
+                <h3>Initial Acceptance Testing</h3>
+                
+                <div class="info-box">
+                    <h4>Commissioning Requirements:</h4>
+                    <ul>
+                        <li><strong>100% Testing:</strong> All devices tested at installation</li>
+                        <li><strong>Integrated Testing:</strong> All systems tested together</li>
+                        <li><strong>Witnessed Testing:</strong> AHJ observation required</li>
+                        <li><strong>Documentation:</strong> Detailed test reports</li>
+                        <li><strong>Deficiency Correction:</strong> Before final approval</li>
+                        <li><strong>Certificate of Occupancy:</strong> Final authorization</li>
+                    </ul>
+                </div>
+
+                <h3>Periodic Testing Requirements</h3>
+                
+                <table>
+                    <tr>
+                        <th>System/Component</th>
+                        <th>Frequency</th>
+                        <th>NFPA Reference</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Fire Alarm Panel</strong></td>
+                        <td>Annual</td>
+                        <td>NFPA 72 Ch. 14</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Smoke Detectors</strong></td>
+                        <td>Annual/Semi-annual</td>
+                        <td>NFPA 72 14.4.3</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sprinkler Systems</strong></td>
+                        <td>Quarterly/Annual</td>
+                        <td>NFPA 25</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fire Pumps</strong></td>
+                        <td>Weekly/Annual</td>
+                        <td>NFPA 25 Ch. 8</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Clean Agent Systems</strong></td>
+                        <td>Semi-annual</td>
+                        <td>NFPA 2001</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Emergency Lighting</strong></td>
+                        <td>Monthly/Annual</td>
+                        <td>NFPA 101</td>
+                    </tr>
+                </table>
+
+                <h3>Testing Documentation</h3>
+                
+                <div class="warning-box">
+                    <h4>Required Test Records:</h4>
+                    <ul>
+                        <li>Date and time of test</li>
+                        <li>Name of person performing test</li>
+                        <li>Components tested</li>
+                        <li>Test results (pass/fail)</li>
+                        <li>Deficiencies found</li>
+                        <li>Corrective actions taken</li>
+                        <li>Signature of qualified person</li>
+                    </ul>
+                </div>
+
+                <h3>Third-Party Inspections</h3>
+                
+                <div class="success-box">
+                    <h4>Special Inspections:</h4>
+                    <ul>
+                        <li><strong>Insurance Carrier:</strong> Risk assessment and requirements</li>
+                        <li><strong>Commissioning Agent:</strong> Independent verification</li>
+                        <li><strong>Special Inspector:</strong> Structural and seismic</li>
+                        <li><strong>Federal Compliance:</strong> OSHA, EPA requirements</li>
+                        <li><strong>Certification Bodies:</strong> Uptime Institute, etc.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Certificate of Occupancy Process -->
+            <div class="slide">
+                <h2>Certificate of Occupancy Process</h2>
+                
+                <p>The Certificate of Occupancy (CO) is the final approval allowing building occupation and operation.</p>
+
+                <h3>Prerequisites for CO</h3>
+                
+                <div class="info-box">
+                    <h4>Required Completions:</h4>
+                    <ul>
+                        <li><strong>All Inspections:</strong> Building, fire, electrical, mechanical</li>
+                        <li><strong>System Testing:</strong> 100% operational verification</li>
+                        <li><strong>Life Safety:</strong> Egress, emergency lighting, exits</li>
+                        <li><strong>Fire Systems:</strong> Detection, suppression, alarms</li>
+                        <li><strong>Documentation:</strong> As-builts, O&M manuals</li>
+                        <li><strong>Corrections:</strong> All deficiencies resolved</li>
+                    </ul>
+                </div>
+
+                <h3>Final Inspection Process</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- CO Process Flow -->
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Certificate of Occupancy Process</text>
+                        
+                        <!-- Steps -->
+                        <rect x="50" y="60" width="140" height="60" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
+                        <text x="120" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Request Final</text>
+                        <text x="120" y="100" text-anchor="middle" fill="white" font-size="12">Inspections</text>
+                        
+                        <rect x="230" y="60" width="140" height="60" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
+                        <text x="300" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Multi-Discipline</text>
+                        <text x="300" y="100" text-anchor="middle" fill="white" font-size="12">Inspections</text>
+                        
+                        <rect x="410" y="60" width="140" height="60" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="480" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Deficiency</text>
+                        <text x="480" y="100" text-anchor="middle" fill="white" font-size="12">Resolution</text>
+                        
+                        <rect x="590" y="60" width="140" height="60" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
+                        <text x="660" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Final</text>
+                        <text x="660" y="100" text-anchor="middle" fill="white" font-size="12">Approval</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 190 90 L 230 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 370 90 L 410 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 550 90 L 590 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        
+                        <!-- Details boxes -->
+                        <rect x="50" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
+                        <text x="120" y="180" text-anchor="middle" font-size="11">• Submit request</text>
+                        <text x="120" y="195" text-anchor="middle" font-size="11">• Schedule inspections</text>
+                        <text x="120" y="210" text-anchor="middle" font-size="11">• Prepare documents</text>
+                        <text x="120" y="225" text-anchor="middle" font-size="11">• Notify parties</text>
+                        
+                        <rect x="230" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
+                        <text x="300" y="180" text-anchor="middle" font-size="11">• Building official</text>
+                        <text x="300" y="195" text-anchor="middle" font-size="11">• Fire marshal</text>
+                        <text x="300" y="210" text-anchor="middle" font-size="11">• Electrical inspector</text>
+                        <text x="300" y="225" text-anchor="middle" font-size="11">• Health department</text>
+                        
+                        <rect x="410" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
+                        <text x="480" y="180" text-anchor="middle" font-size="11">• Correct deficiencies</text>
+                        <text x="480" y="195" text-anchor="middle" font-size="11">• Re-inspection</text>
+                        <text x="480" y="210" text-anchor="middle" font-size="11">• Documentation</text>
+                        <text x="480" y="225" text-anchor="middle" font-size="11">• Sign-offs</text>
+                        
+                        <rect x="590" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
+                        <text x="660" y="180" text-anchor="middle" font-size="11">• CO issued</text>
+                        <text x="660" y="195" text-anchor="middle" font-size="11">• Occupancy allowed</text>
+                        <text x="660" y="210" text-anchor="middle" font-size="11">• Operations begin</text>
+                        <text x="660" y="225" text-anchor="middle" font-size="11">• File documents</text>
+                        
+                        <!-- TCO Option -->
+                        <rect x="300" y="280" width="200" height="60" fill="#FFF9C4" stroke="#F9A825" stroke-width="2" rx="5"/>
+                        <text x="400" y="305" text-anchor="middle" font-size="12" font-weight="bold">Temporary CO Option</text>
+                        <text x="400" y="320" text-anchor="middle" font-size="11">Limited occupancy with conditions</text>
+                        
+                        <!-- Arrow marker -->
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <h3>Common CO Delays</h3>
+                
+                <div class="danger-box">
+                    <h4>Typical Issues:</h4>
+                    <ul>
+                        <li>Incomplete fire alarm testing</li>
+                        <li>Missing emergency lighting</li>
+                        <li>Egress obstructions</li>
+                        <li>Documentation gaps</li>
+                        <li>Outstanding permits</li>
+                        <li>Contractor coordination</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9: Ongoing Compliance -->
+            <div class="slide">
+                <h2>Ongoing Compliance Requirements</h2>
+                
+                <p>Code compliance doesn't end with the Certificate of Occupancy - it requires continuous attention throughout facility operation.</p>
+
+                <h3>Annual Requirements</h3>
+                
+                <div class="info-box">
+                    <h4>Recurring Obligations:</h4>
+                    <ul>
+                        <li><strong>Fire Inspections:</strong> Annual fire marshal inspection</li>
+                        <li><strong>System Testing:</strong> Annual fire system testing</li>
+                        <li><strong>Permits:</strong> Operational permit renewals</li>
+                        <li><strong>Training:</strong> Staff fire safety training</li>
+                        <li><strong>Drills:</strong> Evacuation drill requirements</li>
+                        <li><strong>Documentation:</strong> Updated emergency plans</li>
+                    </ul>
+                </div>
+
+                <h3>Change Management</h3>
+                
+                <div class="warning-box">
+                    <h4>When Permits are Required:</h4>
+                    <ul>
+                        <li>Modifications to fire alarm system</li>
+                        <li>Changes to sprinkler system</li>
+                        <li>Alterations affecting egress</li>
+                        <li>Occupancy changes</li>
+                        <li>Hazardous material storage</li>
+                        <li>Hot work operations</li>
+                    </ul>
+                </div>
+
+                <h3>Compliance Tracking</h3>
+                
+                <table>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Frequency</th>
+                        <th>Responsible Party</th>
+                    </tr>
+                    <tr>
+                        <td><strong>System Testing</strong></td>
+                        <td>Per NFPA schedule</td>
+                        <td>Qualified contractor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Staff Training</strong></td>
+                        <td>Annual + new hires</td>
+                        <td>Facility management</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Plan Updates</strong></td>
+                        <td>As changes occur</td>
+                        <td>Fire safety director</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inspections</strong></td>
+                        <td>Annual minimum</td>
+                        <td>Fire marshal</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Records</strong></td>
+                        <td>Continuous</td>
+                        <td>Document control</td>
+                    </tr>
+                </table>
+
+                <h3>Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Maintaining Compliance:</h4>
+                    <ul>
+                        <li>Establish compliance calendar with all deadlines</li>
+                        <li>Maintain relationships with AHJ representatives</li>
+                        <li>Use qualified contractors for all work</li>
+                        <li>Document all changes and modifications</li>
+                        <li>Regular internal audits and assessments</li>
+                        <li>Stay current with code updates and changes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 10: Data Center Specific Compliance -->
+            <div class="slide">
+                <h2>Data Center Specific Compliance</h2>
+                
+                <p>Data centers face unique compliance challenges due to their critical nature and specialized systems.</p>
+
+                <h3>Special Considerations</h3>
+                
+                <div class="info-box">
+                    <h4>Data Center Compliance Factors:</h4>
+                    <ul>
+                        <li><strong>24/7 Operations:</strong> Testing and maintenance windows</li>
+                        <li><strong>Security Requirements:</strong> Access for inspections</li>
+                        <li><strong>Clean Agent Systems:</strong> Environmental regulations</li>
+                        <li><strong>EPO Systems:</strong> Coordination with life safety</li>
+                        <li><strong>High Density:</strong> Cooling and fire load calculations</li>
+                        <li><strong>Uptime Requirements:</strong> Impairment procedures</li>
+                    </ul>
+                </div>
+
+                <h3>Regulatory Overlaps</h3>
+                
+                <table>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Fire Code</th>
+                        <th>Other Authority</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Halon Systems</strong></td>
+                        <td>NFPA 2001</td>
+                        <td>EPA regulations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Battery Rooms</strong></td>
+                        <td>IFC hazmat</td>
+                        <td>IEEE standards</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fuel Storage</strong></td>
+                        <td>NFPA 110</td>
+                        <td>Environmental permits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Security</strong></td>
+                        <td>Egress requirements</td>
+                        <td>Federal standards</td>
+                    </tr>
+                </table>
+
+                <h3>Industry Certifications</h3>
+                
+                <div class="success-box">
+                    <h4>Beyond Code Compliance:</h4>
+                    <ul>
+                        <li><strong>Uptime Institute:</strong> Tier certification requirements</li>
+                        <li><strong>LEED:</strong> Sustainable design credits</li>
+                        <li><strong>DCCA:</strong> Data center standards</li>
+                        <li><strong>ISO 27001:</strong> Security management</li>
+                        <li><strong>SOC 2:</strong> Compliance auditing</li>
+                    </ul>
+                </div>
+
+                <h3>Compliance Strategy</h3>
+                
+                <div class="warning-box">
+                    <h4>Integrated Approach:</h4>
+                    <ul>
+                        <li>Early engagement with all authorities</li>
+                        <li>Comprehensive compliance matrix</li>
+                        <li>Regular compliance audits</li>
+                        <li>Continuous training program</li>
+                        <li>Proactive code update monitoring</li>
+                        <li>Strong documentation practices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 11: References -->
+            <div class="slide">
+                <h2>References and Resources</h2>
+                
+                <p>This training module was developed using authoritative sources on fire safety codes and regulations.</p>
+
+                <div class="reference-box">
+                    <h4>📚 Primary References:</h4>
+                    <ul>
+                        <li>• NFPA 1 - Fire Code (2021 Edition)</li>
+                        <li>• NFPA 13 - Installation of Sprinkler Systems (2022)</li>
+                        <li>• NFPA 72 - National Fire Alarm and Signaling Code (2022)</li>
+                        <li>• NFPA 75 - Fire Protection of Information Technology Equipment (2020)</li>
+                        <li>• NFPA 101 - Life Safety Code (2021)</li>
+                        <li>• International Building Code (2021)</li>
+                        <li>• International Fire Code (2021)</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>🏢 Code Organizations:</h4>
+                    <ul>
+                        <li>• NFPA - National Fire Protection Association</li>
+                        <li>• ICC - International Code Council</li>
+                        <li>• IAPMO - International Association of Plumbing and Mechanical Officials</li>
+                        <li>• NFSA - National Fire Sprinkler Association</li>
+                        <li>• AFAA - Automatic Fire Alarm Association</li>
+                        <li>• NICET - National Institute for Certification in Engineering Technologies</li>
+                    </ul>
+                </div>
+
+                <div class="reference-box">
+                    <h4>📖 Additional Resources:</h4>
+                    <ul>
+                        <li>• "Fire Protection Handbook" - NFPA, 20th Edition</li>
+                        <li>• "Code Compliance for Advanced Technology Facilities" - SFPE</li>
+                        <li>• "Data Center Design and Implementation Best Practices" - BICSI</li>
+                        <li>• State and local fire marshal websites</li>
+                        <li>• ICC code commentary volumes</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Note on Content Development:</h4>
+                    <p>This training module is based on model codes and standards commonly adopted in the United States. Always verify the specific codes, editions, and local amendments adopted in your jurisdiction. Code requirements can vary significantly between locations and change with new editions.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Slide -->
+            <div class="slide">
+                <h2>Knowledge Assessment Quiz</h2>
+                <p>Test your understanding of Code Compliance. Select the best answer for each question:</p>
+
+                <form id="quizForm">
+                    <div class="quiz-question">
+                        <h4>1. What does AHJ stand for?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="a"> Authorized Hazard Jurisdiction</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="b"> Authority Having Jurisdiction</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="c"> Administrative Housing Journal</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q1" value="d"> Annual Hazard Justification</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>2. Which NFPA standard specifically addresses data center fire protection?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="a"> NFPA 13</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="b"> NFPA 72</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="c"> NFPA 75</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q2" value="d"> NFPA 101</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>3. In the code hierarchy, which typically has the highest enforcement authority?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="a"> Industry standards</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="b"> Federal regulations</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="c"> Local amendments</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q3" value="d"> State codes</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>4. What is the typical occupancy classification for a data center under IBC?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="a"> Group A - Assembly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="b"> Group B - Business</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="c"> Group S - Storage</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q4" value="d"> Group U - Utility</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>5. How often must fire alarm systems typically undergo comprehensive testing?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="a"> Monthly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="b"> Quarterly</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="c"> Annually</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q5" value="d"> Every 5 years</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>6. What document provides final authorization to occupy a building?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="a"> Building permit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="b"> Fire marshal approval</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="c"> Certificate of Occupancy</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q6" value="d"> Construction permit</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. When multiple codes apply, which requirement typically governs?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> The oldest code</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> The newest code</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> The most restrictive requirement</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> The least restrictive requirement</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. What is required when making modifications to fire protection systems?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Notification only</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> Permit and inspection</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Documentation update</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> No requirements</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. How long should fire protection system test records typically be retained?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> 1 year</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> 3-5 years minimum</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> 10 years</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Not required</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. What is a variance in code compliance?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> A code violation</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> An approved alternative method</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> A temporary permit</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> An inspection report</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-quiz">Submit Quiz</button>
+                </form>
+
+                <div id="quizResults" style="display: none;">
+                    <div class="score-display">
+                        <h3>Your Quiz Results</h3>
+                        <div class="score" id="scoreDisplay">0%</div>
+                        <p id="resultMessage"></p>
+                        <button onclick="retakeQuiz()" class="nav-button" style="margin-top: 20px;">Retake Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter" id="slideCounter">1 / 13</span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementsByClassName('slide');
+        const totalSlides = slides.length;
+
+        // Quiz answers
+        const correctAnswers = {
+            q1: 'b',  // Authority Having Jurisdiction
+            q2: 'c',  // NFPA 75
+            q3: 'b',  // Federal regulations (highest in hierarchy)
+            q4: 'b',  // Group B - Business
+            q5: 'c',  // Annually
+            q6: 'c',  // Certificate of Occupancy
+            q7: 'c',  // The most restrictive requirement
+            q8: 'b',  // Permit and inspection
+            q9: 'b',  // 3-5 years minimum
+            q10: 'b'  // An approved alternative method
+        };
+
+        function showSlide(n) {
+            if (n >= totalSlides) { currentSlide = totalSlides - 1; }
+            if (n < 0) { currentSlide = 0; }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            // Update slide counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        // Quiz functionality
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            for (let question in correctAnswers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                if (selectedAnswer && selectedAnswer.value === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Hide form and show results
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+            
+            // Display score
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            
+            // Display message based on score
+            let message = '';
+            if (percentage >= 80) {
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Code Compliance.`;
+                document.getElementById('scoreDisplay').style.color = '#28a745';
+            } else {
+                message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
+                document.getElementById('scoreDisplay').style.color = '#dc3545';
+            }
+            document.getElementById('resultMessage').textContent = message;
+        });
+
+        function retakeQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').style.display = 'block';
+            document.getElementById('quizResults').style.display = 'none';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
