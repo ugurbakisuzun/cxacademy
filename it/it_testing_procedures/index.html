@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Compliance Training Module - Data Center 101</title>
+    <title>Code Compliance Training Module - IT Testing Procedures</title>
     <style>
         * {
             margin: 0;
@@ -331,8 +331,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Code Compliance Training Module</h1>
-            <p>Data Center 101 - Fire Safety Codes and Regulatory Requirements</p>
+            <h1>IT Testing Procedures Training Module</h1>
+            <p>Comprehensive Guide to Software Testing Methodologies and Best Practices</p>
         </div>
 
         <div class="progress-bar">
@@ -342,63 +342,258 @@
         <div class="content-wrapper">
             <!-- Slide 1: Welcome -->
             <div class="slide active">
-                <h2>Welcome to Code Compliance Training</h2>
-                <p>Welcome to this comprehensive training module on Fire Safety Code Compliance for data centers. This course will provide you with essential knowledge about the codes, standards, and regulatory requirements that govern fire protection and life safety in data center facilities.</p>
+                <h2>Welcome to IT Testing Procedures Training</h2>
+                <p>Welcome to this comprehensive training module on IT Testing Procedures. This course will provide you with essential knowledge about software testing methodologies, test planning, execution strategies, and quality assurance best practices.</p>
                 
                 <div class="info-box">
-                    <h3>🎯 Learning Objectives</h3>
+                    <h3>Learning Objectives</h3>
                     <ul>
-                        <li>Understand the hierarchy of codes and standards</li>
-                        <li>Learn key NFPA codes for data center fire safety</li>
-                        <li>Recognize building code requirements (IBC/IFC)</li>
-                        <li>Understand local amendments and AHJ requirements</li>
-                        <li>Learn documentation and inspection requirements</li>
-                        <li>Understand ongoing compliance obligations</li>
-                        <li>Test your knowledge with a comprehensive quiz</li>
+                        <li>Understand fundamental testing concepts and methodologies</li>
+                        <li>Learn test planning and documentation strategies</li>
+                        <li>Master different types of testing approaches</li>
+                        <li>Explore test case design and execution techniques</li>
+                        <li>Understand defect management processes</li>
+                        <li>Learn basics of test automation</li>
+                        <li>Understand performance and security testing</li>
+                        <li>Apply industry best practices</li>
                     </ul>
                 </div>
 
-                <p><strong>Duration:</strong> Approximately 30-45 minutes</p>
-                <p><strong>Prerequisites:</strong> Basic understanding of fire safety systems</p>
+                <p><strong>Duration:</strong> Approximately 45-60 minutes</p>
+                <p><strong>Prerequisites:</strong> Basic understanding of software development lifecycle</p>
             </div>
 
-            <!-- Slide 2: Code Hierarchy and Authority -->
+            <!-- Slide 2: Testing Fundamentals -->
             <div class="slide">
-                <h2>Code Hierarchy and Authority</h2>
+                <h2>Software Testing Fundamentals</h2>
                 
-                <p>Understanding the hierarchy of codes and standards is essential for ensuring proper compliance in data center fire protection.</p>
+                <p>Software testing is a systematic process of evaluating and verifying that a software application meets specified requirements and functions correctly.</p>
 
-                <h3>Regulatory Hierarchy</h3>
+                <h3>Testing Principles</h3>
                 
                 <div class="diagram">
                     <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Code Hierarchy Pyramid -->
-                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Code and Standard Hierarchy</text>
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Seven Principles of Software Testing</text>
                         
-                        <!-- Federal Level -->
-                        <polygon points="400,60 250,120 550,120" fill="#1976D2" stroke="#0D47A1" stroke-width="2"/>
-                        <text x="400" y="95" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Federal</text>
-                        <text x="400" y="110" text-anchor="middle" fill="white" font-size="12">OSHA, EPA</text>
+                        <!-- Principle 1 -->
+                        <rect x="50" y="60" width="140" height="80" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
+                        <text x="120" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Testing Shows</text>
+                        <text x="120" y="100" text-anchor="middle" fill="white" font-size="12">Presence of</text>
+                        <text x="120" y="115" text-anchor="middle" fill="white" font-size="12">Defects</text>
                         
-                        <!-- State Level -->
-                        <polygon points="250,120 150,200 650,200 550,120" fill="#1E88E5" stroke="#1565C0" stroke-width="2"/>
-                        <text x="400" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">State Codes</text>
-                        <text x="400" y="170" text-anchor="middle" fill="white" font-size="12">State Fire Marshal</text>
+                        <!-- Principle 2 -->
+                        <rect x="210" y="60" width="140" height="80" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
+                        <text x="280" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Exhaustive</text>
+                        <text x="280" y="100" text-anchor="middle" fill="white" font-size="12">Testing is</text>
+                        <text x="280" y="115" text-anchor="middle" fill="white" font-size="12">Impossible</text>
                         
-                        <!-- Local Level -->
-                        <polygon points="150,200 50,280 750,280 650,200" fill="#2196F3" stroke="#1976D2" stroke-width="2"/>
-                        <text x="400" y="235" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Local Codes</text>
-                        <text x="400" y="250" text-anchor="middle" fill="white" font-size="12">City/County Amendments</text>
+                        <!-- Principle 3 -->
+                        <rect x="370" y="60" width="140" height="80" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="440" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Early Testing</text>
+                        <text x="440" y="100" text-anchor="middle" fill="white" font-size="12">Saves Time</text>
+                        <text x="440" y="115" text-anchor="middle" fill="white" font-size="12">and Money</text>
                         
-                        <!-- Standards -->
-                        <rect x="50" y="280" width="700" height="80" fill="#64B5F6" stroke="#42A5F5" stroke-width="2"/>
-                        <text x="400" y="310" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Industry Standards</text>
-                        <text x="400" y="330" text-anchor="middle" fill="white" font-size="12">NFPA, ICC, FM Global, UL</text>
-                        <text x="400" y="345" text-anchor="middle" fill="white" font-size="12">Referenced by Codes</text>
+                        <!-- Principle 4 -->
+                        <rect x="530" y="60" width="140" height="80" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
+                        <text x="600" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Defect</text>
+                        <text x="600" y="100" text-anchor="middle" fill="white" font-size="12">Clustering</text>
+                        <text x="600" y="115" text-anchor="middle" fill="white" font-size="12">Occurs</text>
                         
-                        <!-- Arrow showing enforcement -->
-                        <path d="M 100 380 L 100 50" stroke="#333" stroke-width="3" marker-end="url(#arrowhead)"/>
-                        <text x="120" y="220" font-size="12" fill="#333" transform="rotate(-90 120 220)">Enforcement Authority</text>
+                        <!-- Principle 5 -->
+                        <rect x="130" y="180" width="140" height="80" fill="#64B5F6" stroke="#42A5F5" stroke-width="2" rx="5"/>
+                        <text x="200" y="205" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Pesticide</text>
+                        <text x="200" y="220" text-anchor="middle" fill="white" font-size="12">Paradox</text>
+                        <text x="200" y="235" text-anchor="middle" fill="white" font-size="12">Effect</text>
+                        
+                        <!-- Principle 6 -->
+                        <rect x="290" y="180" width="140" height="80" fill="#90CAF9" stroke="#64B5F6" stroke-width="2" rx="5"/>
+                        <text x="360" y="205" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Testing is</text>
+                        <text x="360" y="220" text-anchor="middle" fill="white" font-size="12">Context</text>
+                        <text x="360" y="235" text-anchor="middle" fill="white" font-size="12">Dependent</text>
+                        
+                        <!-- Principle 7 -->
+                        <rect x="450" y="180" width="140" height="80" fill="#BBDEFB" stroke="#90CAF9" stroke-width="2" rx="5"/>
+                        <text x="520" y="205" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Absence of</text>
+                        <text x="520" y="220" text-anchor="middle" fill="#333" font-size="12">Errors Fallacy</text>
+                        
+                        <!-- Central Quality Circle -->
+                        <circle cx="400" cy="320" r="50" fill="#1565c0" stroke="#0D47A1" stroke-width="3"/>
+                        <text x="400" y="315" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Quality</text>
+                        <text x="400" y="330" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Assurance</text>
+                    </svg>
+                </div>
+
+                <h3>Testing Objectives</h3>
+                
+                <div class="info-box">
+                    <h4>Primary Goals:</h4>
+                    <ul>
+                        <li><strong>Find Defects:</strong> Identify bugs and issues before release</li>
+                        <li><strong>Verify Requirements:</strong> Ensure software meets specifications</li>
+                        <li><strong>Validate Functionality:</strong> Confirm system works as intended</li>
+                        <li><strong>Assess Quality:</strong> Evaluate overall software quality</li>
+                        <li><strong>Risk Mitigation:</strong> Reduce risk of failures in production</li>
+                        <li><strong>Compliance:</strong> Meet regulatory and industry standards</li>
+                    </ul>
+                </div>
+
+                <h3>Testing vs. Quality Assurance</h3>
+                
+                <div class="warning-box">
+                    <h4>Key Distinctions:</h4>
+                    <ul>
+                        <li><strong>Testing:</strong> Process-oriented, focuses on finding defects</li>
+                        <li><strong>QA:</strong> Product-oriented, focuses on preventing defects</li>
+                        <li><strong>Testing:</strong> Reactive approach to quality</li>
+                        <li><strong>QA:</strong> Proactive approach to quality</li>
+                        <li><strong>Testing:</strong> Subset of quality control activities</li>
+                        <li><strong>QA:</strong> Encompasses entire software development process</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3: Testing Methodologies -->
+            <div class="slide">
+                <h2>Testing Methodologies and Approaches</h2>
+                
+                <p>Different testing methodologies provide structured approaches to organizing and executing testing activities.</p>
+
+                <h3>Testing Approaches</h3>
+                
+                <table>
+                    <tr>
+                        <th>Approach</th>
+                        <th>Description</th>
+                        <th>When to Use</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Black Box Testing</strong></td>
+                        <td>Testing without knowledge of internal code structure</td>
+                        <td>Functional testing, user acceptance testing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>White Box Testing</strong></td>
+                        <td>Testing with full knowledge of internal code structure</td>
+                        <td>Unit testing, code coverage analysis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gray Box Testing</strong></td>
+                        <td>Combination of black box and white box approaches</td>
+                        <td>Integration testing, penetration testing</td>
+                    </tr>
+                </table>
+
+                <h3>Testing Methodologies</h3>
+                
+                <div class="info-box">
+                    <h4>Waterfall Testing:</h4>
+                    <ul>
+                        <li>Sequential testing phases</li>
+                        <li>Testing begins after development completion</li>
+                        <li>Extensive documentation</li>
+                        <li>Best for stable requirements</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <h4>Agile Testing:</h4>
+                    <ul>
+                        <li>Continuous testing throughout development</li>
+                        <li>Test-driven development (TDD)</li>
+                        <li>Behavior-driven development (BDD)</li>
+                        <li>Sprint-based testing cycles</li>
+                        <li>Collaboration between developers and testers</li>
+                    </ul>
+                </div>
+
+                <h3>V-Model Testing</h3>
+                
+                <div class="warning-box">
+                    <h4>V-Model Characteristics:</h4>
+                    <ul>
+                        <li>Each development phase has corresponding test phase</li>
+                        <li>Testing activities planned in parallel with development</li>
+                        <li>Early test planning and design</li>
+                        <li>Verification and validation at each level</li>
+                        <li>Higher defect detection rates</li>
+                    </ul>
+                </div>
+
+                <h3>Risk-Based Testing</h3>
+                
+                <div class="danger-box">
+                    <h4>Risk Assessment Factors:</h4>
+                    <ul>
+                        <li>Business impact of potential failures</li>
+                        <li>Probability of defect occurrence</li>
+                        <li>Complexity of system components</li>
+                        <li>Historical defect data</li>
+                        <li>Customer usage patterns</li>
+                        <li>Time and resource constraints</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4: Test Planning and Documentation -->
+            <div class="slide">
+                <h2>Test Planning and Documentation</h2>
+                
+                <p>Effective test planning is crucial for successful testing projects. It involves defining test strategy, scope, resources, and timelines.</p>
+
+                <h3>Test Planning Process</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Test Planning Process Flow</text>
+                        
+                        <!-- Process Steps -->
+                        <rect x="50" y="60" width="120" height="50" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
+                        <text x="110" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Requirements</text>
+                        <text x="110" y="98" text-anchor="middle" fill="white" font-size="11">Analysis</text>
+                        
+                        <rect x="190" y="60" width="120" height="50" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
+                        <text x="250" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Test</text>
+                        <text x="250" y="98" text-anchor="middle" fill="white" font-size="11">Strategy</text>
+                        
+                        <rect x="330" y="60" width="120" height="50" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="390" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Test</text>
+                        <text x="390" y="98" text-anchor="middle" fill="white" font-size="11">Planning</text>
+                        
+                        <rect x="470" y="60" width="120" height="50" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
+                        <text x="530" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Resource</text>
+                        <text x="530" y="98" text-anchor="middle" fill="white" font-size="11">Allocation</text>
+                        
+                        <rect x="610" y="60" width="120" height="50" fill="#64B5F6" stroke="#42A5F5" stroke-width="2" rx="5"/>
+                        <text x="670" y="85" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Schedule</text>
+                        <text x="670" y="98" text-anchor="middle" fill="white" font-size="11">Creation</text>
+                        
+                        <!-- Arrows -->
+                        <path d="M 170 85 L 190 85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 310 85 L 330 85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 450 85 L 470 85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <path d="M 590 85 L 610 85" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Test Plan Components -->
+                        <rect x="100" y="180" width="200" height="180" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="200" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">Test Plan Components</text>
+                        <text x="120" y="230" font-size="12" fill="#333">• Test Objectives</text>
+                        <text x="120" y="248" font-size="12" fill="#333">• Scope and Approach</text>
+                        <text x="120" y="266" font-size="12" fill="#333">• Test Environment</text>
+                        <text x="120" y="284" font-size="12" fill="#333">• Entry/Exit Criteria</text>
+                        <text x="120" y="302" font-size="12" fill="#333">• Resource Requirements</text>
+                        <text x="120" y="320" font-size="12" fill="#333">• Risk Assessment</text>
+                        <text x="120" y="338" font-size="12" fill="#333">• Schedule and Milestones</text>
+                        
+                        <!-- Test Strategy Elements -->
+                        <rect x="420" y="180" width="200" height="180" fill="#E8F5E8" stroke="#28a745" stroke-width="2" rx="5"/>
+                        <text x="520" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#28a745">Test Strategy Elements</text>
+                        <text x="440" y="230" font-size="12" fill="#333">• Testing Levels</text>
+                        <text x="440" y="248" font-size="12" fill="#333">• Testing Types</text>
+                        <text x="440" y="266" font-size="12" fill="#333">• Test Techniques</text>
+                        <text x="440" y="284" font-size="12" fill="#333">• Automation Strategy</text>
+                        <text x="440" y="302" font-size="12" fill="#333">• Tool Selection</text>
+                        <text x="440" y="320" font-size="12" fill="#333">• Defect Management</text>
+                        <text x="440" y="338" font-size="12" fill="#333">• Reporting Strategy</text>
                         
                         <!-- Arrowhead marker -->
                         <defs>
@@ -409,522 +604,317 @@
                     </svg>
                 </div>
 
-                <h3>Authority Having Jurisdiction (AHJ)</h3>
-                
-                <div class="info-box">
-                    <h4>Key AHJ Entities:</h4>
-                    <ul>
-                        <li><strong>Fire Marshal:</strong> Primary fire code enforcement</li>
-                        <li><strong>Building Official:</strong> Building code compliance</li>
-                        <li><strong>Electrical Inspector:</strong> Electrical code enforcement</li>
-                        <li><strong>Insurance Carrier:</strong> Additional requirements</li>
-                        <li><strong>Federal Agencies:</strong> Special facilities (DOD, DOE)</li>
-                    </ul>
-                </div>
-
-                <div class="warning-box">
-                    <h4>⚠️ Important Concepts:</h4>
-                    <ul>
-                        <li>Most restrictive requirement applies</li>
-                        <li>Local amendments can modify model codes</li>
-                        <li>AHJ interpretation is final</li>
-                        <li>Variances require formal approval</li>
-                        <li>Code updates occur on cycles (3-5 years)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Slide 3: NFPA Standards Overview -->
-            <div class="slide">
-                <h2>NFPA Standards for Data Centers</h2>
-                
-                <p>The National Fire Protection Association (NFPA) develops consensus standards that form the basis for most fire codes in the United States.</p>
-
-                <h3>Key NFPA Standards</h3>
-                
-                <table>
-                    <tr>
-                        <th>Standard</th>
-                        <th>Title</th>
-                        <th>Key Requirements</th>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 1</strong></td>
-                        <td>Fire Code</td>
-                        <td>General fire safety, maintenance, operations</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 13</strong></td>
-                        <td>Sprinkler Systems</td>
-                        <td>Design, installation, water supplies</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 72</strong></td>
-                        <td>Fire Alarm Code</td>
-                        <td>Detection, notification, integration</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 75</strong></td>
-                        <td>IT Equipment Protection</td>
-                        <td>Data center specific requirements</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 101</strong></td>
-                        <td>Life Safety Code</td>
-                        <td>Egress, emergency lighting, exits</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NFPA 2001</strong></td>
-                        <td>Clean Agent Systems</td>
-                        <td>Gaseous suppression design</td>
-                    </tr>
-                </table>
-
-                <h3>NFPA 75 - Data Center Specific</h3>
-                
-                <div class="info-box">
-                    <h4>Critical Requirements:</h4>
-                    <ul>
-                        <li><strong>Room Construction:</strong> 1-hour fire rating minimum</li>
-                        <li><strong>Detection:</strong> Early warning smoke detection</li>
-                        <li><strong>Suppression:</strong> Automatic suppression required</li>
-                        <li><strong>EPO:</strong> Emergency power off coordination</li>
-                        <li><strong>Cable Management:</strong> Limited combustibles</li>
-                        <li><strong>Documentation:</strong> Risk assessment required</li>
-                    </ul>
-                </div>
-
-                <h3>NFPA 72 Requirements</h3>
-                
-                <div class="success-box">
-                    <h4>Fire Alarm System Requirements:</h4>
-                    <ul>
-                        <li>Smoke detection at return air openings</li>
-                        <li>Heat detection in electrical spaces</li>
-                        <li>Manual pull stations at exits</li>
-                        <li>Audible/visible notification devices</li>
-                        <li>Fire alarm control panel with battery backup</li>
-                        <li>Monitoring by approved central station</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Slide 4: Building Codes (IBC/IFC) -->
-            <div class="slide">
-                <h2>International Building and Fire Codes</h2>
-                
-                <p>The International Code Council (ICC) publishes model codes adopted by most US jurisdictions with local amendments.</p>
-
-                <h3>International Building Code (IBC)</h3>
-                
-                <div class="info-box">
-                    <h4>IBC Chapter 3 - Occupancy Classification:</h4>
-                    <ul>
-                        <li><strong>Group B:</strong> Business occupancy (typical data centers)</li>
-                        <li><strong>Group F-1:</strong> Moderate hazard factory (large facilities)</li>
-                        <li><strong>Mixed Use:</strong> Multiple occupancies in same building</li>
-                        <li><strong>Accessory:</strong> Support spaces <10% of area</li>
-                    </ul>
-                </div>
-
-                <h3>Construction Requirements</h3>
-                
-                <table>
-                    <tr>
-                        <th>Element</th>
-                        <th>Type II-B</th>
-                        <th>Type II-A</th>
-                        <th>Type I-A</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Structural Frame</strong></td>
-                        <td>0 hours</td>
-                        <td>1 hour</td>
-                        <td>3 hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Exterior Walls</strong></td>
-                        <td>0 hours</td>
-                        <td>1 hour</td>
-                        <td>3 hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Floor Construction</strong></td>
-                        <td>0 hours</td>
-                        <td>1 hour</td>
-                        <td>2 hours</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Roof Construction</strong></td>
-                        <td>0 hours</td>
-                        <td>1 hour</td>
-                        <td>1.5 hours</td>
-                    </tr>
-                </table>
-
-                <h3>International Fire Code (IFC)</h3>
-                
-                <div class="warning-box">
-                    <h4>IFC Operational Requirements:</h4>
-                    <ul>
-                        <li>Fire safety and evacuation plans</li>
-                        <li>Hot work permits and procedures</li>
-                        <li>Hazardous materials management</li>
-                        <li>Fire department access and water supply</li>
-                        <li>Inspection, testing, and maintenance</li>
-                        <li>Emergency planning and drills</li>
-                    </ul>
-                </div>
-
-                <h3>Special Requirements</h3>
-                
-                <div class="success-box">
-                    <h4>High-Rise Provisions (>75 feet):</h4>
-                    <ul>
-                        <li>Fire command center required</li>
-                        <li>Smoke control systems</li>
-                        <li>Stairway pressurization</li>
-                        <li>Emergency voice/alarm system</li>
-                        <li>Fire department communication system</li>
-                        <li>Automatic sprinklers throughout</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Slide 5: Local Amendments and Variations -->
-            <div class="slide">
-                <h2>Local Amendments and Variations</h2>
-                
-                <p>Local jurisdictions often modify model codes to address specific regional concerns, climate conditions, or local practices.</p>
-
-                <h3>Common Local Amendments</h3>
-                
-                <div class="info-box">
-                    <h4>Typical Local Modifications:</h4>
-                    <ul>
-                        <li><strong>Seismic Requirements:</strong> Earthquake bracing and anchorage</li>
-                        <li><strong>Wind Requirements:</strong> Hurricane or tornado provisions</li>
-                        <li><strong>Water Supply:</strong> Local fire flow requirements</li>
-                        <li><strong>Alarm Monitoring:</strong> Direct fire department connection</li>
-                        <li><strong>Permitting:</strong> Additional inspections or approvals</li>
-                        <li><strong>Contractor Licensing:</strong> Local certification requirements</li>
-                    </ul>
-                </div>
-
-                <h3>Regional Examples</h3>
-                
-                <table>
-                    <tr>
-                        <th>Region</th>
-                        <th>Common Amendments</th>
-                        <th>Specific Requirements</th>
-                    </tr>
-                    <tr>
-                        <td><strong>California</strong></td>
-                        <td>Title 24, seismic</td>
-                        <td>Energy efficiency, bracing</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Florida</strong></td>
-                        <td>Wind, flood</td>
-                        <td>Hurricane protection</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Chicago</strong></td>
-                        <td>High-rise</td>
-                        <td>Enhanced fire pumps</td>
-                    </tr>
-                    <tr>
-                        <td><strong>New York City</strong></td>
-                        <td>Local Law 26</td>
-                        <td>Unique sprinkler rules</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Texas</strong></td>
-                        <td>State amendments</td>
-                        <td>Modified egress widths</td>
-                    </tr>
-                </table>
-
-                <h3>Identifying Local Requirements</h3>
-                
-                <div class="warning-box">
-                    <h4>Research Methods:</h4>
-                    <ul>
-                        <li>Contact local fire marshal early in design</li>
-                        <li>Review jurisdiction's adopted codes and amendments</li>
-                        <li>Check for local technical bulletins or interpretations</li>
-                        <li>Attend pre-construction meetings</li>
-                        <li>Consult with local fire protection contractors</li>
-                        <li>Review similar project approvals</li>
-                    </ul>
-                </div>
-
-                <h3>Variance Process</h3>
-                
-                <div class="success-box">
-                    <h4>When Compliance is Challenging:</h4>
-                    <ul>
-                        <li><strong>Equivalency:</strong> Propose alternative methods</li>
-                        <li><strong>Performance-Based:</strong> Engineering analysis</li>
-                        <li><strong>Hardship:</strong> Technical infeasibility</li>
-                        <li><strong>Documentation:</strong> Detailed justification required</li>
-                        <li><strong>Review Process:</strong> Board of appeals hearing</li>
-                        <li><strong>Conditions:</strong> Additional requirements may apply</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Slide 6: Documentation Requirements -->
-            <div class="slide">
-                <h2>Documentation Requirements</h2>
-                
-                <p>Proper documentation is essential for code compliance, from design through ongoing operations.</p>
-
-                <h3>Design Phase Documentation</h3>
-                
-                <div class="info-box">
-                    <h4>Required Submittal Documents:</h4>
-                    <ul>
-                        <li><strong>Site Plan:</strong> Access roads, water supply, building location</li>
-                        <li><strong>Floor Plans:</strong> Occupancy, egress paths, fire ratings</li>
-                        <li><strong>Fire Alarm Drawings:</strong> Device locations, zones, sequences</li>
-                        <li><strong>Sprinkler Drawings:</strong> Hydraulic calculations, coverage</li>
-                        <li><strong>Specifications:</strong> Equipment listings, installation standards</li>
-                        <li><strong>Details:</strong> Penetrations, fire-stopping, rated assemblies</li>
-                    </ul>
-                </div>
-
-                <h3>Construction Documentation</h3>
+                <h3>Test Documentation</h3>
                 
                 <table>
                     <tr>
                         <th>Document Type</th>
                         <th>Purpose</th>
-                        <th>Retention Period</th>
+                        <th>Key Contents</th>
                     </tr>
                     <tr>
-                        <td><strong>Permits</strong></td>
-                        <td>Legal authorization</td>
-                        <td>Life of building</td>
+                        <td><strong>Test Plan</strong></td>
+                        <td>Overall testing approach</td>
+                        <td>Scope, strategy, resources, schedule</td>
                     </tr>
                     <tr>
-                        <td><strong>Inspection Reports</strong></td>
-                        <td>Compliance verification</td>
-                        <td>3-5 years minimum</td>
+                        <td><strong>Test Cases</strong></td>
+                        <td>Detailed test procedures</td>
+                        <td>Steps, data, expected results</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Scripts</strong></td>
+                        <td>Automated test procedures</td>
+                        <td>Code, parameters, assertions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Data</strong></td>
+                        <td>Input values for testing</td>
+                        <td>Valid/invalid data sets</td>
                     </tr>
                     <tr>
                         <td><strong>Test Reports</strong></td>
-                        <td>System acceptance</td>
-                        <td>Life of system</td>
-                    </tr>
-                    <tr>
-                        <td><strong>As-Built Drawings</strong></td>
-                        <td>Actual installation</td>
-                        <td>Life of building</td>
-                    </tr>
-                    <tr>
-                        <td><strong>O&M Manuals</strong></td>
-                        <td>Maintenance guidance</td>
-                        <td>Life of equipment</td>
+                        <td>Results and metrics</td>
+                        <td>Pass/fail rates, defects found</td>
                     </tr>
                 </table>
 
-                <h3>Operational Documentation</h3>
+                <h3>Test Estimation</h3>
                 
-                <div class="warning-box">
-                    <h4>Ongoing Records:</h4>
+                <div class="info-box">
+                    <h4>Estimation Techniques:</h4>
                     <ul>
-                        <li><strong>ITM Records:</strong> Inspection, testing, maintenance logs</li>
-                        <li><strong>Impairment Records:</strong> System outages and restorations</li>
-                        <li><strong>Training Records:</strong> Staff certifications and drills</li>
-                        <li><strong>Incident Reports:</strong> Alarms, activations, false alarms</li>
-                        <li><strong>Change Management:</strong> Modifications and updates</li>
-                    </ul>
-                </div>
-
-                <h3>Record Keeping Best Practices</h3>
-                
-                <div class="success-box">
-                    <h4>Documentation Management:</h4>
-                    <ul>
-                        <li>Maintain both physical and digital copies</li>
-                        <li>Organize by system and date</li>
-                        <li>Ensure accessibility during inspections</li>
-                        <li>Regular review and updates</li>
-                        <li>Secure storage with backup</li>
-                        <li>Clear retention policy</li>
+                        <li><strong>Function Point Analysis:</strong> Based on functional requirements</li>
+                        <li><strong>Work Breakdown Structure:</strong> Task-based estimation</li>
+                        <li><strong>Three-Point Estimation:</strong> Optimistic, pessimistic, realistic</li>
+                        <li><strong>Historical Data:</strong> Previous project metrics</li>
+                        <li><strong>Expert Judgment:</strong> Experience-based estimates</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Slide 7: Inspection and Testing Requirements -->
+            <!-- Slide 5: Types of Testing -->
             <div class="slide">
-                <h2>Inspection and Testing Requirements</h2>
+                <h2>Types of Testing</h2>
                 
-                <p>Regular inspection and testing ensures ongoing code compliance and system reliability.</p>
+                <p>Software testing encompasses various types and levels, each serving specific purposes in ensuring software quality.</p>
 
-                <h3>Initial Acceptance Testing</h3>
+                <h3>Testing Levels</h3>
+                
+                <div class="diagram">
+                    <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Testing Pyramid</text>
+                        
+                        <!-- Unit Tests (Base) -->
+                        <polygon points="200,280 600,280 500,220 300,220" fill="#28a745" stroke="#218838" stroke-width="2"/>
+                        <text x="400" y="255" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Unit Tests</text>
+                        <text x="400" y="275" text-anchor="middle" fill="white" font-size="12">Fast • Isolated • Developer-focused</text>
+                        
+                        <!-- Integration Tests (Middle) -->
+                        <polygon points="250,220 550,220 475,160 325,160" fill="#ffc107" stroke="#e0a800" stroke-width="2"/>
+                        <text x="400" y="195" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Integration Tests</text>
+                        <text x="400" y="210" text-anchor="middle" fill="white" font-size="12">Component interaction</text>
+                        
+                        <!-- System Tests (Top) -->
+                        <polygon points="300,160 500,160 450,100 350,100" fill="#dc3545" stroke="#c82333" stroke-width="2"/>
+                        <text x="400" y="135" text-anchor="middle" fill="white" font-size="16" font-weight="bold">System Tests</text>
+                        <text x="400" y="150" text-anchor="middle" fill="white" font-size="12">End-to-end</text>
+                        
+                        <!-- UI Tests (Peak) -->
+                        <polygon points="350,100 450,100 425,60 375,60" fill="#6f42c1" stroke="#5a32a3" stroke-width="2"/>
+                        <text x="400" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">UI Tests</text>
+                        
+                        <!-- Labels -->
+                        <text x="100" y="250" font-size="12" fill="#333">More tests</text>
+                        <text x="100" y="265" font-size="12" fill="#333">Faster execution</text>
+                        <text x="100" y="280" font-size="12" fill="#333">Lower cost</text>
+                        
+                        <text x="650" y="100" font-size="12" fill="#333">Fewer tests</text>
+                        <text x="650" y="115" font-size="12" fill="#333">Slower execution</text>
+                        <text x="650" y="130" font-size="12" fill="#333">Higher cost</text>
+                    </svg>
+                </div>
+
+                <h3>Functional Testing Types</h3>
                 
                 <div class="info-box">
-                    <h4>Commissioning Requirements:</h4>
+                    <h4>Key Functional Tests:</h4>
                     <ul>
-                        <li><strong>100% Testing:</strong> All devices tested at installation</li>
-                        <li><strong>Integrated Testing:</strong> All systems tested together</li>
-                        <li><strong>Witnessed Testing:</strong> AHJ observation required</li>
-                        <li><strong>Documentation:</strong> Detailed test reports</li>
-                        <li><strong>Deficiency Correction:</strong> Before final approval</li>
-                        <li><strong>Certificate of Occupancy:</strong> Final authorization</li>
+                        <li><strong>Unit Testing:</strong> Individual components or modules</li>
+                        <li><strong>Integration Testing:</strong> Component interactions</li>
+                        <li><strong>System Testing:</strong> Complete integrated system</li>
+                        <li><strong>User Acceptance Testing:</strong> Business requirements validation</li>
+                        <li><strong>Regression Testing:</strong> Ensuring existing functionality works</li>
+                        <li><strong>Smoke Testing:</strong> Basic functionality verification</li>
                     </ul>
                 </div>
 
-                <h3>Periodic Testing Requirements</h3>
+                <h3>Non-Functional Testing Types</h3>
                 
                 <table>
                     <tr>
-                        <th>System/Component</th>
-                        <th>Frequency</th>
-                        <th>NFPA Reference</th>
+                        <th>Testing Type</th>
+                        <th>Purpose</th>
+                        <th>Key Metrics</th>
                     </tr>
                     <tr>
-                        <td><strong>Fire Alarm Panel</strong></td>
-                        <td>Annual</td>
-                        <td>NFPA 72 Ch. 14</td>
+                        <td><strong>Performance Testing</strong></td>
+                        <td>Speed, stability, scalability</td>
+                        <td>Response time, throughput, resource usage</td>
                     </tr>
                     <tr>
-                        <td><strong>Smoke Detectors</strong></td>
-                        <td>Annual/Semi-annual</td>
-                        <td>NFPA 72 14.4.3</td>
+                        <td><strong>Security Testing</strong></td>
+                        <td>Vulnerability identification</td>
+                        <td>Breach attempts, data protection</td>
                     </tr>
                     <tr>
-                        <td><strong>Sprinkler Systems</strong></td>
-                        <td>Quarterly/Annual</td>
-                        <td>NFPA 25</td>
+                        <td><strong>Usability Testing</strong></td>
+                        <td>User experience evaluation</td>
+                        <td>Task completion time, error rates</td>
                     </tr>
                     <tr>
-                        <td><strong>Fire Pumps</strong></td>
-                        <td>Weekly/Annual</td>
-                        <td>NFPA 25 Ch. 8</td>
+                        <td><strong>Compatibility Testing</strong></td>
+                        <td>Cross-platform functionality</td>
+                        <td>Browser/OS support</td>
                     </tr>
                     <tr>
-                        <td><strong>Clean Agent Systems</strong></td>
-                        <td>Semi-annual</td>
-                        <td>NFPA 2001</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Emergency Lighting</strong></td>
-                        <td>Monthly/Annual</td>
-                        <td>NFPA 101</td>
+                        <td><strong>Reliability Testing</strong></td>
+                        <td>System stability over time</td>
+                        <td>Mean time between failures</td>
                     </tr>
                 </table>
 
-                <h3>Testing Documentation</h3>
-                
-                <div class="warning-box">
-                    <h4>Required Test Records:</h4>
-                    <ul>
-                        <li>Date and time of test</li>
-                        <li>Name of person performing test</li>
-                        <li>Components tested</li>
-                        <li>Test results (pass/fail)</li>
-                        <li>Deficiencies found</li>
-                        <li>Corrective actions taken</li>
-                        <li>Signature of qualified person</li>
-                    </ul>
-                </div>
-
-                <h3>Third-Party Inspections</h3>
+                <h3>Specialized Testing Approaches</h3>
                 
                 <div class="success-box">
-                    <h4>Special Inspections:</h4>
+                    <h4>Advanced Testing Types:</h4>
                     <ul>
-                        <li><strong>Insurance Carrier:</strong> Risk assessment and requirements</li>
-                        <li><strong>Commissioning Agent:</strong> Independent verification</li>
-                        <li><strong>Special Inspector:</strong> Structural and seismic</li>
-                        <li><strong>Federal Compliance:</strong> OSHA, EPA requirements</li>
-                        <li><strong>Certification Bodies:</strong> Uptime Institute, etc.</li>
+                        <li><strong>API Testing:</strong> Application programming interface validation</li>
+                        <li><strong>Database Testing:</strong> Data integrity and performance</li>
+                        <li><strong>Mobile Testing:</strong> Device-specific functionality</li>
+                        <li><strong>Accessibility Testing:</strong> Compliance with accessibility standards</li>
+                        <li><strong>Localization Testing:</strong> Multi-language and cultural adaptation</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Slide 8: Certificate of Occupancy Process -->
+            <!-- Slide 6: Test Case Design -->
             <div class="slide">
-                <h2>Certificate of Occupancy Process</h2>
+                <h2>Test Case Design and Execution</h2>
                 
-                <p>The Certificate of Occupancy (CO) is the final approval allowing building occupation and operation.</p>
+                <p>Effective test case design is essential for comprehensive test coverage and efficient defect detection.</p>
 
-                <h3>Prerequisites for CO</h3>
+                <h3>Test Case Components</h3>
                 
                 <div class="info-box">
-                    <h4>Required Completions:</h4>
+                    <h4>Essential Elements:</h4>
                     <ul>
-                        <li><strong>All Inspections:</strong> Building, fire, electrical, mechanical</li>
-                        <li><strong>System Testing:</strong> 100% operational verification</li>
-                        <li><strong>Life Safety:</strong> Egress, emergency lighting, exits</li>
-                        <li><strong>Fire Systems:</strong> Detection, suppression, alarms</li>
-                        <li><strong>Documentation:</strong> As-builts, O&M manuals</li>
-                        <li><strong>Corrections:</strong> All deficiencies resolved</li>
+                        <li><strong>Test Case ID:</strong> Unique identifier</li>
+                        <li><strong>Test Description:</strong> Clear, concise summary</li>
+                        <li><strong>Preconditions:</strong> Setup requirements</li>
+                        <li><strong>Test Steps:</strong> Detailed execution procedure</li>
+                        <li><strong>Test Data:</strong> Input values and parameters</li>
+                        <li><strong>Expected Result:</strong> Anticipated outcome</li>
+                        <li><strong>Actual Result:</strong> Observed outcome</li>
+                        <li><strong>Status:</strong> Pass/Fail/Blocked</li>
                     </ul>
                 </div>
 
-                <h3>Final Inspection Process</h3>
+                <h3>Test Design Techniques</h3>
+                
+                <table>
+                    <tr>
+                        <th>Technique</th>
+                        <th>Description</th>
+                        <th>Best Use Case</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Equivalence Partitioning</strong></td>
+                        <td>Divide input data into equivalent classes</td>
+                        <td>Reducing test cases while maintaining coverage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boundary Value Analysis</strong></td>
+                        <td>Test values at boundaries of input domains</td>
+                        <td>Finding errors at data boundaries</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Decision Table Testing</strong></td>
+                        <td>Test different combinations of conditions</td>
+                        <td>Complex business logic validation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State Transition Testing</strong></td>
+                        <td>Test system behavior state changes</td>
+                        <td>Applications with distinct operational states</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pairwise Testing</strong></td>
+                        <td>Test all possible pairs of parameters</td>
+                        <td>Configuration testing with multiple variables</td>
+                    </tr>
+                </table>
+
+                <h3>Test Execution Process</h3>
+                
+                <div class="warning-box">
+                    <h4>Execution Best Practices:</h4>
+                    <ul>
+                        <li>Execute tests in defined order</li>
+                        <li>Document all results thoroughly</li>
+                        <li>Report defects immediately</li>
+                        <li>Maintain traceability to requirements</li>
+                        <li>Update test status regularly</li>
+                        <li>Coordinate with development team</li>
+                    </ul>
+                </div>
+
+                <h3>Test Coverage Metrics</h3>
+                
+                <div class="success-box">
+                    <h4>Coverage Types:</h4>
+                    <ul>
+                        <li><strong>Requirements Coverage:</strong> Percentage of requirements tested</li>
+                        <li><strong>Code Coverage:</strong> Percentage of code executed</li>
+                        <li><strong>Branch Coverage:</strong> Percentage of decision branches tested</li>
+                        <li><strong>Condition Coverage:</strong> Percentage of boolean conditions tested</li>
+                        <li><strong>Path Coverage:</strong> Percentage of execution paths tested</li>
+                    </ul>
+                </div>
+
+                <h3>Test Data Management</h3>
+                
+                <div class="danger-box">
+                    <h4>Data Considerations:</h4>
+                    <ul>
+                        <li>Use realistic test data sets</li>
+                        <li>Protect sensitive information</li>
+                        <li>Maintain data consistency</li>
+                        <li>Plan for data cleanup</li>
+                        <li>Version control test data</li>
+                        <li>Document data dependencies</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7: Defect Management -->
+            <div class="slide">
+                <h2>Defect Management Process</h2>
+                
+                <p>Effective defect management ensures that identified issues are properly tracked, prioritized, and resolved throughout the software development lifecycle.</p>
+
+                <h3>Defect Lifecycle</h3>
                 
                 <div class="diagram">
                     <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
-                        <!-- CO Process Flow -->
-                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Certificate of Occupancy Process</text>
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Defect Lifecycle States</text>
                         
-                        <!-- Steps -->
-                        <rect x="50" y="60" width="140" height="60" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
-                        <text x="120" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Request Final</text>
-                        <text x="120" y="100" text-anchor="middle" fill="white" font-size="12">Inspections</text>
+                        <!-- New -->
+                        <rect x="50" y="60" width="100" height="50" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
+                        <text x="100" y="90" text-anchor="middle" fill="white" font-size="12" font-weight="bold">NEW</text>
                         
-                        <rect x="230" y="60" width="140" height="60" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
-                        <text x="300" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Multi-Discipline</text>
-                        <text x="300" y="100" text-anchor="middle" fill="white" font-size="12">Inspections</text>
+                        <!-- Assigned -->
+                        <rect x="200" y="60" width="100" height="50" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
+                        <text x="250" y="90" text-anchor="middle" fill="white" font-size="12" font-weight="bold">ASSIGNED</text>
                         
-                        <rect x="410" y="60" width="140" height="60" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
-                        <text x="480" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Deficiency</text>
-                        <text x="480" y="100" text-anchor="middle" fill="white" font-size="12">Resolution</text>
+                        <!-- Open -->
+                        <rect x="350" y="60" width="100" height="50" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="400" y="90" text-anchor="middle" fill="white" font-size="12" font-weight="bold">OPEN</text>
                         
-                        <rect x="590" y="60" width="140" height="60" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
-                        <text x="660" y="85" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Final</text>
-                        <text x="660" y="100" text-anchor="middle" fill="white" font-size="12">Approval</text>
+                        <!-- Fixed -->
+                        <rect x="500" y="60" width="100" height="50" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
+                        <text x="550" y="90" text-anchor="middle" fill="white" font-size="12" font-weight="bold">FIXED</text>
+                        
+                        <!-- Retest -->
+                        <rect x="350" y="150" width="100" height="50" fill="#64B5F6" stroke="#42A5F5" stroke-width="2" rx="5"/>
+                        <text x="400" y="180" text-anchor="middle" fill="white" font-size="12" font-weight="bold">RETEST</text>
+                        
+                        <!-- Verified -->
+                        <rect x="200" y="240" width="100" height="50" fill="#90CAF9" stroke="#64B5F6" stroke-width="2" rx="5"/>
+                        <text x="250" y="270" text-anchor="middle" fill="white" font-size="12" font-weight="bold">VERIFIED</text>
+                        
+                        <!-- Closed -->
+                        <rect x="350" y="240" width="100" height="50" fill="#BBDEFB" stroke="#90CAF9" stroke-width="2" rx="5"/>
+                        <text x="400" y="270" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">CLOSED</text>
+                        
+                        <!-- Rejected -->
+                        <rect x="650" y="150" width="100" height="50" fill="#dc3545" stroke="#c82333" stroke-width="2" rx="5"/>
+                        <text x="700" y="180" text-anchor="middle" fill="white" font-size="12" font-weight="bold">REJECTED</text>
+                        
+                        <!-- Reopened -->
+                        <rect x="500" y="150" width="100" height="50" fill="#ffc107" stroke="#e0a800" stroke-width="2" rx="5"/>
+                        <text x="550" y="180" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">REOPENED</text>
                         
                         <!-- Arrows -->
-                        <path d="M 190 90 L 230 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                        <path d="M 370 90 L 410 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                        <path d="M 550 90 L 590 90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
-                        
-                        <!-- Details boxes -->
-                        <rect x="50" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
-                        <text x="120" y="180" text-anchor="middle" font-size="11">• Submit request</text>
-                        <text x="120" y="195" text-anchor="middle" font-size="11">• Schedule inspections</text>
-                        <text x="120" y="210" text-anchor="middle" font-size="11">• Prepare documents</text>
-                        <text x="120" y="225" text-anchor="middle" font-size="11">• Notify parties</text>
-                        
-                        <rect x="230" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
-                        <text x="300" y="180" text-anchor="middle" font-size="11">• Building official</text>
-                        <text x="300" y="195" text-anchor="middle" font-size="11">• Fire marshal</text>
-                        <text x="300" y="210" text-anchor="middle" font-size="11">• Electrical inspector</text>
-                        <text x="300" y="225" text-anchor="middle" font-size="11">• Health department</text>
-                        
-                        <rect x="410" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
-                        <text x="480" y="180" text-anchor="middle" font-size="11">• Correct deficiencies</text>
-                        <text x="480" y="195" text-anchor="middle" font-size="11">• Re-inspection</text>
-                        <text x="480" y="210" text-anchor="middle" font-size="11">• Documentation</text>
-                        <text x="480" y="225" text-anchor="middle" font-size="11">• Sign-offs</text>
-                        
-                        <rect x="590" y="160" width="140" height="80" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" rx="5"/>
-                        <text x="660" y="180" text-anchor="middle" font-size="11">• CO issued</text>
-                        <text x="660" y="195" text-anchor="middle" font-size="11">• Occupancy allowed</text>
-                        <text x="660" y="210" text-anchor="middle" font-size="11">• Operations begin</text>
-                        <text x="660" y="225" text-anchor="middle" font-size="11">• File documents</text>
-                        
-                        <!-- TCO Option -->
-                        <rect x="300" y="280" width="200" height="60" fill="#FFF9C4" stroke="#F9A825" stroke-width="2" rx="5"/>
-                        <text x="400" y="305" text-anchor="middle" font-size="12" font-weight="bold">Temporary CO Option</text>
-                        <text x="400" y="320" text-anchor="middle" font-size="11">Limited occupancy with conditions</text>
+                        <path d="M 150 85 L 200 85" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 300 85 L 350 85" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 450 85 L 500 85" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 550 110 L 400 150" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 400 200 L 250 240" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 300 265 L 350 265" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 450 175 L 500 175" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 600 175 L 650 175" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <path d="M 550 150 L 550 110" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
                         
                         <!-- Arrow marker -->
                         <defs>
@@ -935,394 +925,694 @@
                     </svg>
                 </div>
 
-                <h3>Common CO Delays</h3>
+                <h3>Defect Classification</h3>
+                
+                <table>
+                    <tr>
+                        <th>Severity</th>
+                        <th>Priority</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical</strong></td>
+                        <td>High</td>
+                        <td>System crash, data loss</td>
+                        <td>Application cannot start</td>
+                    </tr>
+                    <tr>
+                        <td><strong>High</strong></td>
+                        <td>High</td>
+                        <td>Major functionality broken</td>
+                        <td>Login system failure</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Medium</strong></td>
+                        <td>Medium</td>
+                        <td>Feature works with issues</td>
+                        <td>Incorrect calculations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Low</strong></td>
+                        <td>Low</td>
+                        <td>Minor issues, cosmetic problems</td>
+                        <td>Typos, alignment issues</td>
+                    </tr>
+                </table>
+
+                <h3>Defect Reporting</h3>
+                
+                <div class="info-box">
+                    <h4>Essential Defect Information:</h4>
+                    <ul>
+                        <li><strong>Summary:</strong> Clear, concise description</li>
+                        <li><strong>Steps to Reproduce:</strong> Detailed reproduction steps</li>
+                        <li><strong>Expected vs Actual Result:</strong> What should happen vs what happens</li>
+                        <li><strong>Environment:</strong> OS, browser, version information</li>
+                        <li><strong>Severity/Priority:</strong> Business impact assessment</li>
+                        <li><strong>Attachments:</strong> Screenshots, logs, test data</li>
+                    </ul>
+                </div>
+
+                <h3>Root Cause Analysis</h3>
+                
+                <div class="warning-box">
+                    <h4>Common Defect Categories:</h4>
+                    <ul>
+                        <li><strong>Requirements Issues:</strong> Unclear or missing requirements</li>
+                        <li><strong>Design Flaws:</strong> Architectural or design problems</li>
+                        <li><strong>Coding Errors:</strong> Implementation mistakes</li>
+                        <li><strong>Integration Issues:</strong> Component interaction problems</li>
+                        <li><strong>Environment Problems:</strong> Configuration or setup issues</li>
+                        <li><strong>Data Issues:</strong> Incorrect or missing test data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8: Test Automation -->
+            <div class="slide">
+                <h2>Test Automation Fundamentals</h2>
+                
+                <p>Test automation involves using software tools and scripts to execute tests automatically, improving efficiency and test coverage.</p>
+
+                <h3>Automation Benefits and Challenges</h3>
+                
+                <div class="success-box">
+                    <h4>Benefits of Test Automation:</h4>
+                    <ul>
+                        <li>Faster test execution</li>
+                        <li>Improved test coverage</li>
+                        <li>Consistent and repeatable tests</li>
+                        <li>Early defect detection</li>
+                        <li>Reduced manual effort</li>
+                        <li>Better ROI for regression testing</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <h4>Automation Challenges:</h4>
+                    <ul>
+                        <li>High initial setup costs</li>
+                        <li>Maintenance overhead</li>
+                        <li>Tool learning curve</li>
+                        <li>Not suitable for all test types</li>
+                        <li>False positive/negative results</li>
+                        <li>Dependency on stable applications</li>
+                    </ul>
+                </div>
+
+                <h3>Automation Strategy</h3>
+                
+                <table>
+                    <tr>
+                        <th>Test Type</th>
+                        <th>Automation Suitability</th>
+                        <th>Reasoning</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Regression Tests</strong></td>
+                        <td>High</td>
+                        <td>Repetitive, stable functionality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Smoke Tests</strong></td>
+                        <td>High</td>
+                        <td>Basic functionality validation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Load/Performance</strong></td>
+                        <td>High</td>
+                        <td>Requires multiple virtual users</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data-Driven Tests</strong></td>
+                        <td>Medium-High</td>
+                        <td>Multiple datasets, same logic</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usability Tests</strong></td>
+                        <td>Low</td>
+                        <td>Requires human judgment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exploratory Tests</strong></td>
+                        <td>Low</td>
+                        <td>Ad-hoc, investigative nature</td>
+                    </tr>
+                </table>
+
+                <h3>Automation Tools and Frameworks</h3>
+                
+                <div class="info-box">
+                    <h4>Popular Automation Tools:</h4>
+                    <ul>
+                        <li><strong>Selenium:</strong> Web application testing</li>
+                        <li><strong>Cypress:</strong> Modern web testing framework</li>
+                        <li><strong>Appium:</strong> Mobile application testing</li>
+                        <li><strong>JUnit/TestNG:</strong> Unit testing frameworks</li>
+                        <li><strong>REST Assured:</strong> API testing</li>
+                        <li><strong>Playwright:</strong> Cross-browser automation</li>
+                    </ul>
+                </div>
+
+                <h3>Automation Best Practices</h3>
                 
                 <div class="danger-box">
-                    <h4>Typical Issues:</h4>
+                    <h4>Key Guidelines:</h4>
                     <ul>
-                        <li>Incomplete fire alarm testing</li>
-                        <li>Missing emergency lighting</li>
-                        <li>Egress obstructions</li>
-                        <li>Documentation gaps</li>
-                        <li>Outstanding permits</li>
-                        <li>Contractor coordination</li>
+                        <li>Start with stable, high-value test cases</li>
+                        <li>Maintain clear test automation architecture</li>
+                        <li>Use page object model for web testing</li>
+                        <li>Implement proper error handling and reporting</li>
+                        <li>Regular maintenance and updates</li>
+                        <li>Parallel execution for faster feedback</li>
+                        <li>Continuous integration pipeline integration</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Slide 9: Ongoing Compliance -->
+            <!-- Slide 9: Performance Testing -->
             <div class="slide">
-                <h2>Ongoing Compliance Requirements</h2>
+                <h2>Performance Testing</h2>
                 
-                <p>Code compliance doesn't end with the Certificate of Occupancy - it requires continuous attention throughout facility operation.</p>
+                <p>Performance testing evaluates how well software performs under various conditions, ensuring it meets performance requirements and can handle expected loads.</p>
 
-                <h3>Annual Requirements</h3>
+                <h3>Types of Performance Testing</h3>
                 
-                <div class="info-box">
-                    <h4>Recurring Obligations:</h4>
-                    <ul>
-                        <li><strong>Fire Inspections:</strong> Annual fire marshal inspection</li>
-                        <li><strong>System Testing:</strong> Annual fire system testing</li>
-                        <li><strong>Permits:</strong> Operational permit renewals</li>
-                        <li><strong>Training:</strong> Staff fire safety training</li>
-                        <li><strong>Drills:</strong> Evacuation drill requirements</li>
-                        <li><strong>Documentation:</strong> Updated emergency plans</li>
-                    </ul>
+                <div class="diagram">
+                    <svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                        <text x="400" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1565c0">Performance Testing Types</text>
+                        
+                        <!-- Load Testing -->
+                        <rect x="50" y="80" width="140" height="60" fill="#1976D2" stroke="#0D47A1" stroke-width="2" rx="5"/>
+                        <text x="120" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Load Testing</text>
+                        <text x="120" y="120" text-anchor="middle" fill="white" font-size="10">Normal expected load</text>
+                        
+                        <!-- Stress Testing -->
+                        <rect x="220" y="80" width="140" height="60" fill="#1E88E5" stroke="#1565C0" stroke-width="2" rx="5"/>
+                        <text x="290" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Stress Testing</text>
+                        <text x="290" y="120" text-anchor="middle" fill="white" font-size="10">Beyond normal capacity</text>
+                        
+                        <!-- Volume Testing -->
+                        <rect x="390" y="80" width="140" height="60" fill="#2196F3" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="460" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Volume Testing</text>
+                        <text x="460" y="120" text-anchor="middle" fill="white" font-size="10">Large amounts of data</text>
+                        
+                        <!-- Spike Testing -->
+                        <rect x="560" y="80" width="140" height="60" fill="#42A5F5" stroke="#2196F3" stroke-width="2" rx="5"/>
+                        <text x="630" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Spike Testing</text>
+                        <text x="630" y="120" text-anchor="middle" fill="white" font-size="10">Sudden load increases</text>
+                        
+                        <!-- Endurance Testing -->
+                        <rect x="135" y="180" width="140" height="60" fill="#64B5F6" stroke="#42A5F5" stroke-width="2" rx="5"/>
+                        <text x="205" y="205" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Endurance Testing</text>
+                        <text x="205" y="220" text-anchor="middle" fill="white" font-size="10">Extended periods</text>
+                        
+                        <!-- Scalability Testing -->
+                        <rect x="305" y="180" width="140" height="60" fill="#90CAF9" stroke="#64B5F6" stroke-width="2" rx="5"/>
+                        <text x="375" y="205" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Scalability Testing</text>
+                        <text x="375" y="220" text-anchor="middle" fill="white" font-size="10">Resource scaling</text>
+                        
+                        <!-- Baseline Testing -->
+                        <rect x="475" y="180" width="140" height="60" fill="#BBDEFB" stroke="#90CAF9" stroke-width="2" rx="5"/>
+                        <text x="545" y="205" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">Baseline Testing</text>
+                        <text x="545" y="220" text-anchor="middle" fill="#333" font-size="10">Performance benchmarks</text>
+                        
+                        <!-- Performance Graph -->
+                        <rect x="200" y="270" width="400" height="60" fill="#f8f9fa" stroke="#1976D2" stroke-width="2" rx="5"/>
+                        <text x="400" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">Key Metrics</text>
+                        <text x="400" y="315" text-anchor="middle" font-size="11" fill="#333">Response Time • Throughput • Resource Utilization • Error Rate</text>
+                    </svg>
                 </div>
 
-                <h3>Change Management</h3>
-                
-                <div class="warning-box">
-                    <h4>When Permits are Required:</h4>
-                    <ul>
-                        <li>Modifications to fire alarm system</li>
-                        <li>Changes to sprinkler system</li>
-                        <li>Alterations affecting egress</li>
-                        <li>Occupancy changes</li>
-                        <li>Hazardous material storage</li>
-                        <li>Hot work operations</li>
-                    </ul>
-                </div>
-
-                <h3>Compliance Tracking</h3>
+                <h3>Performance Metrics</h3>
                 
                 <table>
                     <tr>
-                        <th>Activity</th>
-                        <th>Frequency</th>
-                        <th>Responsible Party</th>
+                        <th>Metric</th>
+                        <th>Description</th>
+                        <th>Target Example</th>
                     </tr>
                     <tr>
-                        <td><strong>System Testing</strong></td>
-                        <td>Per NFPA schedule</td>
-                        <td>Qualified contractor</td>
+                        <td><strong>Response Time</strong></td>
+                        <td>Time to complete a request</td>
+                        <td>< 2 seconds for web pages</td>
                     </tr>
                     <tr>
-                        <td><strong>Staff Training</strong></td>
-                        <td>Annual + new hires</td>
-                        <td>Facility management</td>
+                        <td><strong>Throughput</strong></td>
+                        <td>Requests processed per unit time</td>
+                        <td>1000 requests per second</td>
                     </tr>
                     <tr>
-                        <td><strong>Plan Updates</strong></td>
-                        <td>As changes occur</td>
-                        <td>Fire safety director</td>
+                        <td><strong>Concurrent Users</strong></td>
+                        <td>Number of simultaneous users</td>
+                        <td>500 concurrent users</td>
                     </tr>
                     <tr>
-                        <td><strong>Inspections</strong></td>
-                        <td>Annual minimum</td>
-                        <td>Fire marshal</td>
+                        <td><strong>Resource Utilization</strong></td>
+                        <td>CPU, memory, disk, network usage</td>
+                        <td>CPU < 80%, Memory < 85%</td>
                     </tr>
                     <tr>
-                        <td><strong>Records</strong></td>
-                        <td>Continuous</td>
-                        <td>Document control</td>
+                        <td><strong>Error Rate</strong></td>
+                        <td>Percentage of failed requests</td>
+                        <td>< 1% error rate</td>
                     </tr>
                 </table>
 
-                <h3>Best Practices</h3>
+                <h3>Performance Testing Tools</h3>
+                
+                <div class="info-box">
+                    <h4>Popular Tools:</h4>
+                    <ul>
+                        <li><strong>JMeter:</strong> Open-source load testing tool</li>
+                        <li><strong>LoadRunner:</strong> Enterprise performance testing suite</li>
+                        <li><strong>Gatling:</strong> High-performance load testing framework</li>
+                        <li><strong>K6:</strong> Developer-friendly load testing tool</li>
+                        <li><strong>BlazeMeter:</strong> Cloud-based performance testing</li>
+                        <li><strong>WebLoad:</strong> Web application load testing</li>
+                    </ul>
+                </div>
+
+                <h3>Performance Testing Process</h3>
                 
                 <div class="success-box">
-                    <h4>Maintaining Compliance:</h4>
+                    <h4>Testing Steps:</h4>
                     <ul>
-                        <li>Establish compliance calendar with all deadlines</li>
-                        <li>Maintain relationships with AHJ representatives</li>
-                        <li>Use qualified contractors for all work</li>
-                        <li>Document all changes and modifications</li>
-                        <li>Regular internal audits and assessments</li>
-                        <li>Stay current with code updates and changes</li>
+                        <li>Define performance requirements and acceptance criteria</li>
+                        <li>Design realistic test scenarios and user journeys</li>
+                        <li>Prepare test environment and monitoring tools</li>
+                        <li>Execute baseline tests to establish benchmarks</li>
+                        <li>Run load tests with increasing user loads</li>
+                        <li>Identify performance bottlenecks and issues</li>
+                        <li>Optimize and retest until criteria are met</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Slide 10: Data Center Specific Compliance -->
+            <!-- Slide 10: Security Testing -->
             <div class="slide">
-                <h2>Data Center Specific Compliance</h2>
+                <h2>Security Testing Considerations</h2>
                 
-                <p>Data centers face unique compliance challenges due to their critical nature and specialized systems.</p>
+                <p>Security testing identifies vulnerabilities, threats, and risks in software applications to ensure data protection and system security.</p>
 
-                <h3>Special Considerations</h3>
+                <h3>Security Testing Types</h3>
                 
                 <div class="info-box">
-                    <h4>Data Center Compliance Factors:</h4>
+                    <h4>Key Security Tests:</h4>
                     <ul>
-                        <li><strong>24/7 Operations:</strong> Testing and maintenance windows</li>
-                        <li><strong>Security Requirements:</strong> Access for inspections</li>
-                        <li><strong>Clean Agent Systems:</strong> Environmental regulations</li>
-                        <li><strong>EPO Systems:</strong> Coordination with life safety</li>
-                        <li><strong>High Density:</strong> Cooling and fire load calculations</li>
-                        <li><strong>Uptime Requirements:</strong> Impairment procedures</li>
+                        <li><strong>Authentication Testing:</strong> User identity verification</li>
+                        <li><strong>Authorization Testing:</strong> Access control validation</li>
+                        <li><strong>Data Protection Testing:</strong> Encryption and data integrity</li>
+                        <li><strong>Input Validation Testing:</strong> Malicious input handling</li>
+                        <li><strong>Session Management Testing:</strong> Session security controls</li>
+                        <li><strong>Error Handling Testing:</strong> Information disclosure prevention</li>
                     </ul>
                 </div>
 
-                <h3>Regulatory Overlaps</h3>
+                <h3>Common Security Vulnerabilities</h3>
                 
                 <table>
                     <tr>
-                        <th>Requirement</th>
-                        <th>Fire Code</th>
-                        <th>Other Authority</th>
+                        <th>Vulnerability Type</th>
+                        <th>Description</th>
+                        <th>Testing Approach</th>
                     </tr>
                     <tr>
-                        <td><strong>Halon Systems</strong></td>
-                        <td>NFPA 2001</td>
-                        <td>EPA regulations</td>
+                        <td><strong>SQL Injection</strong></td>
+                        <td>Malicious SQL code injection</td>
+                        <td>Input validation, parameterized queries</td>
                     </tr>
                     <tr>
-                        <td><strong>Battery Rooms</strong></td>
-                        <td>IFC hazmat</td>
-                        <td>IEEE standards</td>
+                        <td><strong>Cross-Site Scripting (XSS)</strong></td>
+                        <td>Malicious script execution</td>
+                        <td>Input sanitization, output encoding</td>
                     </tr>
                     <tr>
-                        <td><strong>Fuel Storage</strong></td>
-                        <td>NFPA 110</td>
-                        <td>Environmental permits</td>
+                        <td><strong>Cross-Site Request Forgery</strong></td>
+                        <td>Unauthorized request execution</td>
+                        <td>Token validation, same-site cookies</td>
                     </tr>
                     <tr>
-                        <td><strong>Security</strong></td>
-                        <td>Egress requirements</td>
-                        <td>Federal standards</td>
+                        <td><strong>Buffer Overflow</strong></td>
+                        <td>Memory boundary violations</td>
+                        <td>Boundary testing, input length validation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Broken Authentication</strong></td>
+                        <td>Authentication bypass or weakness</td>
+                        <td>Login security, session management</td>
                     </tr>
                 </table>
 
-                <h3>Industry Certifications</h3>
+                <h3>Security Testing Tools</h3>
                 
-                <div class="success-box">
-                    <h4>Beyond Code Compliance:</h4>
+                <div class="warning-box">
+                    <h4>Security Testing Tools:</h4>
                     <ul>
-                        <li><strong>Uptime Institute:</strong> Tier certification requirements</li>
-                        <li><strong>LEED:</strong> Sustainable design credits</li>
-                        <li><strong>DCCA:</strong> Data center standards</li>
-                        <li><strong>ISO 27001:</strong> Security management</li>
-                        <li><strong>SOC 2:</strong> Compliance auditing</li>
+                        <li><strong>OWASP ZAP:</strong> Web application security scanner</li>
+                        <li><strong>Burp Suite:</strong> Web vulnerability scanner</li>
+                        <li><strong>Nessus:</strong> Network vulnerability scanner</li>
+                        <li><strong>SonarQube:</strong> Static code analysis</li>
+                        <li><strong>Fortify:</strong> Application security testing</li>
+                        <li><strong>Checkmarx:</strong> Static application security testing</li>
                     </ul>
                 </div>
 
-                <h3>Compliance Strategy</h3>
+                <h3>Security Testing Process</h3>
                 
-                <div class="warning-box">
-                    <h4>Integrated Approach:</h4>
+                <div class="danger-box">
+                    <h4>Testing Activities:</h4>
                     <ul>
-                        <li>Early engagement with all authorities</li>
-                        <li>Comprehensive compliance matrix</li>
-                        <li>Regular compliance audits</li>
-                        <li>Continuous training program</li>
-                        <li>Proactive code update monitoring</li>
-                        <li>Strong documentation practices</li>
+                        <li>Threat modeling and risk assessment</li>
+                        <li>Static code analysis for security flaws</li>
+                        <li>Dynamic security testing during runtime</li>
+                        <li>Penetration testing and vulnerability assessment</li>
+                        <li>Security configuration review</li>
+                        <li>Compliance testing (GDPR, HIPAA, SOX)</li>
+                    </ul>
+                </div>
+
+                <h3>Security Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Security Guidelines:</h4>
+                    <ul>
+                        <li>Implement security testing early in SDLC</li>
+                        <li>Regular security assessments and updates</li>
+                        <li>Secure coding practices and training</li>
+                        <li>Proper error handling and logging</li>
+                        <li>Regular security patches and updates</li>
+                        <li>Incident response and recovery planning</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Slide 11: References -->
+            <!-- Slide 11: Best Practices -->
+            <div class="slide">
+                <h2>Testing Best Practices and Industry Standards</h2>
+                
+                <p>Following established best practices ensures effective testing processes and high-quality software delivery.</p>
+
+                <h3>Test Process Best Practices</h3>
+                
+                <div class="success-box">
+                    <h4>Process Excellence:</h4>
+                    <ul>
+                        <li><strong>Shift-Left Testing:</strong> Start testing early in development cycle</li>
+                        <li><strong>Risk-Based Testing:</strong> Focus on high-risk areas first</li>
+                        <li><strong>Continuous Testing:</strong> Integrate testing into CI/CD pipelines</li>
+                        <li><strong>Test-Driven Development:</strong> Write tests before code</li>
+                        <li><strong>Behavior-Driven Development:</strong> Collaborate on test scenarios</li>
+                        <li><strong>Exploratory Testing:</strong> Combine learning and testing</li>
+                    </ul>
+                </div>
+
+                <h3>Team and Communication</h3>
+                
+                <div class="info-box">
+                    <h4>Team Practices:</h4>
+                    <ul>
+                        <li>Cross-functional collaboration</li>
+                        <li>Regular communication and standups</li>
+                        <li>Knowledge sharing and training</li>
+                        <li>Clear roles and responsibilities</li>
+                        <li>Continuous learning and improvement</li>
+                        <li>Quality mindset across all team members</li>
+                    </ul>
+                </div>
+
+                <h3>Quality Metrics and KPIs</h3>
+                
+                <table>
+                    <tr>
+                        <th>Metric Category</th>
+                        <th>Key Metrics</th>
+                        <th>Purpose</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Effectiveness</strong></td>
+                        <td>Defect detection rate, test coverage</td>
+                        <td>Measure testing quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Efficiency</strong></td>
+                        <td>Test execution time, automation ratio</td>
+                        <td>Optimize testing process</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Defect Quality</strong></td>
+                        <td>Defect density, escape rate</td>
+                        <td>Track product quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Process Quality</strong></td>
+                        <td>Requirement coverage, test case quality</td>
+                        <td>Improve test processes</td>
+                    </tr>
+                </table>
+
+                <h3>Industry Standards and Frameworks</h3>
+                
+                <div class="warning-box">
+                    <h4>Testing Standards:</h4>
+                    <ul>
+                        <li><strong>ISO 29119:</strong> Software testing standards</li>
+                        <li><strong>IEEE 829:</strong> Test documentation standard</li>
+                        <li><strong>ISTQB:</strong> Testing certification body</li>
+                        <li><strong>TMMI:</strong> Test Maturity Model Integration</li>
+                        <li><strong>Agile Testing:</strong> Agile testing principles</li>
+                        <li><strong>DevOps Testing:</strong> Continuous testing practices</li>
+                    </ul>
+                </div>
+
+                <h3>Continuous Improvement</h3>
+                
+                <div class="danger-box">
+                    <h4>Improvement Areas:</h4>
+                    <ul>
+                        <li>Regular retrospectives and lessons learned</li>
+                        <li>Process optimization and automation</li>
+                        <li>Tool evaluation and adoption</li>
+                        <li>Team skill development and training</li>
+                        <li>Metrics analysis and action planning</li>
+                        <li>Industry trend monitoring and adaptation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 12: References -->
             <div class="slide">
                 <h2>References and Resources</h2>
                 
-                <p>This training module was developed using authoritative sources on fire safety codes and regulations.</p>
+                <p>This training module was developed using authoritative sources on software testing methodologies and industry best practices.</p>
 
                 <div class="reference-box">
-                    <h4>📚 Primary References:</h4>
+                    <h4>Primary References:</h4>
                     <ul>
-                        <li>• NFPA 1 - Fire Code (2021 Edition)</li>
-                        <li>• NFPA 13 - Installation of Sprinkler Systems (2022)</li>
-                        <li>• NFPA 72 - National Fire Alarm and Signaling Code (2022)</li>
-                        <li>• NFPA 75 - Fire Protection of Information Technology Equipment (2020)</li>
-                        <li>• NFPA 101 - Life Safety Code (2021)</li>
-                        <li>• International Building Code (2021)</li>
-                        <li>• International Fire Code (2021)</li>
+                        <li>• ISTQB Foundation Level Syllabus (2018 Version 3.1)</li>
+                        <li>• IEEE 829 - Standard for Software and System Test Documentation</li>
+                        <li>• ISO/IEC 29119 - Software Testing Standards</li>
+                        <li>• "Agile Testing: A Practical Guide" - Crispin & Gregory</li>
+                        <li>• "The Art of Software Testing" - Myers, Sandler & Badgett</li>
+                        <li>• "Lessons Learned in Software Testing" - Kaner, Bach & Pettichord</li>
+                        <li>• OWASP Testing Guide v4.2</li>
                     </ul>
                 </div>
 
                 <div class="reference-box">
-                    <h4>🏢 Code Organizations:</h4>
+                    <h4>Professional Organizations:</h4>
                     <ul>
-                        <li>• NFPA - National Fire Protection Association</li>
-                        <li>• ICC - International Code Council</li>
-                        <li>• IAPMO - International Association of Plumbing and Mechanical Officials</li>
-                        <li>• NFSA - National Fire Sprinkler Association</li>
-                        <li>• AFAA - Automatic Fire Alarm Association</li>
-                        <li>• NICET - National Institute for Certification in Engineering Technologies</li>
+                        <li>• ISTQB - International Software Testing Qualifications Board</li>
+                        <li>• AST - Association for Software Testing</li>
+                        <li>• IIST - International Institute for Software Testing</li>
+                        <li>• IEEE Computer Society</li>
+                        <li>• OWASP - Open Web Application Security Project</li>
+                        <li>• Agile Alliance</li>
                     </ul>
                 </div>
 
                 <div class="reference-box">
-                    <h4>📖 Additional Resources:</h4>
+                    <h4>Tools and Frameworks:</h4>
                     <ul>
-                        <li>• "Fire Protection Handbook" - NFPA, 20th Edition</li>
-                        <li>• "Code Compliance for Advanced Technology Facilities" - SFPE</li>
-                        <li>• "Data Center Design and Implementation Best Practices" - BICSI</li>
-                        <li>• State and local fire marshal websites</li>
-                        <li>• ICC code commentary volumes</li>
+                        <li>• Selenium WebDriver Documentation</li>
+                        <li>• JUnit 5 User Guide</li>
+                        <li>• TestNG Documentation</li>
+                        <li>• Cypress Documentation</li>
+                        <li>• Apache JMeter User Manual</li>
+                        <li>• Postman Learning Center</li>
                     </ul>
                 </div>
 
                 <div class="info-box">
-                    <h4>💡 Note on Content Development:</h4>
-                    <p>This training module is based on model codes and standards commonly adopted in the United States. Always verify the specific codes, editions, and local amendments adopted in your jurisdiction. Code requirements can vary significantly between locations and change with new editions.</p>
+                    <h4>Note on Content Development:</h4>
+                    <p>This training module represents current industry best practices for software testing. Testing methodologies and tools continue to evolve rapidly. Always verify the latest versions of tools and frameworks, and adapt practices to your specific organizational context and project requirements.</p>
                 </div>
             </div>
 
             <!-- Quiz Slide -->
             <div class="slide">
                 <h2>Knowledge Assessment Quiz</h2>
-                <p>Test your understanding of Code Compliance. Select the best answer for each question:</p>
+                <p>Test your understanding of IT Testing Procedures. Select the best answer for each question:</p>
 
                 <form id="quizForm">
                     <div class="quiz-question">
-                        <h4>1. What does AHJ stand for?</h4>
+                        <h4>1. Which testing principle states that finding and fixing defects early saves time and money?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q1" value="a"> Authorized Hazard Jurisdiction</label>
+                            <label><input type="radio" name="q1" value="a"> Exhaustive testing is impossible</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q1" value="b"> Authority Having Jurisdiction</label>
+                            <label><input type="radio" name="q1" value="b"> Early testing saves time and money</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q1" value="c"> Administrative Housing Journal</label>
+                            <label><input type="radio" name="q1" value="c"> Testing shows presence of defects</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q1" value="d"> Annual Hazard Justification</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>2. Which NFPA standard specifically addresses data center fire protection?</h4>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q2" value="a"> NFPA 13</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q2" value="b"> NFPA 72</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q2" value="c"> NFPA 75</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q2" value="d"> NFPA 101</label>
+                            <label><input type="radio" name="q1" value="d"> Defect clustering occurs</label>
                         </div>
                     </div>
 
                     <div class="quiz-question">
-                        <h4>3. In the code hierarchy, which typically has the highest enforcement authority?</h4>
+                        <h4>2. What type of testing is performed without knowledge of the internal code structure?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q3" value="a"> Industry standards</label>
+                            <label><input type="radio" name="q2" value="a"> White box testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q3" value="b"> Federal regulations</label>
+                            <label><input type="radio" name="q2" value="b"> Gray box testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q3" value="c"> Local amendments</label>
+                            <label><input type="radio" name="q2" value="c"> Black box testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q3" value="d"> State codes</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>4. What is the typical occupancy classification for a data center under IBC?</h4>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q4" value="a"> Group A - Assembly</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q4" value="b"> Group B - Business</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q4" value="c"> Group S - Storage</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q4" value="d"> Group U - Utility</label>
+                            <label><input type="radio" name="q2" value="d"> Unit testing</label>
                         </div>
                     </div>
 
                     <div class="quiz-question">
-                        <h4>5. How often must fire alarm systems typically undergo comprehensive testing?</h4>
+                        <h4>3. In the testing pyramid, which type of tests should be most numerous?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q5" value="a"> Monthly</label>
+                            <label><input type="radio" name="q3" value="a"> UI tests</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q5" value="b"> Quarterly</label>
+                            <label><input type="radio" name="q3" value="b"> Integration tests</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q5" value="c"> Annually</label>
+                            <label><input type="radio" name="q3" value="c"> Unit tests</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q5" value="d"> Every 5 years</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>6. What document provides final authorization to occupy a building?</h4>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q6" value="a"> Building permit</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q6" value="b"> Fire marshal approval</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q6" value="c"> Certificate of Occupancy</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q6" value="d"> Construction permit</label>
+                            <label><input type="radio" name="q3" value="d"> System tests</label>
                         </div>
                     </div>
 
                     <div class="quiz-question">
-                        <h4>7. When multiple codes apply, which requirement typically governs?</h4>
+                        <h4>4. Which test design technique divides input data into equivalent classes?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q7" value="a"> The oldest code</label>
+                            <label><input type="radio" name="q4" value="a"> Boundary value analysis</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q7" value="b"> The newest code</label>
+                            <label><input type="radio" name="q4" value="b"> Equivalence partitioning</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q7" value="c"> The most restrictive requirement</label>
+                            <label><input type="radio" name="q4" value="c"> Decision table testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q7" value="d"> The least restrictive requirement</label>
-                        </div>
-                    </div>
-
-                    <div class="quiz-question">
-                        <h4>8. What is required when making modifications to fire protection systems?</h4>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q8" value="a"> Notification only</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q8" value="b"> Permit and inspection</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q8" value="c"> Documentation update</label>
-                        </div>
-                        <div class="quiz-option">
-                            <label><input type="radio" name="q8" value="d"> No requirements</label>
+                            <label><input type="radio" name="q4" value="d"> State transition testing</label>
                         </div>
                     </div>
 
                     <div class="quiz-question">
-                        <h4>9. How long should fire protection system test records typically be retained?</h4>
+                        <h4>5. What is the first state in the typical defect lifecycle?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q9" value="a"> 1 year</label>
+                            <label><input type="radio" name="q5" value="a"> Assigned</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q9" value="b"> 3-5 years minimum</label>
+                            <label><input type="radio" name="q5" value="b"> Open</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q9" value="c"> 10 years</label>
+                            <label><input type="radio" name="q5" value="c"> New</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q9" value="d"> Not required</label>
+                            <label><input type="radio" name="q5" value="d"> Fixed</label>
                         </div>
                     </div>
 
                     <div class="quiz-question">
-                        <h4>10. What is a variance in code compliance?</h4>
+                        <h4>6. Which type of testing is best suited for automation?</h4>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q10" value="a"> A code violation</label>
+                            <label><input type="radio" name="q6" value="a"> Usability testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q10" value="b"> An approved alternative method</label>
+                            <label><input type="radio" name="q6" value="b"> Exploratory testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q10" value="c"> A temporary permit</label>
+                            <label><input type="radio" name="q6" value="c"> Regression testing</label>
                         </div>
                         <div class="quiz-option">
-                            <label><input type="radio" name="q10" value="d"> An inspection report</label>
+                            <label><input type="radio" name="q6" value="d"> Ad-hoc testing</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>7. What performance metric measures the number of requests processed per unit time?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="a"> Response time</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="b"> Throughput</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="c"> Concurrent users</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q7" value="d"> Error rate</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>8. Which security vulnerability involves malicious SQL code injection?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="a"> Cross-Site Scripting (XSS)</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="b"> SQL Injection</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="c"> Buffer Overflow</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q8" value="d"> Cross-Site Request Forgery</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>9. What does "shift-left testing" mean?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="a"> Moving testing to the end of development</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="b"> Starting testing early in the development cycle</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="c"> Testing only on the left side of the application</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q9" value="d"> Using left-handed testers only</label>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>10. Which standard provides guidelines for software testing documentation?</h4>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="a"> ISO 9001</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="b"> IEEE 829</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="c"> ISO 27001</label>
+                        </div>
+                        <div class="quiz-option">
+                            <label><input type="radio" name="q10" value="d"> CMMI Level 3</label>
                         </div>
                     </div>
 
@@ -1354,16 +1644,16 @@
 
         // Quiz answers
         const correctAnswers = {
-            q1: 'b',  // Authority Having Jurisdiction
-            q2: 'c',  // NFPA 75
-            q3: 'b',  // Federal regulations (highest in hierarchy)
-            q4: 'b',  // Group B - Business
-            q5: 'c',  // Annually
-            q6: 'c',  // Certificate of Occupancy
-            q7: 'c',  // The most restrictive requirement
-            q8: 'b',  // Permit and inspection
-            q9: 'b',  // 3-5 years minimum
-            q10: 'b'  // An approved alternative method
+            q1: 'b',  // Early testing saves time and money
+            q2: 'c',  // Black box testing
+            q3: 'c',  // Unit tests (most numerous in pyramid)
+            q4: 'b',  // Equivalence partitioning
+            q5: 'c',  // New (first defect state)
+            q6: 'c',  // Regression testing (best for automation)
+            q7: 'b',  // Throughput
+            q8: 'b',  // SQL Injection
+            q9: 'b',  // Starting testing early in development cycle
+            q10: 'b'  // IEEE 829
         };
 
         function showSlide(n) {
@@ -1419,7 +1709,7 @@
             // Display message based on score
             let message = '';
             if (percentage >= 80) {
-                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of Code Compliance.`;
+                message = `Congratulations! You passed with ${score} out of ${totalQuestions} correct answers. You have demonstrated a strong understanding of IT Testing Procedures.`;
                 document.getElementById('scoreDisplay').style.color = '#28a745';
             } else {
                 message = `You scored ${score} out of ${totalQuestions}. You need 80% or higher to pass. Please review the material and try again.`;
